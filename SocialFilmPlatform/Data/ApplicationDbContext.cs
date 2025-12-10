@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Models;
+
 namespace SocialFilmPlatform.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -16,6 +17,8 @@ namespace SocialFilmPlatform.Data
         public DbSet<Diary> Diaries { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<MovieDiary> MovieDiaries { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,5 +52,7 @@ namespace SocialFilmPlatform.Data
                 .HasForeignKey(md => md.ActorId);
         }
         
+
+
     }
 }
