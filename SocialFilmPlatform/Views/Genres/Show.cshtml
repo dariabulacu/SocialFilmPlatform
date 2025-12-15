@@ -1,0 +1,20 @@
+﻿@model SocialFilmPlatform.Models.Genre
+@{
+	ViewBag.Title = "Afisare gen";
+}
+
+<h2>@ViewBag.Title</h2>
+<br />
+<p>@Model.GenreName</p>
+
+<form method="post" asp-controller="Genres" asp-action="Delete"
+	asp-route-id="@Model.Id">
+	<button class="btn btn-danger" type = "submit" >Sterge genul.</button>
+</form>
+
+<br/>
+
+<a class="btn alert-success" href="/Genres/Index/">Afisare lista de genuri.</a>
+<br />
+<hr />
+<br />
