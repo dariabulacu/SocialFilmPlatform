@@ -22,7 +22,9 @@ namespace SocialFilmPlatform.Controllers
         }
         public ActionResult Show(int id)
         {
-            Genre? genre = db.Genres.Find(id);
+            Genre? genre = db.Genres
+                .Include(g=>g.Movies)
+                .FirstOrDefault(g => g.Id == id);
             if (genre == null)
             {
                 return NotFound();
@@ -43,7 +45,7 @@ namespace SocialFilmPlatform.Controllers
             {
                 db.Genres.Add(genre);
                 db.SaveChanges();
-                TempData["message"] = "Genul cu numele " + genre + " a fost adaugata!";
+                TempData["message"] = "Genul cu numele " + genre.GenreName + " a fost adăugat!";
                 return RedirectToAction("Index");
             }
             else

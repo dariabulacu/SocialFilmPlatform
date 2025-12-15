@@ -1,6 +1,6 @@
 ﻿
 @{
-	ViewBag.Title = "Lista genuri";
+	ViewBag.Title = "Listă genuri";
 }
 <br /><br />
 <h2 class="text-center"> @ViewBag.Title</h2>
@@ -23,11 +23,11 @@
         <div><i class="bi bi-globe"></i> @genre.GenreName</div>
     </div>
     <br />
-    <a class="btn btn-outline-dark" asp-controller="Genres" asp-action="Show" asp-route-id="@genre.Id">Afisare gen</a>
+    <a class="btn btn-outline-dark" asp-controller="Genres" asp-action="Show" asp-route-id="@genre.Id">Afișare gen</a>
     <a class="btn btn-outline-dark" asp-controller="Genres" asp-action="Edit" asp-route-id="@genre.Id">Editare gen</a>
     <br />
     <br />
 }
 <br />
-<a class="btn btn-success" asp-controller="Genres" asp-action="New">Adauga un nou gen.</a>
+<a class="btn btn-success" asp-controller="Genres" asp-action="New">Adaugă un nou gen</a>
 <br />
