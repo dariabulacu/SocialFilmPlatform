@@ -22,7 +22,9 @@ namespace SocialFilmPlatform.Controllers
         }
         public ActionResult Show(int id)
         {
-            Genre? genre = db.Genres.Find(id);
+            Genre? genre = db.Genres
+                .Include(g=>g.Movies)
+                .FirstOrDefault(g => g.Id == id);
             if (genre == null)
             {
                 return NotFound();

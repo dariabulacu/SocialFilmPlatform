@@ -1,20 +1,40 @@
 ﻿@model SocialFilmPlatform.Models.Genre
+
 @{
-	ViewBag.Title = "Afisare gen";
+    ViewBag.Title = "Afisare gen";
 }
 
 <h2>@ViewBag.Title</h2>
+
 <br />
-<p>@Model.GenreName</p>
+
+<p><strong>Nume gen:</strong> @Model.GenreName</p>
+
+<hr />
+
+<h4>Filme din acest gen</h4>
+
+@if (Model.Movies == null || !Model.Movies.Any())
+{
+    <p>Nu există filme pentru acest gen.</p>
+}
+else
+{
+    <ul>
+        @foreach (var movie in Model.Movies)
+        {
+            <li>@movie.Title (@movie.Director)</li>
+        }
+    </ul>
+}
+
+<hr />
 
 <form method="post" asp-controller="Genres" asp-action="Delete"
-	asp-route-id="@Model.Id">
-	<button class="btn btn-danger" type = "submit" >Sterge genul.</button>
+      asp-route-id="@Model.Id">
+    <button class="btn btn-danger" type="submit">Șterge genul</button>
 </form>
 
-<br/>
+<br />
 
-<a class="btn alert-success" href="/Genres/Index/">Afisare lista de genuri.</a>
-<br />
-<hr />
-<br />
+<a class="btn btn-success" href="/Genres/Index">Afișare listă de genuri</a>
