@@ -1,33 +1,50 @@
-﻿
-@{
-	ViewBag.Title = "Listă genuri";
+﻿@{
+    ViewBag.Title = "Genuri";
 }
-<br /><br />
-<h2 class="text-center"> @ViewBag.Title</h2>
-<br />
+
+<h2 class="mt-4 mb-3 text-center">@ViewBag.Title</h2>
 
 @if (ViewBag.Message != null)
 {
-
-	<h2 class="alert alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
-}
-
-
-<br />
-<br />
-
-@foreach (SocialFilmPlatform.Models.Genre genre in ViewBag.Genres)
-{
-    <div class="form-group">
-        <label asp-for="@genre.GenreName" class="form-label"><i class="bi bi-bookmarks-fill"></i> Denumire gen</label>
-        <div><i class="bi bi-globe"></i> @genre.GenreName</div>
+    <div class="alert alert-success text-center">
+        @ViewBag.Message
     </div>
-    <br />
-    <a class="btn btn-outline-dark" asp-controller="Genres" asp-action="Show" asp-route-id="@genre.Id">Afișare gen</a>
-    <a class="btn btn-outline-dark" asp-controller="Genres" asp-action="Edit" asp-route-id="@genre.Id">Editare gen</a>
-    <br />
-    <br />
 }
-<br />
-<a class="btn btn-success" asp-controller="Genres" asp-action="New">Adaugă un nou gen</a>
-<br />
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-success" asp-controller="Genres" asp-action="New">
+        <i class="bi bi-plus-lg"></i> Adaugă gen nou
+    </a>
+</div>
+
+@if (ViewBag.Genres == null || !((IEnumerable<SocialFilmPlatform.Models.Genre>)ViewBag.Genres).Any())
+{
+    <div class="alert alert-info">Nu există genuri încă.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        @foreach (SocialFilmPlatform.Models.Genre genre in ViewBag.Genres)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <i class="bi bi-bookmarks-fill me-1"></i> @genre.GenreName
+                        </h5>
+                        <div class="mt-auto">
+                            <a class="btn btn-outline-primary btn-sm me-2"
+                               asp-controller="Genres" asp-action="Show" asp-route-id="@genre.Id">
+                                Detalii
+                            </a>
+                            <a class="btn btn-outline-secondary btn-sm"
+                               asp-controller="Genres" asp-action="Edit" asp-route-id="@genre.Id">
+                                Editează
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
