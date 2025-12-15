@@ -11,7 +11,8 @@ namespace SocialFilmPlatform.Models
         public string Director { get; set; }
         public string Description { get; set; }
         public float Score { get; set; }
-        public string ReleaseDate { get; set; }
+        
+        public DateTime ReleaseDate { get; set; }
         
         public virtual ICollection<Actor> Actors { get; set; } = [];
         
@@ -21,7 +22,7 @@ namespace SocialFilmPlatform.Models
         public virtual ICollection<ActorMovie> ActorMovies { get; set; } = [];
         
         //fk
-        public int? GenreId { get; set; }
+        public int? GendreId { get; set; }
         //proprietatea de navigare
 
         //cheie externa (FK) - un film este postat de catre un user 
