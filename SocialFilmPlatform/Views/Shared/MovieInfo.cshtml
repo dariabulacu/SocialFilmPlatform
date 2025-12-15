@@ -1,0 +1,19 @@
+@model SocialFilmPlatform.Models.Movie
+
+<div class="card-body">
+    <h3 class="card-title alert-success py-3 px-3 rounded-2 mb-2">@Model.Title</h3>
+    <p class="text-muted mb-1">Regizor: <strong>@Model.Director</strong></p>
+    <p class="text-muted mb-3">Lansare: @Model.ReleaseDate.ToString("dd MMM yyyy")</p>
+
+    <div class="card-text mb-4">@Model.Description</div>
+
+    <div class="d-flex justify-content-between flex-wrap gap-2">
+        <span class="badge bg-primary">Gen: @Model.Genre?.GenreName ?? "Nespecificat"</span>
+        <span class="badge bg-warning text-dark">Scor: @Model.Score</span>
+        @if (Model.User != null)
+        {
+            <span class="badge bg-secondary">Adăugat de @Model.User.UserName</span>
+        }
+    </div>
+
+</div>

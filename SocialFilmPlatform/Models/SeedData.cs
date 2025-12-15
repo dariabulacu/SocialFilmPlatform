@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
 using SocialFilmPlatform.Models;
 
-namespace ArticlesApp.Models
+namespace SocialFilmPlatform.Models
 {
     // PASUL 4: useri si roluri
     public static class SeedData

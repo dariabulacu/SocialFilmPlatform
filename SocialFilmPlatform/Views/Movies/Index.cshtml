@@ -1,44 +1,68 @@
-@model IEnumerable<SocialFilmPlatform.Models.Movie>
+<br />
+<h2 class="text-center">Showing Movies</h2>
 
-@{
-    ViewData["Title"] = "Filme";
+@if (User.IsInRole("Editor") || User.IsInRole("Admin"))
+{
+    <div class="text-end mb-3">
+        <a asp-controller="Movies" asp-action="New" class="btn btn-primary">Adaugă film</a>
+    </div>
 }
 
-<div class="d-flex align-items-center justify-content-between mb-3">
-    <div>
-        <h1 class="display-6 mb-0">Filme</h1>
-        <p class="text-muted mb-0">Lista filmelor din platformă</p>
+<br />
+
+@if(ViewBag.Message != null){
+
+    <h2 class="p-3 rounded-3 text-center mb-5 alert @ViewBag.Alert">@ViewBag.Message</h2>
+}
+
+<br />
+
+
+@* Motorul de cautare  *@
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search topics or keywords" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-outline-success" type="submit">Search</button>
     </div>
+</form>
+
+@foreach (var movie in ViewBag.Movies)
+{
+    <div class="card">
+
+        <partial name="MovieInfo" model="movie"></partial>
+
+        <a class="btn btn-success" asp-controller="Movies" asp-action="Show" asp-route-id="@movie.Id">Show Movie</a>
+
+    </div>
+
+    <br />
+    <br />
+}
+
+@* Afisarea paginata a articolelor *@
+
+<div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="@ViewBag.PaginationBaseUrl=1" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            @for (int i = 1; i <= ViewBag.lastPage; i++)
+            {
+                <li class="page-item"> <a class="page-link" href="@ViewBag.PaginationBaseUrl=@i">@(i)</a> </li>
+
+            }
+
+            <li class="page-item">
+                <a class="page-link" href="@ViewBag.PaginationBaseUrl=@(ViewBag.lastPage)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
-
-@if (!Model.Any())
-{
-    <div class="alert alert-info">Nu există filme încă.</div>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-striped align-middle">
-            <thead>
-                <tr>
-                    <th>Titlu</th>
-                    <th>Regizor</th>
-                    <th>Scor</th>
-                    <th>Data lansării</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var movie in Model)
-                {
-                    <tr>
-                        <td>@movie.Title</td>
-                        <td>@movie.Director</td>
-                        <td>@movie.Score</td>
-                        <td>@movie.ReleaseDate</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-
