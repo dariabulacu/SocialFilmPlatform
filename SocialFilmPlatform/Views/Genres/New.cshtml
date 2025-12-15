@@ -1,12 +1,12 @@
 ﻿@model SocialFilmPlatform.Models.Genre
 @{
-	ViewBag.Title = "Adaugare gen";
+	ViewBag.Title = "Adăugare Gen";
 }
-<h2>ViewBag.Title</h2>
+<h2>@ViewBag.Title</h2>
 
 <form asp-action="New" asp-controller = "Genres" method="post">
 	<div class="form-group">
-		<label asp-for="GenreName" class="form-label"> Denumire gen</label>
+		<label asp-for="GenreName" class="form-label">Denumire Gen</label>
 		<br/>
 		<input asp-for="GenreName" class="form-control"/>
 		<span asp-validation-for="GenreName" class="text-danger"></span>
@@ -14,5 +14,5 @@
 	</div>
 	<br />
 	<br />
-	<button class="btn btn-success" type="submit">Adauga gen</button>
+	<button class="btn btn-success" type="submit">Adaugă un nou gen</button>
 </form>"

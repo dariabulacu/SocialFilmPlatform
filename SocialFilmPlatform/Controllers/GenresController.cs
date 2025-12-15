@@ -45,7 +45,7 @@ namespace SocialFilmPlatform.Controllers
             {
                 db.Genres.Add(genre);
                 db.SaveChanges();
-                TempData["message"] = "Genul cu numele " + genre + " a fost adaugata!";
+                TempData["message"] = "Genul cu numele " + genre.GenreName + " a fost adăugat!";
                 return RedirectToAction("Index");
             }
             else
