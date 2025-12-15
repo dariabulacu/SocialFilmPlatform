@@ -1,0 +1,299 @@
+Index: SocialFilmPlatform/Controllers/MoviesController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/SocialFilmPlatform/Controllers/MoviesController.cs b/SocialFilmPlatform/Controllers/MoviesController.cs
+deleted file mode 100644
+--- a/SocialFilmPlatform/Controllers/MoviesController.cs	(revision 18c5fc4b22a5e0860c3e1a0180fb1accd6fcd40a)
++++ /dev/null	(revision 18c5fc4b22a5e0860c3e1a0180fb1accd6fcd40a)
+@@ -1,253 +0,0 @@
+-using Microsoft.AspNetCore.Authorization;
+-using Microsoft.AspNetCore.Identity;
+-using Microsoft.AspNetCore.Mvc;
+-using Microsoft.AspNetCore.Mvc.Localization;
+-using Microsoft.AspNetCore.Mvc.Rendering;
+-using Microsoft.EntityFrameworkCore;
+-using SocialFilmPlatform.Data;
+-using SocialFilmPlatform.Models;
+-using Ganss.Xss;
+-
+-
+-namespace SocialFilmPlatform.Controllers
+-{
+-    public class MoviesController(
+-        ApplicationDbContext context,
+-        UserManager<ApplicationUser> userManager,
+-        RoleManager<IdentityRole> roleManager) : Controller
+-    {
+-        private readonly ApplicationDbContext db = context;
+-        private readonly UserManager<ApplicationUser> _userManager = userManager;
+-        private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+-
+-        [Authorize(Roles = "User,Editor,Admin")]
+-        public IActionResult Index()
+-        {
+-            var movies = db.Movies
+-                .Include(m => m.Genre)
+-                .Include(m => m.User)
+-                .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
+-                .Include(m => m.MovieDiaries)
+-                .Include(m => m.Reviews);
+-
+-
+-            ViewBag.Movies = movies;
+-            
+-            if(TempData.ContainsKey("message"))
+-            {
+-                ViewBag.Message = TempData["message"];
+-                ViewBag.Alert = TempData["messageType"];
+-            }
+-            
+-            var search = "";
+-            if(Convert.ToString(HttpContext.Request.Query["search"]) != null)
+-            {
+-                search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
+-                
+-                List<int> articleIds = db.Movies.Where(
+-                    at => at.Title.Contains(search) ||
+-                          at.Director.Contains(search) ||
+-                          at.Description.Contains(search)
+-                ).Select(at => at.Id).ToList();
+-                    
+-                    
+-            }
+-            
+-            ViewBag.SearchString = search;
+-
+-            int _perPage = 3;
+-            int totalItems = movies.Count();
+-            var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
+-            var offset = 0;
+-            if (!currentPage.Equals(0))
+-            {
+-                offset = (currentPage - 1) * _perPage;
+-            }
+-            var paginatedMovies = movies.Skip(offset).Take(_perPage).ToList();
+-            ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
+-            ViewBag.Articles = paginatedMovies;
+-
+-            if (search != "")
+-            {
+-                ViewBag.PaginationBaseUrl = "/Movies/Index?search=" + search + "&page=";
+-            }
+-            else
+-            {
+-                ViewBag.PaginationBaseUrl = "/Movies/Index?page=";
+-            }
+-
+-            return View();
+-        }
+-
+-        [Authorize(Roles = "User,Editor,Admin")]
+-
+-        public IActionResult Show(int id)
+-        {
+-            var movie = db.Movies
+-                .Include(m => m.Genre)
+-                .Include(m => m.User)
+-                .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
+-                .Include(m => m.MovieDiaries)
+-                .Include(m => m.Reviews)
+-                .FirstOrDefault(m => m.Id == id);
+-
+-            if (movie is null)
+-            {
+-                return NotFound();
+-            }
+-            SetAccessRights();
+-            return View(movie);
+-        }
+-        private void SetAccessRights()
+-        {
+-            ViewBag.AfisareButoane = false;
+-            if (User.IsInRole("Editor"))
+-            {
+-                ViewBag.AfisareButoane = true;
+-            }
+-
+-            ViewBag.UserCurent = _userManager.GetUserId(User);
+-            ViewBag.EsteAdmin = User.IsInRole("Admin");
+-        }
+-
+-        [Authorize(Roles = "Editor,Admin")]
+-        public IActionResult New()
+-        {
+-            ViewBag.Genres = GetAllGenres();
+-
+-            return View(new Movie
+-            {
+-                ReleaseDate = DateTime.Today
+-            });
+-        }
+-
+-        [HttpPost]
+-        [Authorize(Roles = "Editor,Admin")]
+-        public IActionResult New(Movie movie)
+-        {
+-            var sanitizer = new HtmlSanitizer();
+-
+-            movie.UserId = _userManager.GetUserId(User);
+-            if (ModelState.IsValid)
+-            {
+-                movie.Description = sanitizer.Sanitize(movie.Description);
+-                db.Movies.Add(movie);
+-                db.SaveChanges();
+-                TempData["message"] = "Movie added successfully!";
+-                TempData["messageType"] = "success";
+-                return RedirectToAction("Index");
+-            }
+-
+-            ViewBag.Genres = GetAllGenres();
+-            return View(movie);
+-        }
+-
+-        [Authorize(Roles = "Editor,Admin")]
+-        public IActionResult Edit(int id)
+-        {
+-            var movie = db.Movies
+-                .Include(m => m.Genre)
+-                .FirstOrDefault(m => m.Id == id);
+-
+-            if (movie is null)
+-            {
+-                return NotFound();
+-            }
+-
+-            ViewBag.Genres = GetAllGenres();
+-
+-            if ((movie.UserId == _userManager.GetUserId(User)) || User.IsInRole("Admin"))
+-            {
+-                return View(movie);
+-            }
+-
+-            TempData["message"] = "Nu aveți dreptul să modificați un film care nu vă aparține.";
+-            TempData["messageType"] = "alert-danger";
+-            return RedirectToAction("Index");
+-        }
+-
+-        [HttpPost]
+-        [Authorize(Roles = "Editor,Admin")]
+-        public IActionResult Delete(int id)
+-        {
+-            var movie = db.Movies.Find(id);
+-
+-            if (movie is null)
+-            {
+-                return NotFound();
+-            }
+-            else
+-            {
+-                if(movie.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+-                {
+-                    db.Movies.Remove(movie);
+-                    db.SaveChanges();
+-
+-                    TempData["message"] = "Filmul a fost șters.";
+-                    TempData["messageType"] = "alert-success";
+-                    return RedirectToAction("Index");
+-                }
+-                else
+-                {
+-                    TempData["message"] = "Nu aveti dreptul sa stergeti un film care nu va apartine";
+-                    TempData["messageType"] = "alert-danger";
+-                    return RedirectToAction("Index");
+-                }
+-            }
+-        }
+-        [HttpPost]
+-        [Authorize(Roles = "Editor,Admin")]
+-        public IActionResult Edit(int id, Movie requestMovie)
+-        {
+-            var sanitizer = new HtmlSanitizer();
+-            var movie = db.Movies.Find(id);
+-
+-            if (movie is null)
+-            {
+-                return NotFound();
+-            }
+-
+-            if (!ModelState.IsValid)
+-            {
+-                ViewBag.Genres = GetAllGenres();
+-                return View(requestMovie);
+-            }
+-
+-            if ((movie.UserId == _userManager.GetUserId(User)) || User.IsInRole("Admin"))
+-            {
+-                movie.Title = requestMovie.Title;
+-                movie.Director = requestMovie.Director;
+-                movie.Description = sanitizer.Sanitize(requestMovie.Description);
+-                movie.Score = requestMovie.Score;
+-                movie.ReleaseDate = requestMovie.ReleaseDate;
+-                movie.GendreId = requestMovie.GendreId;
+-                movie.Genre = null;
+-
+-                db.SaveChanges();
+-
+-                TempData["message"] = "Filmul a fost actualizat.";
+-                TempData["messageType"] = "alert-success";
+-                return RedirectToAction("Index");
+-            }
+-
+-            TempData["message"] = "Nu aveți dreptul să modificați un film care nu vă aparține.";
+-            TempData["messageType"] = "alert-danger";
+-            return RedirectToAction("Index");
+-        }
+-
+-        private IEnumerable<SelectListItem> GetAllGenres()
+-        {
+-            return db.Genres
+-                .OrderBy(g => g.GenreName)
+-                .Select(g => new SelectListItem
+-                {
+-                    Value = g.Id.ToString(),
+-                    Text = g.GenreName
+-                })
+-                .ToList();
+-        }
+-
+-
+-    }
+-
+-}
+\ No newline at end of file
+Index: SocialFilmPlatform/.idea/.idea.SocialFilmPlatform.dir/.idea/indexLayout.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/SocialFilmPlatform/.idea/.idea.SocialFilmPlatform.dir/.idea/indexLayout.xml b/SocialFilmPlatform/.idea/.idea.SocialFilmPlatform.dir/.idea/indexLayout.xml
+new file mode 100644
+--- /dev/null	(date 1765839060122)
++++ b/SocialFilmPlatform/.idea/.idea.SocialFilmPlatform.dir/.idea/indexLayout.xml	(date 1765839060122)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="UserContentModel">
++    <attachedFolders />
++    <explicitIncludes />
++    <explicitExcludes />
++  </component>
++</project>
+\ No newline at end of file
+Index: SocialFilmPlatform/.idea/.idea.SocialFilmPlatform.dir/.idea/projectSettingsUpdater.xml
+===================================================================
+diff --git a/SocialFilmPlatform/.idea/.idea.SocialFilmPlatform.dir/.idea/projectSettingsUpdater.xml b/SocialFilmPlatform/.idea/.idea.SocialFilmPlatform.dir/.idea/projectSettingsUpdater.xml
+new file mode 100644
+--- /dev/null	(date 1765839060138)
++++ b/SocialFilmPlatform/.idea/.idea.SocialFilmPlatform.dir/.idea/projectSettingsUpdater.xml	(date 1765839060138)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RiderProjectSettingsUpdater">
++    <option name="singleClickDiffPreview" value="1" />
++    <option name="unhandledExceptionsIgnoreList" value="1" />
++    <option name="vcsConfiguration" value="3" />
++  </component>
++</project>
+\ No newline at end of file
