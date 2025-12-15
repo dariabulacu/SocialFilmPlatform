@@ -1,3 +1,4 @@
+using ArticlesApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
@@ -11,8 +12,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// Configureaz? Identity s? foloseasc? ApplicationUser (user-ul t?u custom)
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
@@ -20,6 +21,12 @@ builder.Services.AddControllersWithViews();
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);  
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

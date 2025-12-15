@@ -1,0 +1,44 @@
+@model IEnumerable<SocialFilmPlatform.Models.Movie>
+
+@{
+    ViewData["Title"] = "Filme";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h1 class="display-6 mb-0">Filme</h1>
+        <p class="text-muted mb-0">Lista filmelor din platformă</p>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Nu există filme încă.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Titlu</th>
+                    <th>Regizor</th>
+                    <th>Scor</th>
+                    <th>Data lansării</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model)
+                {
+                    <tr>
+                        <td>@movie.Title</td>
+                        <td>@movie.Director</td>
+                        <td>@movie.Score</td>
+                        <td>@movie.ReleaseDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+

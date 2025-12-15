@@ -16,6 +16,15 @@ namespace SocialFilmPlatform.Models
         //fk to movie
         public int? MovieId { get; set; }
         //proprietatea de navigare
+
+        //cheie externa (FK) - un review este postat de catre un user 
+
+        public string? UserId { get; set; }
+
+        //proprietatea de navigatie 
+        //un review estse postat de catre un user 
+
+        public virtual ApplicationUser? User { get; set; }
         public virtual Movie? Movie { get; set; }
         
         
