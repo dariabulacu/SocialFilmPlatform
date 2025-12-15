@@ -1,0 +1,33 @@
+﻿
+@{
+	ViewBag.Title = "Lista genuri";
+}
+<br /><br />
+<h2 class="text-center"> @ViewBag.Title</h2>
+<br />
+
+@if (ViewBag.Message != null)
+{
+
+	<h2 class="alert alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+
+
+<br />
+<br />
+
+@foreach (SocialFilmPlatform.Models.Genre genre in ViewBag.Genres)
+{
+    <div class="form-group">
+        <label asp-for="@genre.GenreName" class="form-label"><i class="bi bi-bookmarks-fill"></i> Denumire gen</label>
+        <div><i class="bi bi-globe"></i> @genre.GenreName</div>
+    </div>
+    <br />
+    <a class="btn btn-outline-dark" asp-controller="Genres" asp-action="Show" asp-route-id="@genre.Id">Afisare gen</a>
+    <a class="btn btn-outline-dark" asp-controller="Genres" asp-action="Edit" asp-route-id="@genre.Id">Editare gen</a>
+    <br />
+    <br />
+}
+<br />
+<a class="btn btn-success" asp-controller="Genres" asp-action="New">Adauga un nou gen.</a>
+<br />
