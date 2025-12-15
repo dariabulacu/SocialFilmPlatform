@@ -51,5 +51,8 @@ namespace SocialFilmPlatform.Data
                 .WithMany(d => d.ActorMovies)
                 .HasForeignKey(md => md.ActorId);
         }
+        
+
+
     }
 }

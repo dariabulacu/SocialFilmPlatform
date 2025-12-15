@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialFilmPlatform.Data;
 
@@ -11,9 +12,11 @@ using SocialFilmPlatform.Data;
 namespace SocialFilmPlatform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251215130611_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -328,6 +331,9 @@ namespace SocialFilmPlatform.Data.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -353,14 +359,11 @@ namespace SocialFilmPlatform.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
                 });
@@ -403,24 +406,25 @@ namespace SocialFilmPlatform.Data.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("DatePosted")
-                        .HasColumnType("datetime(6)");
+                    b.Property<string>("DatePosted")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Reviews");
                 });
@@ -511,17 +515,15 @@ namespace SocialFilmPlatform.Data.Migrations
 
             modelBuilder.Entity("SocialFilmPlatform.Models.Movie", b =>
                 {
+                    b.HasOne("SocialFilmPlatform.Models.ApplicationUser", null)
+                        .WithMany("Movies")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("SocialFilmPlatform.Models.Genre", "Genre")
                         .WithMany("Movies")
                         .HasForeignKey("GenreId");
 
-                    b.HasOne("SocialFilmPlatform.Models.ApplicationUser", "User")
-                        .WithMany("Movies")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Genre");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SocialFilmPlatform.Models.MovieDiary", b =>
@@ -545,17 +547,15 @@ namespace SocialFilmPlatform.Data.Migrations
 
             modelBuilder.Entity("SocialFilmPlatform.Models.Review", b =>
                 {
+                    b.HasOne("SocialFilmPlatform.Models.ApplicationUser", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("SocialFilmPlatform.Models.Movie", "Movie")
                         .WithMany("Reviews")
                         .HasForeignKey("MovieId");
 
-                    b.HasOne("SocialFilmPlatform.Models.ApplicationUser", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Movie");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SocialFilmPlatform.Models.Actor", b =>
