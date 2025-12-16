@@ -1,8 +1,8 @@
 @model SocialFilmPlatform.Models.Movie
 @{
     ViewData["Title"] = $"Detalii film – {Model.Title}";
-    var poateEdita = ViewBag.AfisareButoane as bool? ?? false;
-    var esteAdmin = ViewBag.EsteAdmin as bool? ?? false;
+    var poateEdita = (ViewBag.AfisareButoane as bool?) ?? false;
+    var esteAdmin = (ViewBag.EsteAdmin as bool?) ?? false;
     var userCurentId = ViewBag.UserCurent as string;
     var esteOwner = !string.IsNullOrEmpty(Model.UserId) && Model.UserId == userCurentId;
 }
@@ -35,7 +35,7 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Descriere</h5>
-                    <p class="card-text">@Model.Description</p>
+                    <div class="card-text">@Html.Raw(Model.Description)</div>
                 </div>
             </div>
 
@@ -63,16 +63,17 @@
 
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Recenzii (@(Model.Reviews?.Count ?? 0))</h5>
+                    <h5 class="card-title">Recenzii (@((Model.Reviews?.Count ?? 0)))</h5>
                     
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="mb-3">
-                            <form asp-controller="Reviews" asp-action="New" method="post" class="mb-3">
+                            <form asp-controller="Reviews" asp-action="New" method="post" class="mb-3" id="reviewForm">
                                 <input type="hidden" name="MovieId" value="@Model.Id" />
+                                <input type="hidden" name="Content" id="reviewContent" />
                                 <div class="mb-2">
-                                    <textarea name="Content" class="form-control" rows="3" 
-                                              placeholder="Scrie recenzia ta aici..." required></textarea>
+                                    <div id="editor" style="height: 200px; background: white;"></div>
+                                    <small class="text-muted">Folosește bara de instrumente pentru a formata textul</small>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-sm">Adaugă recenzie</button>
                             </form>
@@ -93,12 +94,12 @@
                             {
                                 <li class="list-group-item">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <div>
-                                            <strong>@(review.User?.UserName ?? "Anonim")</strong>
-                                            <span class="text-muted small ms-2">
-                                                @review.DatePosted.ToString("dd.MM.yyyy HH:mm")
-                                            </span>
-                                        </div>
+                                    <div>
+                                        <strong>@((review.User?.UserName ?? "Anonim"))</strong>
+                                        <span class="text-muted small ms-2">
+                                            @review.DatePosted.ToString("dd.MM.yyyy HH:mm")
+                                        </span>
+                                    </div>
                                         @if (User.Identity.IsAuthenticated && 
                                              (review.UserId == userCurentId || esteAdmin))
                                         {
@@ -132,7 +133,7 @@
                                             </div>
                                         }
                                     </div>
-                                    <div>@review.Content</div>
+                                    <div class="review-content">@Html.Raw(review.Content)</div>
                                 </li>
                             }
                         </ul>
@@ -186,4 +187,43 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <script>
+        // Inițializează editorul Quill
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Scrie recenzia ta aici... Folosește bara de instrumente pentru a formata textul.',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['link'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // La submit, salvează conținutul HTML în câmpul ascuns
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            var content = quill.root.innerHTML;
+            
+            // Verifică dacă editorul este gol
+            if (quill.getText().trim().length === 0) {
+                e.preventDefault();
+                alert('Te rog să scrii o recenzie înainte de a trimite.');
+                return false;
+            }
+            
+            document.getElementById('reviewContent').value = content;
+        });
+    </script>
+}
+
 
