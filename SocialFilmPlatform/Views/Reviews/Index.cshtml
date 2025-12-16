@@ -1,5 +1,150 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<SocialFilmPlatform.Models.Review>
+
 @{
+    ViewData["Title"] = ViewBag.MovieTitle != null ? $"Recenzii - {ViewBag.MovieTitle}" : "Toate recenziile";
+    var currentUserId = ViewContext.HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var isAdmin = ViewContext.HttpContext.User.IsInRole("Admin");
+    var movieId = ViewBag.MovieId as int?;
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-6">
+                <i class="bi bi-chat-square-text me-2"></i>
+                @if (ViewBag.MovieTitle != null)
+                {
+                    <span>Recenzii pentru <span class="text-primary">@ViewBag.MovieTitle</span></span>
+                }
+                else
+                {
+                    <span>Toate recenziile</span>
+                }
+            </h1>
+            @if (movieId.HasValue)
+            {
+                <a href="@Url.Action("Show", "Movies", new { id = movieId })" class="btn btn-sm btn-outline-secondary mt-2">
+                    <i class="bi bi-arrow-left me-1"></i>Înapoi la film
+                </a>
+            }
+        </div>
+        <span class="badge bg-primary fs-6">@Model.Count() recenzii</span>
+    </div>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert @ViewBag.Alert alert-dismissible fade show" role="alert">
+            @ViewBag.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle me-2"></i>
+            @if (ViewBag.MovieTitle != null)
+            {
+                <span>Nu există recenzii pentru acest film momentan.</span>
+            }
+            else
+            {
+                <span>Nu există recenzii momentan.</span>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var review in Model)
+            {
+                <div class="col-12">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="flex-grow-1">
+                                    @if (ViewBag.MovieTitle == null)
+                                    {
+                                        <h5 class="card-title mb-1">
+                                            <a href="@Url.Action("Show", "Movies", new { id = review.MovieId })" 
+                                               class="text-decoration-none">
+                                                <i class="bi bi-film me-1"></i>@(review.Movie?.Title ?? "Film necunoscut")
+                                            </a>
+                                        </h5>
+                                    }
+                                    <div class="text-muted small">
+                                        <i class="bi bi-person me-1"></i>
+                                        <strong>@(review.User?.UserName ?? "Anonim")</strong>
+                                        <span class="mx-2">•</span>
+                                        <i class="bi bi-calendar3 me-1"></i>
+                                        @review.DatePosted.ToString("dd MMM yyyy, HH:mm")
+                                    </div>
+                                </div>
+                                
+                                @if (review.UserId == currentUserId || isAdmin)
+                                {
+                                    <div class="d-flex gap-2">
+                                        <a class="btn btn-sm btn-outline-secondary" 
+                                           asp-controller="Reviews" 
+                                           asp-action="Edit" 
+                                           asp-route-id="@review.Id"
+                                           title="Editează recenzia">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form asp-controller="Reviews" 
+                                              asp-action="Delete" 
+                                              asp-route-id="@review.Id" 
+                                              method="post" 
+                                              class="d-inline"
+                                              onsubmit="return confirm('Sigur ștergi recenzia?');">
+                                            <button type="submit" 
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Șterge recenzia">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                            
+                            <div class="card-text review-content">
+                                @Html.Raw(review.Content)
+                            </div>
+                        </div>
+                        @if (ViewBag.MovieTitle == null)
+                        {
+                            <div class="card-footer bg-transparent">
+                                <a href="@Url.Action("Show", "Movies", new { id = review.MovieId })" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye me-1"></i>Vezi filmul
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .review-content {
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .review-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .bi {
+            vertical-align: middle;
+        }
+    </style>
 }

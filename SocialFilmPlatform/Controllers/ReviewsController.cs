@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
 using SocialFilmPlatform.Models;
 
@@ -10,6 +12,34 @@ namespace SocialFilmPlatform.Controllers
     {
         private readonly ApplicationDbContext db = context;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
+
+        [Authorize(Roles = "User,Editor,Admin")]
+        public IActionResult Index(int? movieId)
+        {
+            IQueryable<Review> reviewsQuery = db.Reviews
+                .Include(r => r.User)
+                .Include(r => r.Movie);
+
+            if (movieId.HasValue)
+            {
+                reviewsQuery = reviewsQuery.Where(r => r.MovieId == movieId.Value);
+                var movie = db.Movies.Find(movieId.Value);
+                ViewBag.MovieTitle = movie?.Title;
+                ViewBag.MovieId = movieId.Value;
+            }
+
+            var reviews = reviewsQuery
+                .OrderByDescending(r => r.DatePosted)
+                .ToList();
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+                ViewBag.Alert = TempData["messageType"];
+            }
+
+            return View(reviews);
+        }
 
         [HttpPost]
         [Authorize]
