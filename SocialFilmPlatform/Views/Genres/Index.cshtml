@@ -37,10 +37,17 @@ else
                                asp-controller="Genres" asp-action="Show" asp-route-id="@genre.Id">
                                 Detalii
                             </a>
-                            <a class="btn btn-outline-secondary btn-sm"
+                            <a class="btn btn-outline-secondary btn-sm me-2"
                                asp-controller="Genres" asp-action="Edit" asp-route-id="@genre.Id">
                                 Editează
                             </a>
+                            <form asp-controller="Genres" asp-action="Delete" asp-route-id="@genre.Id" 
+                                  method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                        onclick="return confirm('Sigur ștergi genul @genre.GenreName?');">
+                                    Șterge
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

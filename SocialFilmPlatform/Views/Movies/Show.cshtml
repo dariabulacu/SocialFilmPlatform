@@ -1,8 +1,8 @@
 @model SocialFilmPlatform.Models.Movie
 @{
     ViewData["Title"] = $"Detalii film – {Model.Title}";
-    var poateEdita = ViewBag.AfisareButoane as bool? ?? false;
-    var esteAdmin = ViewBag.EsteAdmin as bool? ?? false;
+    var poateEdita = (ViewBag.AfisareButoane as bool?) ?? false;
+    var esteAdmin = (ViewBag.EsteAdmin as bool?) ?? false;
     var userCurentId = ViewBag.UserCurent as string;
     var esteOwner = !string.IsNullOrEmpty(Model.UserId) && Model.UserId == userCurentId;
 }
@@ -35,7 +35,7 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Descriere</h5>
-                    <p class="card-text">@Model.Description</p>
+                    <div class="card-text">@Html.Raw(Model.Description)</div>
                 </div>
             </div>
 
@@ -63,15 +63,86 @@
 
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Recenzii (@(Model.Reviews?.Count ?? 0))</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Recenzii (@((Model.Reviews?.Count ?? 0)))</h5>
+                        @if (Model.Reviews?.Count > 0)
+                        {
+                            <a href="@Url.Action("Index", "Reviews", new { movieId = Model.Id })" 
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye me-1"></i>Vezi toate recenziile
+                            </a>
+                        }
+                    </div>
+                    
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="mb-3">
+                            <form asp-controller="Reviews" asp-action="New" method="post" class="mb-3" id="reviewForm">
+                                <input type="hidden" name="MovieId" value="@Model.Id" />
+                                <input type="hidden" name="Content" id="reviewContent" />
+                                <div class="mb-2">
+                                    <div id="editor" style="height: 200px; background: white;"></div>
+                                    <small class="text-muted">Folosește bara de instrumente pentru a formata textul</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">Adaugă recenzie</button>
+                            </form>
+                        </div>
+                        <hr />
+                    }
+                    else
+                    {
+                        <p class="text-muted small mb-3">
+                            <a asp-area="Identity" asp-page="/Account/Login">Autentifică-te</a> pentru a scrie o recenzie.
+                        </p>
+                    }
+
                     @if (Model.Reviews?.Any() == true)
                     {
                         <ul class="list-group list-group-flush">
-                            @foreach (var review in Model.Reviews)
+                            @foreach (var review in Model.Reviews.OrderByDescending(r => r.DatePosted))
                             {
                                 <li class="list-group-item">
-                                    @* <div class="fw-semibold">Scor: @review.Score</div> *@
-                                    <div>@review.Content</div>
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <strong>@((review.User?.UserName ?? "Anonim"))</strong>
+                                        <span class="text-muted small ms-2">
+                                            @review.DatePosted.ToString("dd.MM.yyyy HH:mm")
+                                        </span>
+                                    </div>
+                                        @if (User.Identity.IsAuthenticated && 
+                                             (review.UserId == userCurentId || esteAdmin))
+                                        {
+                                            <div class="d-flex gap-2">
+                                                <a class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" 
+                                                   asp-controller="Reviews" 
+                                                   asp-action="Edit" 
+                                                   asp-route-id="@review.Id"
+                                                   title="Editează recenzia">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                                    </svg>
+                                                    <span class="d-none d-sm-inline">Editează</span>
+                                                </a>
+                                                <form asp-controller="Reviews" 
+                                                      asp-action="Delete" 
+                                                      asp-route-id="@review.Id" 
+                                                      method="post" 
+                                                      class="d-inline"
+                                                      onsubmit="return confirm('Sigur ștergi recenzia?');">
+                                                    <button type="submit" 
+                                                            class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
+                                                            title="Șterge recenzia">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                                        </svg>
+                                                        <span class="d-none d-sm-inline">Șterge</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="review-content">@Html.Raw(review.Content)</div>
                                 </li>
                             }
                         </ul>
@@ -93,13 +164,13 @@
                         <dd class="col-6"><span class="badge bg-primary fs-6">@Model.Score</span></dd>
 
                         <dt class="col-6">Gen</dt>
-                        <dd class="col-6">@Model.Genre?.GenreName ?? "Nespecificat"</dd>
+                        <dd class="col-6">@(Model.Genre?.GenreName ?? "Nespecificat")</dd>
 
                         <dt class="col-6">Adăugat de</dt>
-                        <dd class="col-6">@Model.User?.UserName ?? "Anonim"</dd>
+                        <dd class="col-6">@(Model.User?.UserName ?? "Anonim")</dd>
 
                         <dt class="col-6">Jurnale</dt>
-                        <dd class="col-6">@Model.MovieDiaries?.Count ?? 0</dd>
+                        <dd class="col-6">@(Model.MovieDiaries?.Count ?? 0)</dd>
                     </dl>
                 </div>
             </div>
@@ -125,4 +196,43 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <script>
+        // Inițializează editorul Quill
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Scrie recenzia ta aici... Folosește bara de instrumente pentru a formata textul.',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['link'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // La submit, salvează conținutul HTML în câmpul ascuns
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            var content = quill.root.innerHTML;
+            
+            // Verifică dacă editorul este gol
+            if (quill.getText().trim().length === 0) {
+                e.preventDefault();
+                alert('Te rog să scrii o recenzie înainte de a trimite.');
+                return false;
+            }
+            
+            document.getElementById('reviewContent').value = content;
+        });
+    </script>
+}
+
 

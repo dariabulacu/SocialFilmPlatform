@@ -28,9 +28,12 @@
 
                         <div class="mb-3">
                             <label asp-for="Description" class="form-label">Descriere</label>
-                            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                            <textarea name="Description" id="Description" style="display:none;"></textarea>
+                            <div id="descriptionEditor" style="height: 200px; background: white;"></div>
+                            <small class="text-muted">Folosește bara de instrumente pentru a formata textul</small>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
+
 
                         <div class="row g-3">
                             <div class="col-md-6">
@@ -55,7 +58,7 @@
 
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-outline-secondary">Înapoi la listă</a>
-                            <button type="submit" class="btn btn-success">Salvează</button>
+                            <button type="submit" class="btn btn-success" id="submitBtn">Salvează</button>
                         </div>
                     </form>
                 </div>
@@ -63,3 +66,62 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <!-- Include Quill.js stylesheet -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <!-- Include Quill.js library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    
+    <script>
+        // Inițializează editorul Quill pentru descriere
+        var quillDescription = new Quill('#descriptionEditor', {
+            theme: 'snow',
+            placeholder: 'Scrie descrierea filmului aici... Folosește bara de instrumente pentru formatare.',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['link'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Actualizează câmpul ascuns la fiecare schimbare
+        quillDescription.on('text-change', function() {
+            var content = quillDescription.root.innerHTML;
+            document.getElementById('Description').value = content;
+            console.log('Description updated:', content.substring(0, 100));
+        });
+
+        // La submit, salvează conținutul HTML în câmpul ascuns
+        document.querySelector('form').addEventListener('submit', function(e) {
+            var content = quillDescription.root.innerHTML;
+            var textContent = quillDescription.getText().trim();
+            
+            console.log('Submit triggered');
+            console.log('Content length:', content.length);
+            console.log('Text content:', textContent);
+            
+            // Verifică dacă editorul este gol
+            if (textContent.length === 0) {
+                e.preventDefault();
+                alert('Te rog să adaugi o descriere pentru film.');
+                return false;
+            }
+            
+            // Setează valoarea în câmpul textarea
+            document.getElementById('Description').value = content;
+            console.log('Final description value set');
+        });
+    </script>
+}
+            }
+        });
+    </script>
+}
