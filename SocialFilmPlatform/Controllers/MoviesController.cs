@@ -88,7 +88,7 @@ namespace SocialFilmPlatform.Controllers
                 .Include(m => m.User)
                 .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
                 .Include(m => m.MovieDiaries)
-                .Include(m => m.Reviews)
+                .Include(m => m.Reviews).ThenInclude(r => r.User)
                 .FirstOrDefault(m => m.Id == id);
 
             if (movie is null)
