@@ -1,0 +1,43 @@
+@model IEnumerable<SocialFilmPlatform.Models.Actor>
+@{
+    ViewData["Title"] = "Actori";
+    var poateEdita = (ViewBag.AfisareButoane as bool?) ?? false;
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Actori</h1>
+        @if (poateEdita)
+        {
+            <a asp-action="New" class="btn btn-primary rounded-pill">
+                <i class="bi bi-plus-lg me-1"></i>Adaugă Actor
+            </a>
+        }
+    </div>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert @ViewBag.Alert p-3 rounded-3 mb-4">
+            @ViewBag.Message
+        </div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        @foreach (var actor in ViewBag.Actors)
+        {
+            var photoUrl = string.IsNullOrEmpty(actor.PhotoUrl) 
+                ? "https://ui-avatars.com/api/?name=" + actor.Name + "&size=250&background=random" 
+                : actor.PhotoUrl;
+
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="@photoUrl" class="card-img-top" alt="@actor.Name" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">@actor.Name</h5>
+                        <a asp-action="Show" asp-route-id="@actor.Id" class="btn btn-outline-primary btn-sm stretched-link">Detalii</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

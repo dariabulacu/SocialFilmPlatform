@@ -5,17 +5,22 @@ using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
 using SocialFilmPlatform.Models;
 using Ganss.Xss;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace SocialFilmPlatform.Controllers
 {
     public class ActorsController(
         ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager) : Controller
+        RoleManager<IdentityRole> roleManager,
+        IWebHostEnvironment env) : Controller
     {
         private readonly ApplicationDbContext db = context;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+        private readonly IWebHostEnvironment _env = env;
 
         // [Authorize(Roles = "User,Editor,Admin")] // Public access
         public IActionResult Index()
@@ -55,12 +60,28 @@ namespace SocialFilmPlatform.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Editor,Admin")]
-        public IActionResult New(Actor actor)
+        public async Task<IActionResult> New(Actor actor, IFormFile? Image)
         {
             if (ModelState.IsValid)
             {
+                if (Image != null && Image.Length > 0)
+                {
+                    var storagePath = Path.Combine(_env.WebRootPath, "images", "actors");
+                    if (!Directory.Exists(storagePath))
+                    {
+                        Directory.CreateDirectory(storagePath);
+                    }
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
+                    var filePath = Path.Combine(storagePath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(stream);
+                    }
+                    actor.PhotoUrl = "/images/actors/" + fileName;
+                }
+
                 db.Actors.Add(actor);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 TempData["message"] = "Actor added successfully!";
                 TempData["messageType"] = "success";
                 return RedirectToAction("Index");
@@ -81,9 +102,9 @@ namespace SocialFilmPlatform.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Editor,Admin")]
-        public IActionResult Edit(int id, Actor requestActor)
+        public async Task<IActionResult> Edit(int id, Actor requestActor, IFormFile? Image)
         {
-            var actor = db.Actors.Find(id);
+            var actor = await db.Actors.FindAsync(id);
             if (actor is null)
             {
                 return NotFound();
@@ -93,7 +114,24 @@ namespace SocialFilmPlatform.Controllers
             {
                 actor.Name = requestActor.Name;
                 actor.Description = requestActor.Description;
-                db.SaveChanges();
+                
+                if (Image != null && Image.Length > 0)
+                {
+                    var storagePath = Path.Combine(_env.WebRootPath, "images", "actors");
+                    if (!Directory.Exists(storagePath))
+                    {
+                        Directory.CreateDirectory(storagePath);
+                    }
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
+                    var filePath = Path.Combine(storagePath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(stream);
+                    }
+                    actor.PhotoUrl = "/images/actors/" + fileName;
+                }
+
+                await db.SaveChangesAsync();
                 TempData["message"] = "Actor updated successfully!";
                 TempData["messageType"] = "success";
                 return RedirectToAction("Index");

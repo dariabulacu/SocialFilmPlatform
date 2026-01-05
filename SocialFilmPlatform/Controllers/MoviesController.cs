@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
 using SocialFilmPlatform.Models;
 using Ganss.Xss;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+
 
 
 namespace SocialFilmPlatform.Controllers
@@ -14,11 +18,13 @@ namespace SocialFilmPlatform.Controllers
     public class MoviesController(
         ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager) : Controller
+        RoleManager<IdentityRole> roleManager,
+        IWebHostEnvironment env) : Controller
     {
         private readonly ApplicationDbContext db = context;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+        private readonly IWebHostEnvironment _env = env;
 
         // [Authorize(Roles = "User,Editor,Admin")] // Allow everyone to view
         public IActionResult Index()
@@ -135,16 +141,32 @@ namespace SocialFilmPlatform.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Editor,Admin")]
-        public IActionResult New(Movie movie)
+        public async Task<IActionResult> New(Movie movie, IFormFile? Image)
         {
             var sanitizer = new HtmlSanitizer();
 
             movie.UserId = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
+                if (Image != null && Image.Length > 0)
+                {
+                    var storagePath = Path.Combine(_env.WebRootPath, "images", "movies");
+                    if (!Directory.Exists(storagePath))
+                    {
+                        Directory.CreateDirectory(storagePath);
+                    }
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
+                    var filePath = Path.Combine(storagePath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(stream);
+                    }
+                    movie.ImageUrl = "/images/movies/" + fileName;
+                }
+
                 movie.Description = sanitizer.Sanitize(movie.Description);
                 db.Movies.Add(movie);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 TempData["message"] = "Movie added successfully!";
                 TempData["messageType"] = "success";
                 return RedirectToAction("Index");
@@ -209,10 +231,10 @@ namespace SocialFilmPlatform.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Editor,Admin")]
-        public IActionResult Edit(int id, Movie requestMovie)
+        public async Task<IActionResult> Edit(int id, Movie requestMovie, IFormFile? Image)
         {
             var sanitizer = new HtmlSanitizer();
-            var movie = db.Movies.Find(id);
+            var movie = await db.Movies.FindAsync(id);
 
             if (movie is null)
             {
@@ -233,8 +255,32 @@ namespace SocialFilmPlatform.Controllers
                 movie.Score = requestMovie.Score;
                 movie.ReleaseDate = requestMovie.ReleaseDate;
                 movie.GenreId = requestMovie.GenreId;
+                
+                if (Image != null && Image.Length > 0)
+                {
+                    var storagePath = Path.Combine(_env.WebRootPath, "images", "movies");
+                    if (!Directory.Exists(storagePath))
+                    {
+                        Directory.CreateDirectory(storagePath);
+                    }
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
+                    var filePath = Path.Combine(storagePath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(stream);
+                    }
+                    movie.ImageUrl = "/images/movies/" + fileName;
+                }
+                else 
+                {
+                    // Keep existing if not null, or logic if users can paste URL ? 
+                    // Current request is for local files, but we might want to fallback to the existing URL if user didn't upload
+                    // But here requestMovie.ImageUrl might come from hidden field? No hidden field in View.
+                    // If Image is null, we just don't update ImageUrl, so it keeps old value.
+                    // EXCEPT if we want to allow clearing it? For now, let's just update if file provided.
+                }
 
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 TempData["message"] = "Filmul a fost actualizat.";
                 TempData["messageType"] = "alert-success";
