@@ -20,6 +20,7 @@ namespace SocialFilmPlatform.Controllers
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
+        [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Index()
         {
             var movies = db.Movies
@@ -27,11 +28,9 @@ namespace SocialFilmPlatform.Controllers
                 .Include(m => m.User)
                 .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
                 .Include(m => m.MovieDiaries)
-                .Include(m => m.Reviews);
+                .Include(m => m.Reviews)
+                .AsQueryable();
 
-
-            ViewBag.Movies = movies;
-            
             if(TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
@@ -43,13 +42,14 @@ namespace SocialFilmPlatform.Controllers
             {
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
                 
-                List<int> articleIds = db.Movies.Where(
-                    at => at.Title.Contains(search) ||
-                          at.Director.Contains(search) ||
-                          at.Description.Contains(search)
-                ).Select(at => at.Id).ToList();
-                    
-                    
+                if (!string.IsNullOrEmpty(search))
+                {
+                    movies = movies.Where(
+                        m => m.Title.Contains(search) ||
+                             m.Director.Contains(search) ||
+                             m.Description.Contains(search)
+                    );
+                }
             }
             
             ViewBag.SearchString = search;
@@ -64,6 +64,7 @@ namespace SocialFilmPlatform.Controllers
             }
             var paginatedMovies = movies.Skip(offset).Take(_perPage).ToList();
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
+            ViewBag.Movies = paginatedMovies;
             ViewBag.Articles = paginatedMovies;
 
             if (search != "")
@@ -78,6 +79,7 @@ namespace SocialFilmPlatform.Controllers
             return View();
         }
 
+        [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Show(int id)
         {
             var movie = db.Movies
@@ -86,6 +88,7 @@ namespace SocialFilmPlatform.Controllers
                 .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
                 .Include(m => m.MovieDiaries)
                 .Include(m => m.Reviews).ThenInclude(r => r.User)
+                .Include(m => m.Reviews).ThenInclude(r => r.ReviewVotes)
                 .FirstOrDefault(m => m.Id == id);
 
             if (movie is null)
@@ -218,7 +221,6 @@ namespace SocialFilmPlatform.Controllers
                 movie.Score = requestMovie.Score;
                 movie.ReleaseDate = requestMovie.ReleaseDate;
                 movie.GenreId = requestMovie.GenreId;
-                movie.Genre = null;
 
                 db.SaveChanges();
 

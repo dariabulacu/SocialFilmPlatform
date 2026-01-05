@@ -18,6 +18,7 @@ namespace SocialFilmPlatform.Data
         public DbSet<Actor> Actors { get; set; }
         public DbSet<MovieDiary> MovieDiaries { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ReviewVote> ReviewVotes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,6 +51,11 @@ namespace SocialFilmPlatform.Data
                 .HasOne(md => md.Actor)
                 .WithMany(d => d.ActorMovies)
                 .HasForeignKey(md => md.ActorId);
+
+            // Constraint unic: un user poate vota un singur review o singura data
+            modelBuilder.Entity<ReviewVote>()
+                .HasIndex(rv => new { rv.ReviewId, rv.UserId })
+                .IsUnique();
         }
         
 
