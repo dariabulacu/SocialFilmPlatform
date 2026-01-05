@@ -20,7 +20,6 @@ namespace SocialFilmPlatform.Controllers
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
-        [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Index()
         {
             var movies = db.Movies
@@ -78,8 +77,6 @@ namespace SocialFilmPlatform.Controllers
 
             return View();
         }
-
-        [Authorize(Roles = "User,Editor,Admin")]
 
         public IActionResult Show(int id)
         {

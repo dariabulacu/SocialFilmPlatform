@@ -11,11 +11,14 @@
     </div>
 }
 
-<div class="d-flex justify-content-end mb-3">
-    <a class="btn btn-success" asp-controller="Genres" asp-action="New">
-        <i class="bi bi-plus-lg"></i> Adaugă gen nou
-    </a>
-</div>
+@if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+{
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-success" asp-controller="Genres" asp-action="New">
+            <i class="bi bi-plus-lg"></i> Adaugă gen nou
+        </a>
+    </div>
+}
 
 @if (ViewBag.Genres == null || !((IEnumerable<SocialFilmPlatform.Models.Genre>)ViewBag.Genres).Any())
 {
@@ -37,17 +40,20 @@ else
                                asp-controller="Genres" asp-action="Show" asp-route-id="@genre.Id">
                                 Detalii
                             </a>
-                            <a class="btn btn-outline-secondary btn-sm me-2"
-                               asp-controller="Genres" asp-action="Edit" asp-route-id="@genre.Id">
-                                Editează
-                            </a>
-                            <form asp-controller="Genres" asp-action="Delete" asp-route-id="@genre.Id" 
-                                  method="post" class="d-inline">
-                                <button type="submit" class="btn btn-outline-danger btn-sm"
-                                        onclick="return confirm('Sigur ștergi genul @genre.GenreName?');">
-                                    Șterge
-                                </button>
-                            </form>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+                            {
+                                <a class="btn btn-outline-secondary btn-sm me-2"
+                                   asp-controller="Genres" asp-action="Edit" asp-route-id="@genre.Id">
+                                    Editează
+                                </a>
+                                <form asp-controller="Genres" asp-action="Delete" asp-route-id="@genre.Id" 
+                                      method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('Sigur ștergi genul @genre.GenreName?');">
+                                        Șterge
+                                    </button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>

@@ -30,10 +30,13 @@ else
 
 <hr />
 
-<form method="post" asp-controller="Genres" asp-action="Delete"
-      asp-route-id="@Model.Id">
-    <button class="btn btn-danger" type="submit">Șterge genul</button>
-</form>
+@if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+{
+    <form method="post" asp-controller="Genres" asp-action="Delete"
+          asp-route-id="@Model.Id">
+        <button class="btn btn-danger" type="submit">Șterge genul</button>
+    </form>
+}
 
 <br />
 
