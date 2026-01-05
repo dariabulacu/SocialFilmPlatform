@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
 using SocialFilmPlatform.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SocialFilmPlatform.Controllers
 {
@@ -32,13 +33,14 @@ namespace SocialFilmPlatform.Controllers
             return View(genre);
         }
 
+        [Authorize(Roles = "Admin,Editor")]
         public ActionResult New()
         {
             return View();
         }
 
         [HttpPost]
-
+        [Authorize(Roles = "Admin,Editor")]
         public ActionResult New (Genre genre)
         {
             if (ModelState.IsValid)
@@ -53,6 +55,7 @@ namespace SocialFilmPlatform.Controllers
                 return View(genre);
             }
         }
+        [Authorize(Roles = "Admin,Editor")]
         public ActionResult Edit (int id)
         {
             Genre? genre = db.Genres.Find(id);
@@ -61,6 +64,7 @@ namespace SocialFilmPlatform.Controllers
             return View(genre); 
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Editor")]
         public ActionResult Edit (int id, Genre requestGenre)
         {
             Genre? genre = db.Genres.Find(id);
@@ -81,7 +85,7 @@ namespace SocialFilmPlatform.Controllers
             }
         }
         [HttpPost]
-
+        [Authorize(Roles = "Admin,Editor")]
         public ActionResult Delete(int id)
         {
             Genre ? genre = db.Genres.Include(g => g.Movies).FirstOrDefault(g => g.Id == id);

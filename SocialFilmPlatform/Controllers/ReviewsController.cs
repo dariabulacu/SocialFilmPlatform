@@ -13,7 +13,6 @@ namespace SocialFilmPlatform.Controllers
         private readonly ApplicationDbContext db = context;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
 
-        [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Index(int? movieId)
         {
             IQueryable<Review> reviewsQuery = db.Reviews
