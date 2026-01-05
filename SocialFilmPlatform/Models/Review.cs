@@ -26,6 +26,7 @@ namespace SocialFilmPlatform.Models
 
         public virtual ApplicationUser? User { get; set; }
         public virtual Movie? Movie { get; set; }
+        public virtual ICollection<ReviewVote> ReviewVotes { get; set; } = [];
         
         
     }

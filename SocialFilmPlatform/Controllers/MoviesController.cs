@@ -28,11 +28,9 @@ namespace SocialFilmPlatform.Controllers
                 .Include(m => m.User)
                 .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
                 .Include(m => m.MovieDiaries)
-                .Include(m => m.Reviews);
+                .Include(m => m.Reviews)
+                .AsQueryable();
 
-
-            ViewBag.Movies = movies;
-            
             if(TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
@@ -65,6 +63,7 @@ namespace SocialFilmPlatform.Controllers
             }
             var paginatedMovies = movies.Skip(offset).Take(_perPage).ToList();
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
+            ViewBag.Movies = paginatedMovies;
             ViewBag.Articles = paginatedMovies;
 
             if (search != "")
@@ -89,12 +88,20 @@ namespace SocialFilmPlatform.Controllers
                 .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
                 .Include(m => m.MovieDiaries)
                 .Include(m => m.Reviews).ThenInclude(r => r.User)
+                .Include(m => m.Reviews).ThenInclude(r => r.ReviewVotes)
                 .FirstOrDefault(m => m.Id == id);
 
             if (movie is null)
             {
                 return NotFound();
             }
+
+            if(TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+                ViewBag.Alert = TempData["messageType"];
+            }
+
             SetAccessRights();
             return View(movie);
         }
@@ -226,7 +233,6 @@ namespace SocialFilmPlatform.Controllers
                 movie.Score = requestMovie.Score;
                 movie.ReleaseDate = requestMovie.ReleaseDate;
                 movie.GenreId = requestMovie.GenreId;
-                movie.Genre = null;
 
                 db.SaveChanges();
 

@@ -30,6 +30,13 @@
         </div>
     </div>
 
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert p-3 rounded-3 text-center mb-5 @ViewBag.Alert">
+            @ViewBag.Message
+        </div>
+    }
+
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="card shadow-sm mb-4">
@@ -143,6 +150,37 @@
                                         }
                                     </div>
                                     <div class="review-content">@Html.Raw(review.Content)</div>
+                                    
+                                    <!-- Voting Section -->
+                                    <div class="d-flex align-items-center gap-3 mt-2">
+                                        @{
+                                            var likes = review.ReviewVotes?.Count(v => v.IsLike) ?? 0;
+                                            var dislikes = review.ReviewVotes?.Count(v => !v.IsLike) ?? 0;
+                                            var userVote = review.ReviewVotes?.FirstOrDefault(v => v.UserId == userCurentId);
+                                            var userVoteStatus = userVote == null ? "none" : (userVote.IsLike ? "like" : "dislike");
+                                            var canVote = User.IsInRole("User");
+                                        }
+
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" 
+                                                    class="btn @(userVoteStatus == "like" ? "btn-success" : "btn-outline-success") vote-btn"
+                                                    data-review-id="@review.Id"
+                                                    data-type="like"
+                                                    @(canVote ? "" : "disabled")>
+                                                <i class="bi bi-hand-thumbs-up"></i>
+                                                <span class="count">@likes</span>
+                                            </button>
+                                            <button type="button" 
+                                                    class="btn @(userVoteStatus == "dislike" ? "btn-danger" : "btn-outline-danger") vote-btn"
+                                                    data-review-id="@review.Id"
+                                                    data-type="dislike"
+                                                    @(canVote ? "" : "disabled")>
+                                                <i class="bi bi-hand-thumbs-down"></i>
+                                                <span class="count">@dislikes</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- End Voting Section -->
                                 </li>
                             }
                         </ul>
@@ -232,7 +270,63 @@
             
             document.getElementById('reviewContent').value = content;
         });
+
+
+        // AJAX Voting Script
+        document.querySelectorAll('.vote-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                var reviewId = this.dataset.reviewId;
+                var isLike = this.dataset.type === 'like';
+                var that = this;
+
+                fetch('/Reviews/Vote', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `reviewId=${reviewId}&isLike=${isLike}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Find buttons for this review
+                        var likeBtn = document.querySelector(`.vote-btn[data-review-id="${reviewId}"][data-type="like"]`);
+                        var dislikeBtn = document.querySelector(`.vote-btn[data-review-id="${reviewId}"][data-type="dislike"]`);
+
+                        // Update counts
+                        likeBtn.querySelector('.count').innerText = data.likes;
+                        dislikeBtn.querySelector('.count').innerText = data.dislikes;
+
+                        // Update styling based on userStatus
+                        if (data.userStatus === 'like') {
+                            likeBtn.classList.remove('btn-outline-success');
+                            likeBtn.classList.add('btn-success');
+                            
+                            dislikeBtn.classList.remove('btn-danger');
+                            dislikeBtn.classList.add('btn-outline-danger');
+                        } else if (data.userStatus === 'dislike') {
+                            dislikeBtn.classList.remove('btn-outline-danger');
+                            dislikeBtn.classList.add('btn-danger');
+
+                            likeBtn.classList.remove('btn-success');
+                            likeBtn.classList.add('btn-outline-success');
+                        } else {
+                            // None
+                            likeBtn.classList.remove('btn-success');
+                            likeBtn.classList.add('btn-outline-success');
+                            
+                            dislikeBtn.classList.remove('btn-danger');
+                            dislikeBtn.classList.add('btn-outline-danger');
+                        }
+                    } else {
+                        alert('Eroare la votare.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
     </script>
+
 }
 
 
