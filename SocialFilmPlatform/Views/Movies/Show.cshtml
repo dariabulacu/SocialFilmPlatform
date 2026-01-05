@@ -30,6 +30,13 @@
         </div>
     </div>
 
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert p-3 rounded-3 text-center mb-5 @ViewBag.Alert">
+            @ViewBag.Message
+        </div>
+    }
+
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="card shadow-sm mb-4">
@@ -263,9 +270,7 @@
             
             document.getElementById('reviewContent').value = content;
         });
-            
-            document.getElementById('reviewContent').value = content;
-        });
+
 
         // AJAX Voting Script
         document.querySelectorAll('.vote-btn').forEach(btn => {

@@ -95,6 +95,13 @@ namespace SocialFilmPlatform.Controllers
             {
                 return NotFound();
             }
+
+            if(TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+                ViewBag.Alert = TempData["messageType"];
+            }
+
             SetAccessRights();
             return View(movie);
         }

@@ -12,39 +12,9 @@ namespace SocialFilmPlatform.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Diaries_AspNetUsers_ApplicationUserId",
-                table: "Diaries");
 
-            migrationBuilder.DropColumn(
-                name: "GendreId",
-                table: "Movies");
 
-            migrationBuilder.RenameColumn(
-                name: "ApplicationUserId",
-                table: "Diaries",
-                newName: "UserId");
 
-            migrationBuilder.RenameIndex(
-                name: "IX_Diaries_ApplicationUserId",
-                table: "Diaries",
-                newName: "IX_Diaries_UserId");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "ReleaseDate",
-                table: "Movies",
-                type: "datetime(6)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "longtext")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "IsPublic",
-                table: "Diaries",
-                type: "tinyint(1)",
-                nullable: false,
-                defaultValue: false);
 
             migrationBuilder.CreateTable(
                 name: "ReviewVotes",
@@ -86,59 +56,18 @@ namespace SocialFilmPlatform.Data.Migrations
                 table: "ReviewVotes",
                 column: "UserId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Diaries_AspNetUsers_UserId",
-                table: "Diaries",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Diaries_AspNetUsers_UserId",
-                table: "Diaries");
+
 
             migrationBuilder.DropTable(
                 name: "ReviewVotes");
 
-            migrationBuilder.DropColumn(
-                name: "IsPublic",
-                table: "Diaries");
 
-            migrationBuilder.RenameColumn(
-                name: "UserId",
-                table: "Diaries",
-                newName: "ApplicationUserId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Diaries_UserId",
-                table: "Diaries",
-                newName: "IX_Diaries_ApplicationUserId");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "ReleaseDate",
-                table: "Movies",
-                type: "longtext",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "datetime(6)")
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AddColumn<int>(
-                name: "GendreId",
-                table: "Movies",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Diaries_AspNetUsers_ApplicationUserId",
-                table: "Diaries",
-                column: "ApplicationUserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
         }
     }
 }
