@@ -48,10 +48,21 @@ namespace SocialFilmPlatform.Controllers
             rev.UserId = _userManager.GetUserId(User);
             rev.DatePosted = DateTime.Now;
             
+            // Regula: Un user nu poate lasa mai multe recenzii la acelasi film
+            var existingReview = db.Reviews.FirstOrDefault(r => r.MovieId == rev.MovieId && r.UserId == rev.UserId);
+            if (existingReview != null)
+            {
+                TempData["message"] = "Ai lăsat deja o recenzie pentru acest film. O poți edita pe cea existentă.";
+                TempData["messageType"] = "alert-warning";
+                 return RedirectToAction("Show", "Movies", new { id = rev.MovieId });
+            }
+
             if (ModelState.IsValid)
             {
                 db.Reviews.Add(rev);    
                 db.SaveChanges();
+                TempData["message"] = "Recenzia a fost adăugată!";
+                TempData["messageType"] = "success";
                 return RedirectToAction("Show", "Movies", new { id = rev.MovieId });
             }
             else
@@ -71,9 +82,9 @@ namespace SocialFilmPlatform.Controllers
                 return NotFound();
             }
 
-            // Verifică dacă user-ul curent este proprietarul review-ului
+            // Verifică dacă user-ul curent este proprietarul review-ului SAU Admin/Editor
             var currentUserId = _userManager.GetUserId(User);
-            if (rev.UserId != currentUserId && !User.IsInRole("Admin"))
+            if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
                 TempData["message"] = "Nu aveți dreptul să ștergeți această recenzie.";
                 TempData["messageType"] = "alert-danger";
@@ -99,9 +110,11 @@ namespace SocialFilmPlatform.Controllers
                 return NotFound();
             }
 
-            // Verifică dacă user-ul curent este proprietarul review-ului
+            // Verifică dacă user-ul curent este proprietarul review-ului SAU Admin
+            // Adminii/Editorii pot edita recenzii? De obicei moderatorii sterg, nu editeaza textul userului. 
+            // Dar pentru consistenta, permitem Admin/Editor sa modifice daca e nevoie (cenzura partiala).
             var currentUserId = _userManager.GetUserId(User);
-            if (rev.UserId != currentUserId && !User.IsInRole("Admin"))
+            if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
                 TempData["message"] = "Nu aveți dreptul să editați această recenzie.";
                 TempData["messageType"] = "alert-danger";
@@ -124,7 +137,7 @@ namespace SocialFilmPlatform.Controllers
 
             // Verifică dacă user-ul curent este proprietarul review-ului
             var currentUserId = _userManager.GetUserId(User);
-            if (rev.UserId != currentUserId && !User.IsInRole("Admin"))
+            if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
                 TempData["message"] = "Nu aveți dreptul să editați această recenzie.";
                 TempData["messageType"] = "alert-danger";

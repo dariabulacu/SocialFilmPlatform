@@ -20,10 +20,10 @@ namespace SocialFilmPlatform.Controllers
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
-        [Authorize(Roles = "User,Editor,Admin")]
+        // [Authorize(Roles = "User,Editor,Admin")] // Allow everyone to view
         public IActionResult Index()
         {
-            var movies = db.Movies
+            IQueryable<Movie> movies = db.Movies
                 .Include(m => m.Genre)
                 .Include(m => m.User)
                 .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
@@ -42,14 +42,13 @@ namespace SocialFilmPlatform.Controllers
             {
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
                 
-                if (!string.IsNullOrEmpty(search))
-                {
-                    movies = movies.Where(
-                        m => m.Title.Contains(search) ||
-                             m.Director.Contains(search) ||
-                             m.Description.Contains(search)
-                    );
-                }
+                List<int> articleIds = db.Movies.Where(
+                    at => at.Title.Contains(search) ||
+                          at.Director.Contains(search) ||
+                          at.Description.Contains(search)
+                ).Select(at => at.Id).ToList();
+                
+                movies = movies.Where(m => articleIds.Contains(m.Id));
             }
             
             ViewBag.SearchString = search;
@@ -79,7 +78,8 @@ namespace SocialFilmPlatform.Controllers
             return View();
         }
 
-        [Authorize(Roles = "User,Editor,Admin")]
+        // [Authorize(Roles = "User,Editor,Admin")] // Allow everyone to view
+
         public IActionResult Show(int id)
         {
             var movie = db.Movies
@@ -108,10 +108,15 @@ namespace SocialFilmPlatform.Controllers
         private void SetAccessRights()
         {
             ViewBag.AfisareButoane = false;
-            if (User.IsInRole("Editor"))
+            
+            if (User.IsInRole("Editor") || User.IsInRole("Admin"))
             {
                 ViewBag.AfisareButoane = true;
             }
+            // Allow basic users to see buttons for their own content (handled in view usually, but setting flag here)
+            // Actually, existing logic was restrictive. Let's rely on View logic examining current user
+            // but here we just pass data.
+            ViewBag.CurrentUser = _userManager.GetUserId(User);
 
             ViewBag.UserCurent = _userManager.GetUserId(User);
             ViewBag.EsteAdmin = User.IsInRole("Admin");

@@ -16,10 +16,11 @@ namespace SocialFilmPlatform.Controllers
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
-        [Authorize(Roles = "User,Editor,Admin")]
+        // [Authorize(Roles = "User,Editor,Admin")] // Public access
         public IActionResult Index()
         {
             var currentUserId = _userManager.GetUserId(User);
+            // Public diaries OR my diaries
             var diaries = db.Diaries
                             .Where(d => d.IsPublic || d.UserId == currentUserId)
                             .Include(d => d.User)
@@ -35,7 +36,7 @@ namespace SocialFilmPlatform.Controllers
             return View();
         }
 
-        [Authorize(Roles = "User,Editor,Admin")]
+        // [Authorize(Roles = "User,Editor,Admin")] // Public access (with internal checks)
         public IActionResult Show(int id)
         {
             var diary = db.Diaries
@@ -50,6 +51,8 @@ namespace SocialFilmPlatform.Controllers
 
             // Privacy check: if private and not owner, deny access
             var currentUserId = _userManager.GetUserId(User);
+            // If user is not logged in, currentUserId is null. Private diaries check works: (false && false && !User.IsInRole) -> Forbid
+            // Public diaries: IsPublic = true -> skipped if body
             if (!diary.IsPublic && diary.UserId != currentUserId && !User.IsInRole("Admin")) 
             {
                 return Forbid();
