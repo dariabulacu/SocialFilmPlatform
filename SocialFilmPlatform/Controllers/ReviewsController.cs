@@ -145,5 +145,49 @@ namespace SocialFilmPlatform.Controllers
                 return View(requestRev);
             }
         }
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public IActionResult Vote(int reviewId, bool isLike)
+        {
+            var userId = _userManager.GetUserId(User);
+            var existingVote = db.ReviewVotes.FirstOrDefault(v => v.ReviewId == reviewId && v.UserId == userId);
+
+            if (existingVote != null)
+            {
+                if (existingVote.IsLike == isLike)
+                {
+                    // Toggle off if clicking the same vote again
+                    db.ReviewVotes.Remove(existingVote);
+                }
+                else
+                {
+                    // Change vote type
+                    existingVote.IsLike = isLike;
+                    db.ReviewVotes.Update(existingVote);
+                }
+            }
+            else
+            {
+                // New vote
+                var vote = new ReviewVote
+                {
+                    ReviewId = reviewId,
+                    UserId = userId,
+                    IsLike = isLike
+                };
+                db.ReviewVotes.Add(vote);
+            }
+
+            db.SaveChanges();
+
+            var likesCount = db.ReviewVotes.Count(v => v.ReviewId == reviewId && v.IsLike);
+            var dislikesCount = db.ReviewVotes.Count(v => v.ReviewId == reviewId && !v.IsLike);
+            
+            // Re-fetch vote status for frontend update
+            var currentVote = db.ReviewVotes.FirstOrDefault(v => v.ReviewId == reviewId && v.UserId == userId);
+            var status = currentVote == null ? "none" : (currentVote.IsLike ? "like" : "dislike");
+
+            return Json(new { success = true, likes = likesCount, dislikes = dislikesCount, userStatus = status });
+        }
     }
 }
