@@ -1,9 +1,22 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
+    ViewData["FullWidth"] = true;
 }
 
-<div class="text-center py-5">
-    <h1 class="display-4 mb-3">Social Film Platform</h1>
-    <p class="lead mb-4">Descoperă filme și recenzii din comunitatea ta.</p>
-    <a class="btn btn-primary btn-lg" asp-controller="Movies" asp-action="Index">Vezi filmele</a>
+<div class="video-background-holder">
+    <div class="video-background-overlay"></div>
+    <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+        <source src="~/videos/background.mp4" type="video/mp4">
+    </video>
+    <div class="video-background-content h-100 container">
+        <div class="d-flex h-100 text-start align-items-center">
+            <div class="w-100 text-white col-md-8">
+                <h1 class="hero-title">Social Film Platform</h1>
+                <p class="hero-subtitle">Descoperă filme și recenzii din comunitatea ta.</p>
+                <div class="mt-5">
+                     <a class="btn btn-elegant" asp-controller="Movies" asp-action="Index">EXPLORE MOVIES</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

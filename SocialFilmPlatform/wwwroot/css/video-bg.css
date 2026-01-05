@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+/* Page Specific Body Styles */
+.home-body {
+    overflow: hidden;
+    /* Prevent scrolling on homepage */
+    height: 100vh;
+}
+
+/* Navbar Styles */
+.navbar-transparent {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+    background-color: transparent !important;
+    border-bottom: none !important;
+    padding-top: 20px;
+    margin-bottom: 0 !important;
+    /* Override mb-3 */
+}
+
+.navbar-transparent .navbar-brand,
+.navbar-transparent .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.navbar-transparent .navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #fff !important;
+}
+
+.navbar-transparent .nav-link:hover {
+    color: #fff !important;
+}
+
+.navbar-transparent .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Footer Styles */
+.footer-transparent {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: transparent !important;
+    border-top: none !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 1030;
+}
+
+.footer-transparent a {
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-transparent a:hover {
+    color: #fff !important;
+    text-decoration: underline;
+}
+
+
+/* Video Background Settings */
+.video-background-holder {
+    position: relative;
+    background-color: black;
+    background-image: url('/images/fallback-bg.jpg'); /* Fallback */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    min-height: 25rem;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.video-background-holder video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.video-background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    /* Elegant diagonal gradient overlay */
+    background: linear-gradient(105deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0) 100%);
+    z-index: 1;
+}
+
+.video-background-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Typography & Content Highlighting */
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 4.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    /* For animation */
+    animation: fadeUp 1s ease-out forwards;
+}
+
+.hero-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    letter-spacing: 2px;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.3s forwards;
+    /* Delay */
+}
+
+/* Elegant Button */
+.btn-elegant {
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 35px;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.6s forwards;
+    /* Delay */
+    text-decoration: none;
+}
+
+.btn-elegant:hover {
+    background: #fff;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Animations */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

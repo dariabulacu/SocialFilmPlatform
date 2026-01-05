@@ -221,6 +221,7 @@ namespace SocialFilmPlatform.Controllers
                 movie.Score = requestMovie.Score;
                 movie.ReleaseDate = requestMovie.ReleaseDate;
                 movie.GenreId = requestMovie.GenreId;
+                movie.Genre = null;
 
                 db.SaveChanges();
 

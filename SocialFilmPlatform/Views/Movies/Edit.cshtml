@@ -87,19 +87,16 @@
             }
         });
 
-        // Încarcă conținutul existent în editor
         var existingDescription = @Html.Raw(Json.Serialize((Model.Description ?? "")));
         console.log('Existing description:', existingDescription);
         quillDescription.root.innerHTML = existingDescription;
 
-        // Actualizează câmpul ascuns la fiecare schimbare
         quillDescription.on('text-change', function() {
             var content = quillDescription.root.innerHTML;
             document.getElementById('Description').value = content;
             console.log('Description updated:', content.substring(0, 100));
         });
 
-        // La submit, salvează conținutul HTML în câmpul ascuns
         document.querySelector('form').addEventListener('submit', function(e) {
             var content = quillDescription.root.innerHTML;
             var textContent = quillDescription.getText().trim();
@@ -108,14 +105,12 @@
             console.log('Content length:', content.length);
             console.log('Text content:', textContent);
             
-            // Verifică dacă editorul este gol
             if (textContent.length === 0) {
                 e.preventDefault();
                 alert('Te rog să adaugi o descriere pentru film.');
                 return false;
             }
             
-            // Setează valoarea în câmpul textarea
             document.getElementById('Description').value = content;
             console.log('Final description value set');
         });
