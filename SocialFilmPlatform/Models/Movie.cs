@@ -12,6 +12,7 @@ namespace SocialFilmPlatform.Models
         public string Description { get; set; }
         public float Score { get; set; }
         public DateTime ReleaseDate { get; set; }
+        public string? ImageUrl { get; set; }
         
         public virtual ICollection<Actor> Actors { get; set; } = [];
         

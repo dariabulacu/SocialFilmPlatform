@@ -9,6 +9,8 @@ namespace SocialFilmPlatform.Models
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
+        public string? ProfilePictureUrl { get; set; }
+
         //un user poate sa lase un singur review per film, dar le poate edita sau sterge
         //de asemenea poate sa dea like la review-ul altui user 
         public virtual ICollection<Review> Reviews { get; set; } = [];

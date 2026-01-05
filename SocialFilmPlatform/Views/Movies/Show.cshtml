@@ -1,234 +1,482 @@
 @model SocialFilmPlatform.Models.Movie
+
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = $"Detalii film – {Model.Title}";
-    var poateEdita = (ViewBag.AfisareButoane as bool?) ?? false;
-    var esteAdmin = (ViewBag.EsteAdmin as bool?) ?? false;
-    var userCurentId = ViewBag.UserCurent as string;
-    var esteOwner = !string.IsNullOrEmpty(Model.UserId) && Model.UserId == userCurentId;
+    var userCurentId = UserManager.GetUserId(User);
+    var esteAdmin = User.IsInRole("Admin");
+    var esteEditor = User.IsInRole("Editor");
+    var poateEdita = (userCurentId == Model.UserId);
+    var esteOwner = (userCurentId == Model.UserId);
+    
+    var backdropUrl = string.IsNullOrEmpty(Model.ImageUrl) 
+        ? "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1470&auto=format&fit=crop" 
+        : Model.ImageUrl;
 }
 
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-start mb-3">
-        <div>
-            <h1 class="display-6 mb-1">@Model.Title</h1>
-            <p class="text-muted mb-0">Regizor: <strong>@Model.Director</strong></p>
-            <p class="text-muted">Lansat pe @Model.ReleaseDate.ToString("dd MMM yyyy")</p>
-        </div>
-        <div class="d-flex gap-2">
-            <a class="btn btn-outline-secondary" asp-action="Index">Înapoi la listă</a>
-            @if (poateEdita || esteAdmin || esteOwner)
-            {
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id">Editează</a>
-                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-danger"
-                            onclick="return confirm('Sigur ștergi filmul?');">
-                        Șterge
-                    </button>
-                </form>
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:ital,wght@0,300;0,400;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
 
-            }
+    :root {
+        --hollywood-bg: #fdfbf7; /* Very light cream */
+        --hollywood-text: #1a1a1a;
+        --hollywood-gold: #c4a055;
+        --hollywood-gray: #555;
+        --font-display: 'Cinzel', serif; /* Classic Movie Title Font */
+        --font-heading: 'Playfair Display', serif;
+        --font-body: 'Lato', sans-serif;
+    }
+
+    body {
+        background-color: var(--hollywood-bg);
+        color: var(--hollywood-text);
+        font-family: var(--font-body);
+    }
+
+    /* Typography */
+    h1, h2, h3 {
+        font-family: var(--font-display);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #111;
+    }
+
+    h4, h5, h6 {
+        font-family: var(--font-heading);
+        font-weight: 600;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
+        color: var(--hollywood-text);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .section-title::after {
+        content: '';
+        flex-grow: 1;
+        height: 1px;
+        background: #ddd;
+    }
+
+    /* Hero Section - Cleaner */
+    .hero-archive {
+        position: relative;
+        height: 70vh;
+        min-height: 500px;
+        background-image: url('@backdropUrl');
+        background-size: cover;
+        background-position: center top;
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 4rem;
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+    }
+
+    .hero-archive::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, var(--hollywood-bg) 5%, rgba(253, 251, 247, 0.8) 20%, rgba(0,0,0,0) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding-bottom: 2rem;
+        width: 100%;
+        text-shadow: none; /* Removed shadow for cleaner look */
+    }
+
+    .movie-title-large {
+        font-size: 4.5rem;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+        color: #000;
+    }
+
+    .meta-line {
+        font-family: var(--font-heading);
+        font-size: 1.2rem;
+        color: var(--hollywood-gray);
+        font-style: italic;
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+    }
+    
+    .meta-separator {
+        width: 5px;
+        height: 5px;
+        background: var(--hollywood-gold);
+        border-radius: 50%;
+    }
+
+    /* Actions */
+    .btn-archive {
+        background: transparent;
+        border: 1px solid #333;
+        color: #333;
+        font-family: var(--font-display);
+        padding: 0.5rem 1.5rem;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        border-radius: 0;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    .btn-archive:hover {
+        background: #111;
+        color: #fff;
+    }
+
+    /* Content Layout */
+    .content-wrapper {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+
+    .synopsis-text {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: #333;
+        font-weight: 300;
+        letter-spacing: 0.3px;
+    }
+
+    /* Actor Cards - Minimal */
+    .actor-minimal {
+        text-align: center;
+        transition: transform 0.3s;
+    }
+    
+    .actor-minimal:hover {
+        transform: translateY(-5px);
+    }
+
+    .actor-img-round {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+        filter: grayscale(100%);
+        transition: filter 0.3s;
+        border: 2px solid transparent;
+    }
+    
+    .actor-minimal:hover .actor-img-round {
+        filter: grayscale(0%);
+        border-color: var(--hollywood-gold);
+    }
+    
+    .actor-name {
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        margin-bottom: 0.2rem;
+        color: #000;
+    }
+
+    /* Archive Stats Sidebar */
+    .archive-stats {
+        border-left: 1px solid #ddd;
+        padding-left: 2rem;
+    }
+    
+    .stat-item {
+        margin-bottom: 1.5rem;
+    }
+    
+    .stat-label {
+        font-family: var(--font-display);
+        font-size: 0.75rem;
+        color: #888;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 0.3rem;
+    }
+    
+    .stat-value {
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        color: #000;
+    }
+
+    /* Clean Reviews */
+    .review-clean {
+        padding: 2rem 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .review-clean:last-child {
+        border-bottom: none;
+    }
+
+    .review-user {
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .review-date {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-minimal {
+        border: none;
+        background: transparent;
+        color: #777;
+        font-size: 0.9rem;
+        padding: 0;
+        transition: color 0.2s;
+    }
+    .btn-minimal:hover {
+        color: #000;
+    }
+
+    /* Quill Overrides for Minimal Look */
+    .ql-toolbar.ql-snow {
+        border: none !important;
+        border-bottom: 1px solid #efeddfff !important;
+        background: transparent;
+    }
+    .ql-container.ql-snow {
+        border: none !important;
+        background: #fff;
+        font-family: var(--font-body);
+    }
+    
+    /* Make bold text darker and heavier */
+    .ql-editor strong {
+        color: #000;
+        font-weight: 800;
+    }
+</style>
+
+<div class="hero-archive">
+    <div class="container hero-content">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="meta-line mb-3">
+                    <span>@Model.ReleaseDate.ToString("yyyy")</span>
+                    @if(Model.Genre != null)
+                    {
+                        <span class="meta-separator"></span>
+                        <span>@Model.Genre.GenreName</span>
+                    }
+                    <span class="meta-separator"></span>
+                    <span><i class="bi bi-star-fill text-warning me-1"></i>@Model.Score</span>
+                </div>
+                
+                <h1 class="movie-title-large">@Model.Title</h1>
+                <p class="fs-4 fst-italic text-muted mb-4" style="font-family: var(--font-heading);">@Model.Director</p>
+                
+                <div class="d-flex gap-3">
+                    @if (poateEdita || esteAdmin || esteOwner)
+                    {
+                        <a class="btn btn-archive" asp-action="Edit" asp-route-id="@Model.Id">
+                            EDIT RECORD
+                        </a>
+                        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-archive text-danger border-danger"
+                                    onclick="return confirm('Archive deletion is permanent. Proceed?');">
+                                DELETE
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
+<div class="container pb-5">
     @if (ViewBag.Message != null)
     {
-        <div class="alert p-3 rounded-3 text-center mb-5 @ViewBag.Alert">
-            @ViewBag.Message
+        <div class="alert alert-light border-0 text-center mb-5 fst-italic text-muted">
+            — @ViewBag.Message —
         </div>
     }
 
-    <div class="row g-4">
-        <div class="col-lg-8">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Descriere</h5>
-                    <div class="card-text">@Html.Raw(Model.Description)</div>
+    <div class="row gx-5">
+        <!-- Main Content -->
+        <div class="col-lg-8 content-wrapper">
+            <!-- Synopsis -->
+            <section class="mb-5">
+                <h3 class="section-title">Synopsis</h3>
+                <div class="synopsis-text">
+                    @Html.Raw(Model.Description)
                 </div>
-            </div>
+            </section>
 
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Distribuție</h5>
-                    @if (Model.ActorMovies?.Any() == true)
-                    {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var actorMovie in Model.ActorMovies)
-                            {
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>@actorMovie.Actor?.Name</span>
-                                    <span class="text-muted">ID actor: @actorMovie.ActorId</span>
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p class="text-muted mb-0">Nu există actori asociați.</p>
-                    }
-                </div>
-            </div>
-
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0">Recenzii (@((Model.Reviews?.Count ?? 0)))</h5>
-                        @if (Model.Reviews?.Count > 0)
+            <!-- Actors -->
+            <section class="mb-5">
+                <h3 class="section-title">Cast</h3>
+                @if (Model.ActorMovies?.Any() == true)
+                {
+                    <div class="row row-cols-2 row-cols-md-3 gy-4">
+                        @foreach (var actorMovie in Model.ActorMovies.Take(3)) 
                         {
-                            <a href="@Url.Action("Index", "Reviews", new { movieId = Model.Id })" 
-                               class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-eye me-1"></i>Vezi toate recenziile
-                            </a>
+                            var actor = actorMovie.Actor;
+                            var photoUrl = string.IsNullOrEmpty(actor?.PhotoUrl) 
+                                ? "https://ui-avatars.com/api/?name=" + (actor?.Name ?? "Unknown") + "&size=250&background=f0f0f0&color=333" 
+                                : actor.PhotoUrl;
+                                
+                            <div class="col">
+                                <div class="actor-minimal">
+                                    <a href="/Actors/Show/@actor?.Id">
+                                        <img src="@photoUrl" class="actor-img-round" alt="@actor?.Name">
+                                    </a>
+                                    <div class="actor-name">@actor?.Name</div>
+                                    <small class="text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px;">Actor</small>
+                                </div>
+                            </div>
                         }
                     </div>
-                    
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <div class="mb-3">
-                            <form asp-controller="Reviews" asp-action="New" method="post" class="mb-3" id="reviewForm">
-                                <input type="hidden" name="MovieId" value="@Model.Id" />
-                                <input type="hidden" name="Content" id="reviewContent" />
-                                <div class="mb-2">
-                                    <div id="editor" style="height: 200px; background: white;"></div>
-                                    <small class="text-muted">Folosește bara de instrumente pentru a formata textul</small>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-sm">Adaugă recenzie</button>
-                            </form>
-                        </div>
-                        <hr />
-                    }
-                    else
-                    {
-                        <p class="text-muted small mb-3">
-                            <a asp-area="Identity" asp-page="/Account/Login">Autentifică-te</a> pentru a scrie o recenzie.
-                        </p>
-                    }
+                }
+                else
+                {
+                    <div class="text-muted fst-italic text-center py-4">
+                        No cast records found.
+                    </div>
+                }
+            </section>
 
+            <!-- Reviews -->
+            <section>
+                <div class="d-flex justify-content-between align-items-baseline section-title border-0 pb-0 mb-4">
+                    <h3 class="section-title border-0 m-0 p-0">Critiques</h3>
+                    <a href="@Url.Action("Index", "Reviews", new { movieId = Model.Id })" class="btn-minimal">
+                        VIEW ARCHIVE (@(Model.Reviews?.Count ?? 0))
+                    </a>
+                </div>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                            <div class="mb-5 p-4" style="background: #ffffff; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                        <h6 class="mb-3 text-uppercase text-muted" style="letter-spacing: 1px; font-size: 0.8rem;">Add to Archive</h6>
+                        <form asp-controller="Reviews" asp-action="New" method="post" id="reviewForm">
+                            <input type="hidden" name="MovieId" value="@Model.Id" />
+                            <input type="hidden" name="Content" id="reviewContent" />
+                            <div class="mb-3 quill-editor-container">
+                                <div id="editor" style="height: 120px; font-family: var(--font-body);"></div>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-archive">PUBLISH</button>
+                            </div>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4 mb-5 border-top border-bottom border-light">
+                        <a asp-area="Identity" asp-page="/Account/Login" class="text-dark fw-bold text-decoration-none border-bottom border-dark">Log in</a> 
+                        <span class="text-muted">to contribute to the archive.</span>
+                    </div>
+                }
+
+                <div class="reviews-list">
                     @if (Model.Reviews?.Any() == true)
                     {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var review in Model.Reviews.OrderByDescending(r => r.DatePosted))
-                            {
-                                <li class="list-group-item">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div>
-                                        <strong>@((review.User?.UserName ?? "Anonim"))</strong>
-                                        <span class="text-muted small ms-2">
-                                            @review.DatePosted.ToString("dd.MM.yyyy HH:mm")
-                                        </span>
-                                    </div>
-                                        @if (User.Identity.IsAuthenticated && 
-                                             (review.UserId == userCurentId || esteAdmin))
-                                        {
-                                            <div class="d-flex gap-2">
-                                                <a class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" 
-                                                   asp-controller="Reviews" 
-                                                   asp-action="Edit" 
-                                                   asp-route-id="@review.Id"
-                                                   title="Editează recenzia">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                                    </svg>
-                                                    <span class="d-none d-sm-inline">Editează</span>
-                                                </a>
-                                                <form asp-controller="Reviews" 
-                                                      asp-action="Delete" 
-                                                      asp-route-id="@review.Id" 
-                                                      method="post" 
-                                                      class="d-inline"
-                                                      onsubmit="return confirm('Sigur ștergi recenzia?');">
-                                                    <button type="submit" 
-                                                            class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
-                                                            title="Șterge recenzia">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                                                        </svg>
-                                                        <span class="d-none d-sm-inline">Șterge</span>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        }
-                                    </div>
-                                    <div class="review-content">@Html.Raw(review.Content)</div>
-                                    
-                                    <!-- Voting Section -->
-                                    <div class="d-flex align-items-center gap-3 mt-2">
-                                        @{
-                                            var likes = review.ReviewVotes?.Count(v => v.IsLike) ?? 0;
-                                            var dislikes = review.ReviewVotes?.Count(v => !v.IsLike) ?? 0;
-                                            var userVote = review.ReviewVotes?.FirstOrDefault(v => v.UserId == userCurentId);
-                                            var userVoteStatus = userVote == null ? "none" : (userVote.IsLike ? "like" : "dislike");
-                                            var canVote = User.IsInRole("User");
-                                        }
+                        foreach (var review in Model.Reviews.OrderByDescending(r => r.DatePosted))
+                        {
+                            var userPic = string.IsNullOrEmpty(review.User?.ProfilePictureUrl)
+                                ? "https://ui-avatars.com/api/?name=" + (review.User?.UserName ?? "U") + "&background=transparent&color=333"
+                                : review.User.ProfilePictureUrl;
 
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <button type="button" 
-                                                    class="btn @(userVoteStatus == "like" ? "btn-success" : "btn-outline-success") vote-btn"
-                                                    data-review-id="@review.Id"
-                                                    data-type="like"
-                                                    @(canVote ? "" : "disabled")>
-                                                <i class="bi bi-hand-thumbs-up"></i>
-                                                <span class="count">@likes</span>
-                                            </button>
-                                            <button type="button" 
-                                                    class="btn @(userVoteStatus == "dislike" ? "btn-danger" : "btn-outline-danger") vote-btn"
-                                                    data-review-id="@review.Id"
-                                                    data-type="dislike"
-                                                    @(canVote ? "" : "disabled")>
-                                                <i class="bi bi-hand-thumbs-down"></i>
-                                                <span class="count">@dislikes</span>
-                                            </button>
+                            <div class="review-clean">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="@userPic" width="32" height="32" class="rounded-circle bg-light" alt="Avatar">
+                                        <div>
+                                            <div class="review-user">@(review.User?.UserName ?? "Anonymous")</div>
                                         </div>
                                     </div>
-                                    <!-- End Voting Section -->
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p class="text-muted mb-0">Nicio recenzie momentan.</p>
+                                    <div class="review-date">@review.DatePosted.ToString("MMM dd, yyyy")</div>
+                                </div>
+                                
+                                <div class="review-content mb-3 ps-5 text-secondary">
+                                    @Html.Raw(review.Content)
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-end gap-3 ps-5">
+                                    @{
+                                        var likes = review.ReviewVotes?.Count(v => v.IsLike) ?? 0;
+                                        var dislikes = review.ReviewVotes?.Count(v => !v.IsLike) ?? 0;
+                                        var userVote = review.ReviewVotes?.FirstOrDefault(v => v.UserId == userCurentId);
+                                        var likeClass = (userVote?.IsLike == true) ? "text-dark fw-bold" : "";
+                                        var dislikeClass = (userVote != null && !userVote.IsLike) ? "text-dark fw-bold" : "";
+                                    }
+                                    
+                                    <button class="btn-minimal vote-btn @likeClass"
+                                            data-review-id="@review.Id" data-type="like">
+                                        <i class="bi bi-hand-thumbs-up"></i> @likes
+                                    </button>
+                                    
+                                    <button class="btn-minimal vote-btn @dislikeClass"
+                                            data-review-id="@review.Id" data-type="dislike">
+                                        <i class="bi bi-hand-thumbs-down"></i> @dislikes
+                                    </button>
+                                    
+                                    @if (User.Identity.IsAuthenticated && (review.UserId == userCurentId || esteAdmin || esteEditor))
+                                    {
+                                        <div class="dropdown ms-2">
+                                            <button class="btn-minimal" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-0">
+                                                <li><a class="dropdown-item small" asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.Id">Edit</a></li>
+                                                <li>
+                                                    <form asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.Id" method="post">
+                                                        <button type="submit" class="dropdown-item small text-danger" onclick="return confirm('Remove this record?');">Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
-            </div>
+            </section>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Informații generale</h5>
-                    <dl class="row mb-0">
-                        <dt class="col-6">Scor</dt>
-                        <dd class="col-6"><span class="badge bg-primary fs-6">@Model.Score</span></dd>
-
-                        <dt class="col-6">Gen</dt>
-                        <dd class="col-6">@(Model.Genre?.GenreName ?? "Nespecificat")</dd>
-
-                        <dt class="col-6">Adăugat de</dt>
-                        <dd class="col-6">@(Model.User?.UserName ?? "Anonim")</dd>
-
-                        <dt class="col-6">Jurnale</dt>
-                        <dd class="col-6">@(Model.MovieDiaries?.Count ?? 0)</dd>
-                    </dl>
+        <!-- Sidebar -->
+        <div class="col-lg-4 archive-stats d-none d-lg-block">
+            <div>
+                <div class="stat-item">
+                    <span class="stat-label">Archived By</span>
+                    <span class="stat-value">@(Model.User?.UserName ?? "System Archive")</span>
                 </div>
-            </div>
-
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Actorii simpli (@(Model.Actors?.Count ?? 0))</h5>
-                    @if (Model.Actors?.Any() == true)
-                    {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var actor in Model.Actors)
-                            {
-                                <li class="list-group-item">@actor.Name</li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p class="text-muted mb-0">Nu există actori direcți.</p>
-                    }
+                
+                <div class="stat-item">
+                    <span class="stat-label">Diary Entries</span>
+                    <span class="stat-value">@(Model.MovieDiaries?.Count ?? 0)</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Total Critiques</span>
+                    <span class="stat-value">@(Model.Reviews?.Count ?? 0)</span>
+                </div>
+                
+                <div class="mt-5">
+                    <a asp-action="Index" class="btn btn-archive w-100 text-center">
+                        RETURN TO CATALOG
+                    </a>
                 </div>
             </div>
         </div>
@@ -237,96 +485,70 @@
 
 @section Scripts {
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     
     <script>
-        // Inițializează editorul Quill
+        // Init Quill
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Scrie recenzia ta aici... Folosește bara de instrumente pentru a formata textul.',
+            placeholder: 'Record your critique...',
             modules: {
                 toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'color': [] }, { 'background': [] }],
-                    ['link'],
+                    ['bold', 'italic'],
                     ['clean']
                 ]
             }
         });
 
-        // La submit, salvează conținutul HTML în câmpul ascuns
-        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+        document.getElementById('reviewForm')?.addEventListener('submit', function(e) {
             var content = quill.root.innerHTML;
-            
-            // Verifică dacă editorul este gol
             if (quill.getText().trim().length === 0) {
                 e.preventDefault();
-                alert('Te rog să scrii o recenzie înainte de a trimite.');
+                alert('Content cannot be empty.');
                 return false;
             }
-            
             document.getElementById('reviewContent').value = content;
         });
 
-
-        // AJAX Voting Script
+        // Voting Logic
         document.querySelectorAll('.vote-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                var reviewId = this.dataset.reviewId;
-                var isLike = this.dataset.type === 'like';
-                var that = this;
+                // Removed frontend disability check to rely on backend
+                if(!@User.Identity.IsAuthenticated.ToString().ToLower()) return;
+                
+                var button = this;
+                var reviewId = button.dataset.reviewId;
+                var isLike = button.dataset.type === 'like';
+                // Find sibling button
+                var container = button.closest('.d-flex');
+                var likeBtn = container.querySelector('.vote-btn[data-type="like"]');
+                var dislikeBtn = container.querySelector('.vote-btn[data-type="dislike"]');
 
                 fetch('/Reviews/Vote', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `reviewId=${reviewId}&isLike=${isLike}`
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Find buttons for this review
-                        var likeBtn = document.querySelector(`.vote-btn[data-review-id="${reviewId}"][data-type="like"]`);
-                        var dislikeBtn = document.querySelector(`.vote-btn[data-review-id="${reviewId}"][data-type="dislike"]`);
+                        // Update Counts
+                        likeBtn.innerHTML = `<i class="bi bi-hand-thumbs-up"></i> ${data.likes}`;
+                        dislikeBtn.innerHTML = `<i class="bi bi-hand-thumbs-down"></i> ${data.dislikes}`;
 
-                        // Update counts
-                        likeBtn.querySelector('.count').innerText = data.likes;
-                        dislikeBtn.querySelector('.count').innerText = data.dislikes;
+                        // Reset styling
+                        likeBtn.classList.remove('text-dark', 'fw-bold');
+                        dislikeBtn.classList.remove('text-dark', 'fw-bold');
 
-                        // Update styling based on userStatus
+                        // Apply new styling
                         if (data.userStatus === 'like') {
-                            likeBtn.classList.remove('btn-outline-success');
-                            likeBtn.classList.add('btn-success');
-                            
-                            dislikeBtn.classList.remove('btn-danger');
-                            dislikeBtn.classList.add('btn-outline-danger');
+                            likeBtn.classList.add('text-dark', 'fw-bold');
                         } else if (data.userStatus === 'dislike') {
-                            dislikeBtn.classList.remove('btn-outline-danger');
-                            dislikeBtn.classList.add('btn-danger');
-
-                            likeBtn.classList.remove('btn-success');
-                            likeBtn.classList.add('btn-outline-success');
-                        } else {
-                            // None
-                            likeBtn.classList.remove('btn-success');
-                            likeBtn.classList.add('btn-outline-success');
-                            
-                            dislikeBtn.classList.remove('btn-danger');
-                            dislikeBtn.classList.add('btn-outline-danger');
+                            dislikeBtn.classList.add('text-dark', 'fw-bold');
                         }
-                    } else {
-                        alert('Eroare la votare.');
                     }
-                })
-                .catch(error => console.error('Error:', error));
+                });
             });
         });
     </script>
-
 }
-
-

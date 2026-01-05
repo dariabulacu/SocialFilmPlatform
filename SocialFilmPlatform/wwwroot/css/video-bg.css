@@ -75,7 +75,7 @@
 /* Video Background Settings */
 .video-background-holder {
     position: relative;
-    background-color: black;
+    background-color: #000;
     background-image: url('/images/fallback-bg.jpg'); /* Fallback */
     background-size: cover;
     background-position: center;
@@ -107,8 +107,8 @@
     left: 0;
     height: 100%;
     width: 100%;
-    /* Elegant diagonal gradient overlay */
-    background: linear-gradient(105deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0) 100%);
+    /* Darker, more cinematic overlay */
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(13, 17, 23, 0.9) 50%, rgba(0, 0, 0, 0.3) 100%);
     z-index: 1;
 }
 
