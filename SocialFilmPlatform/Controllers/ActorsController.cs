@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
 using SocialFilmPlatform.Models;
@@ -91,8 +92,55 @@ namespace SocialFilmPlatform.Controllers
             {
                 return NotFound();
             }
+
+            // Get movies not already associated with this actor
+            var existingMovieIds = actor.ActorMovies.Select(am => am.MovieId).ToList();
+            var availableMovies = db.Movies
+                .Where(m => !existingMovieIds.Contains(m.Id))
+                .OrderBy(m => m.Title)
+                .Select(m => new { m.Id, m.Title }) // Projection for efficiency
+                .ToList();
+
+            ViewBag.AllMovies = new SelectList(availableMovies, "Id", "Title");
+
             SetAccessRights();
             return View(actor);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Editor,Admin")]
+        public IActionResult AddMovie([FromForm] int ActorId, [FromForm] int MovieId)
+        {
+            if (ActorId == 0 || MovieId == 0)
+            {
+                TempData["message"] = "Invalid selection.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Show", new { id = ActorId });
+            }
+
+            var existing = db.Set<ActorMovie>()
+                .FirstOrDefault(am => am.ActorId == ActorId && am.MovieId == MovieId);
+
+            if (existing == null)
+            {
+                var actorMovie = new ActorMovie
+                {
+                    ActorId = ActorId,
+                    MovieId = MovieId,
+                    Name = "-"
+                };
+                db.Set<ActorMovie>().Add(actorMovie);
+                db.SaveChanges();
+                TempData["message"] = "Film added to filmography!";
+                TempData["messageType"] = "alert-success";
+            }
+            else
+            {
+                TempData["message"] = "Actor is already associated with this film.";
+                TempData["messageType"] = "alert-warning";
+            }
+
+            return RedirectToAction("Show", new { id = ActorId });
         }
 
         [Authorize(Roles = "Editor,Admin")]

@@ -76,6 +76,22 @@
                         </button>
                     </form>
                 </div>
+
+                <div class="mt-4 p-3 border-top border-dark pt-4">
+                    <h6 class="text-uppercase small fw-bold mb-3" style="font-family: var(--font-display); letter-spacing: 1px;">Admin Controls</h6>
+                    <form asp-action="AddMovie" method="post">
+                        <input type="hidden" name="ActorId" value="@Model.Id" />
+                        <div class="mb-3">
+                            <label class="form-label small text-muted text-uppercase mb-1" style="font-size: 0.7rem;">Associate with Film</label>
+                            <select name="MovieId" asp-items="ViewBag.AllMovies" class="form-select rounded-0 small border-secondary text-uppercase" style="font-size: 0.8rem;">
+                                <option value="">-- Select Film --</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 rounded-0 text-uppercase small" style="font-family: var(--font-display); letter-spacing: 1px;">
+                            <i class="bi bi-link-45deg me-1"></i> Link Film
+                        </button>
+                    </form>
+                </div>
             }
         </div>
 

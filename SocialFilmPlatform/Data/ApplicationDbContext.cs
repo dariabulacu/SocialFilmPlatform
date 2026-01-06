@@ -40,7 +40,7 @@ namespace SocialFilmPlatform.Data
             
             //m:m movie and actor
             modelBuilder.Entity<ActorMovie>()
-                .HasKey(md => new { md.Id, md.ActorId, md.MovieId });
+                .HasKey(md => md.Id);
 
             modelBuilder.Entity<ActorMovie>()
                 .HasOne(md => md.Movie)
