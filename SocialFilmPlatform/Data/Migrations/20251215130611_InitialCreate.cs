@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SocialFilmPlatform.Migrations
+namespace SocialFilmPlatform.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -43,8 +43,6 @@ namespace SocialFilmPlatform.Migrations
                     FirstName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProfilePictureUrl = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -225,21 +223,15 @@ namespace SocialFilmPlatform.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Content = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                    ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Diaries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Diaries_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Diaries_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 })
@@ -258,19 +250,19 @@ namespace SocialFilmPlatform.Migrations
                     Description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Score = table.Column<float>(type: "float", nullable: false),
-                    ReleaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "longtext", nullable: true)
+                    ReleaseDate = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    GendreId = table.Column<int>(type: "int", nullable: true),
                     GenreId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                    ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Movies_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Movies_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -278,35 +270,6 @@ namespace SocialFilmPlatform.Migrations
                         column: x => x.GenreId,
                         principalTable: "Genres",
                         principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "DiaryVotes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    DiaryId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    VoteDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DiaryVotes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DiaryVotes_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DiaryVotes_Diaries_DiaryId",
-                        column: x => x.DiaryId,
-                        principalTable: "Diaries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -319,8 +282,6 @@ namespace SocialFilmPlatform.Migrations
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhotoUrl = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     MovieId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -373,17 +334,18 @@ namespace SocialFilmPlatform.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DatePosted = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DatePosted = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     MovieId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                    ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Reviews_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -400,51 +362,24 @@ namespace SocialFilmPlatform.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ActorId = table.Column<int>(type: "int", nullable: true),
-                    MovieId = table.Column<int>(type: "int", nullable: true),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
+                    ActorId = table.Column<int>(type: "int", nullable: false),
+                    MovieId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActorMovie", x => x.Id);
+                    table.PrimaryKey("PK_ActorMovie", x => new { x.Id, x.ActorId, x.MovieId });
                     table.ForeignKey(
                         name: "FK_ActorMovie_Actors_ActorId",
                         column: x => x.ActorId,
                         principalTable: "Actors",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ActorMovie_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
-                        principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ReviewVotes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ReviewId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsLike = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReviewVotes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ReviewVotes_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ReviewVotes_Reviews_ReviewId",
-                        column: x => x.ReviewId,
-                        principalTable: "Reviews",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -503,20 +438,9 @@ namespace SocialFilmPlatform.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Diaries_UserId",
+                name: "IX_Diaries_ApplicationUserId",
                 table: "Diaries",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DiaryVotes_DiaryId_UserId",
-                table: "DiaryVotes",
-                columns: new[] { "DiaryId", "UserId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DiaryVotes_UserId",
-                table: "DiaryVotes",
-                column: "UserId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MovieDiaries_DiaryId",
@@ -529,35 +453,24 @@ namespace SocialFilmPlatform.Migrations
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Movies_ApplicationUserId",
+                table: "Movies",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Movies_GenreId",
                 table: "Movies",
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_UserId",
-                table: "Movies",
-                column: "UserId");
+                name: "IX_Reviews_ApplicationUserId",
+                table: "Reviews",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_MovieId",
                 table: "Reviews",
                 column: "MovieId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_UserId",
-                table: "Reviews",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReviewVotes_ReviewId_UserId",
-                table: "ReviewVotes",
-                columns: new[] { "ReviewId", "UserId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReviewVotes_UserId",
-                table: "ReviewVotes",
-                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -582,13 +495,10 @@ namespace SocialFilmPlatform.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DiaryVotes");
-
-            migrationBuilder.DropTable(
                 name: "MovieDiaries");
 
             migrationBuilder.DropTable(
-                name: "ReviewVotes");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Actors");
@@ -598,9 +508,6 @@ namespace SocialFilmPlatform.Migrations
 
             migrationBuilder.DropTable(
                 name: "Diaries");
-
-            migrationBuilder.DropTable(
-                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Movies");
