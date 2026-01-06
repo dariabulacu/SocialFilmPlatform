@@ -1,0 +1,95 @@
+@{
+    ViewData["Title"] = "My Lists";
+}
+
+<style>
+    .table-vintage {
+        --bs-table-bg: transparent;
+        --bs-table-color: #333;
+        border-color: #ddd;
+    }
+    .table-vintage th {
+        font-family: 'Cinzel', serif;
+        text-transform: uppercase;
+        border-bottom: 2px solid #ccc;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom border-dark">
+        <h2 style="font-family: 'Cinzel', serif;">My Lists</h2>
+        <a asp-action="New" class="btn btn-dark rounded-0 text-uppercase" style="font-family: 'Cinzel', serif; letter-spacing: 1px;">
+            <i class="bi bi-plus-lg"></i> New List
+        </a>
+    </div>
+
+    @if(ViewBag.Message != null)
+    {
+        <div class="alert alert-light border border-dark text-center mb-4">
+            @ViewBag.Message
+        </div>
+    }
+
+    @if(((IEnumerable<SocialFilmPlatform.Models.Diary>)ViewBag.Diaries).Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-vintage align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Movies</th>
+                        <th>Votes</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var diary in ViewBag.Diaries)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Show" asp-route-id="@diary.Id" class="fw-bold text-dark text-decoration-none">
+                                    @diary.Name
+                                </a>
+                                @if(!string.IsNullOrEmpty(diary.Description))
+                                {
+                                    <div class="text-muted small text-truncate" style="max-width: 300px;">@diary.Description</div>
+                                }
+                            </td>
+                            <td>
+                                @if(diary.IsPublic)
+                                {
+                                    <span class="badge bg-success rounded-0">Public</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary rounded-0">Private</span>
+                                }
+                            </td>
+                            <td>@diary.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            <td>@diary.MovieDiaries?.Count</td>
+                            <td>@diary.DiaryVotes?.Count</td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@diary.Id" class="btn btn-sm btn-outline-dark rounded-0 me-1">Edit</a>
+                                <form asp-action="Delete" asp-route-id="@diary.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger rounded-0" 
+                                            onclick="return confirm('Are you sure you want to delete this list?');">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 text-muted">
+            <p class="fs-5">You haven't created any lists yet.</p>
+            <a asp-action="New" class="btn btn-outline-dark rounded-0 mt-3">Start your first list</a>
+        </div>
+    }
+</div>

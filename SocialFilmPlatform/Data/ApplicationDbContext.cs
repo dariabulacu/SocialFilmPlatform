@@ -19,6 +19,7 @@ namespace SocialFilmPlatform.Data
         public DbSet<MovieDiary> MovieDiaries { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ReviewVote> ReviewVotes { get; set; }
+        public DbSet<DiaryVote> DiaryVotes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -55,6 +56,11 @@ namespace SocialFilmPlatform.Data
             // Constraint unic: un user poate vota un singur review o singura data
             modelBuilder.Entity<ReviewVote>()
                 .HasIndex(rv => new { rv.ReviewId, rv.UserId })
+                .IsUnique();
+            
+            // Constraint unic: un user poate vota un singur diary o singura data
+            modelBuilder.Entity<DiaryVote>()
+                .HasIndex(dv => new { dv.DiaryId, dv.UserId })
                 .IsUnique();
         }
         

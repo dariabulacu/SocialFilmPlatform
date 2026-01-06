@@ -9,11 +9,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/ActorsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ActorsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Actors/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Actors/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/Show.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/DiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DiariesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105210001_AddReviewVotes.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105210001_AddReviewVotes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105221237_AddImageFields.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105221237_AddImageFields.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Diary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Diary.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Movie.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Movie.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Movies/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/Edit.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Movies/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/New.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Movies/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/Show.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Shared/_LoginPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_LoginPartial.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +42,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="main" />
+        <entry key="$PROJECT_DIR$/.." value="gabi-branch" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -66,7 +82,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "gabii-branch",
+    "git-widget-placeholder": "gabi-branch",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -152,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767640231034</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Frontend for Actors">
+      <option name="closed" value="true" />
+      <created>1767660677508</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1767660677508</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,7 +190,8 @@
     <MESSAGE value="Rebased with Main and started working on Movies CRUD and Views, still got bugs." />
     <MESSAGE value="Partial View" />
     <MESSAGE value="Add controllers for Actors, Diaries, and M:M relationships" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add controllers for Actors, Diaries, and M:M relationships" />
+    <MESSAGE value="Frontend for Actors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Frontend for Actors" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

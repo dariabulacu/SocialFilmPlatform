@@ -8,6 +8,10 @@ namespace SocialFilmPlatform.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        
+        public string? Description { get; set; }
+        public string? Content { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
        
         public bool IsPublic { get; set; }
         
@@ -15,6 +19,7 @@ namespace SocialFilmPlatform.Models
         public virtual ApplicationUser? User { get; set; }
 
         public virtual ICollection<MovieDiary> MovieDiaries { get; set; } = [];
+        public virtual ICollection<DiaryVote> DiaryVotes { get; set; } = [];
     }
 }
 
