@@ -11,17 +11,9 @@
     <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/ActorsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ActorsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/DiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DiariesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/MoviesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MoviesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/ReviewsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ReviewsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Actors/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Actors/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/Show.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,10 +45,7 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Controllers/MoviesController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/gabrielrachieru/RiderProjects/SocialFilmPlatform/SocialFilmPlatform/Data/Migrations/20251215130611_InitialCreate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/gabrielrachieru/RiderProjects/SocialFilmPlatform/SocialFilmPlatform/Data/Migrations/20251215130611_InitialCreate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/gabrielrachieru/RiderProjects/SocialFilmPlatform/SocialFilmPlatform/Data/Migrations/20251215130611_InitialCreate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/gabrielrachieru/RiderProjects/SocialFilmPlatform/SocialFilmPlatform/Models/Diary.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/ReviewVote.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -77,7 +66,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "gabi-branch",
+    "git-widget-placeholder": "gabii-branch",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

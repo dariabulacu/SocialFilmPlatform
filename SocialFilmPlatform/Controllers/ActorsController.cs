@@ -25,15 +25,58 @@ namespace SocialFilmPlatform.Controllers
         // [Authorize(Roles = "User,Editor,Admin")] // Public access
         public IActionResult Index()
         {
-            var actors = db.Actors.Include(a => a.ActorMovies).ThenInclude(am => am.Movie);
-            
-            ViewBag.Actors = actors;
+            var search = "";
+            if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+            {
+                search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
+            }
+
+            var actorsQuery = db.Actors
+                .Include(a => a.ActorMovies).ThenInclude(am => am.Movie)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                List<int> actorIds = db.Actors.Where(
+                    a => a.Name.Contains(search) ||
+                         a.Description.Contains(search)
+                ).Select(a => a.Id).ToList();
+
+                actorsQuery = actorsQuery.Where(a => actorIds.Contains(a.Id));
+            }
+
+            ViewBag.SearchString = search;
+
+            int _perPage = 3;
+            int totalItems = actorsQuery.Count();
+            var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
+            var offset = 0;
+            if (!currentPage.Equals(0))
+            {
+                offset = (currentPage - 1) * _perPage;
+            }
+            var paginatedActors = actorsQuery.Skip(offset).Take(_perPage).ToList();
+            ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
+            ViewBag.Actors = paginatedActors;
+
+            if (search != "")
+            {
+                ViewBag.PaginationBaseUrl = "/Actors/Index?search=" + search + "&page=";
+            }
+            else
+            {
+                ViewBag.PaginationBaseUrl = "/Actors/Index?page=";
+            }
+
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
                 ViewBag.Alert = TempData["messageType"];
             }
 
+            // Set access rights for buttons in view
+            SetAccessRights();
+            
             return View();
         }
 
