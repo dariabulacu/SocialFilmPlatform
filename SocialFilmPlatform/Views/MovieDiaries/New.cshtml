@@ -1,0 +1,46 @@
+@model SocialFilmPlatform.Models.MovieDiary
+
+@{
+    ViewData["Title"] = "Add Movie to List";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom-0 pb-0">
+                    <h3 class="text-center" style="font-family: var(--font-display);">Add Movie to List</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="New" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small text-uppercase">Select List</label>
+                            <select asp-for="DiaryId" class="form-select rounded-0" asp-items="ViewBag.Diaries"></select>
+                            <span asp-validation-for="DiaryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted small text-uppercase">Select Movie</label>
+                            <select asp-for="MovieId" class="form-select rounded-0" asp-items="ViewBag.Movies"></select>
+                            <span asp-validation-for="MovieId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-dark rounded-0">ADD TO LIST</button>
+                            <a asp-controller="Diaries" asp-action="MyDiaries" class="btn btn-outline-secondary rounded-0">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+             @if (TempData["message"] != null)
+             {
+                 <div class="alert @TempData["messageType"] mt-3 rounded-0 text-center">
+                     @TempData["message"]
+                 </div>
+             }
+        </div>
+    </div>
+</div>

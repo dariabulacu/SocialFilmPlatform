@@ -28,7 +28,7 @@ namespace SocialFilmPlatform.Controllers
             // Base query: All Public Diaries
             IQueryable<Diary> diaries = db.Diaries
                                            .Include(d => d.User)
-                                           .Include(d => d.MovieDiaries)
+                                           .Include(d => d.MovieDiaries).ThenInclude(md => md.Movie)
                                            .Include(d => d.DiaryVotes)
                                            .Where(d => d.IsPublic);
 
@@ -87,7 +87,7 @@ namespace SocialFilmPlatform.Controllers
             var diaries = db.Diaries
                             .Where(d => d.UserId == currentUserId)
                             .Include(d => d.User)
-                            .Include(d => d.MovieDiaries)
+                            .Include(d => d.MovieDiaries).ThenInclude(md => md.Movie)
                             .Include(d => d.DiaryVotes)
                             .OrderByDescending(d => d.CreatedAt)
                             .ToList();

@@ -28,10 +28,14 @@ namespace SocialFilmPlatform.Controllers
         }
 
         [Authorize(Roles = "User,Editor,Admin")]
-        public IActionResult New()
+        public IActionResult New(int? diaryId)
         {
-            ViewBag.Movies = new SelectList(db.Movies, "Id", "Title");
-            ViewBag.Diaries = new SelectList(db.Diaries, "Id", "Name");
+            var currentUserId = _userManager.GetUserId(User);
+            ViewBag.Movies = new SelectList(db.Movies.OrderBy(m => m.Title), "Id", "Title");
+            
+            var userDiaries = db.Diaries.Where(d => d.UserId == currentUserId).OrderBy(d => d.CreatedAt);
+            ViewBag.Diaries = new SelectList(userDiaries, "Id", "Name", diaryId);
+            
             return View();
         }
 

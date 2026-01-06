@@ -1,0 +1,82 @@
+@model SocialFilmPlatform.Models.ApplicationUser
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Profile Sidebar -->
+        <div class="col-md-4 text-center">
+            <div class="card shadow-sm border-0" style="background-color: var(--vintage-bg);">
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                    {
+                        <img src="@Model.ProfilePictureUrl" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid var(--vintage-gold);" alt="Profile Picture">
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/150" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;" alt="Default Profile">
+                    }
+                    
+                    <h3 class="mb-1" style="font-family: var(--font-display);">@Model.FirstName @Model.LastName</h3>
+                    <p class="text-muted">@Model.UserName</p>
+
+                    @if (ViewBag.IsOwner)
+                    {
+                        <a asp-action="Edit" class="btn btn-outline-dark btn-sm mt-2">Editează Profilul</a>
+                    }
+                </div>
+            </div>
+            
+             <div class="card shadow-sm border-0 mt-3" style="background-color: var(--vintage-bg);">
+                <div class="card-body text-start">
+                    <h5 style="font-family: var(--font-display); border-bottom: 2px solid var(--vintage-gold); padding-bottom: 5px;">About</h5>
+                    <p class="mt-2">@(Model.Description ?? "No description added yet.")</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content (Diaries) -->
+        <div class="col-md-8">
+            <h2 class="mb-4" style="font-family: var(--font-display);">
+                @(ViewBag.IsOwner ? "My Lists" : "Public Lists")
+            </h2>
+
+            @if (ViewBag.Diaries != null) // Cast to generic list for safety if needed
+            {
+                var diaries = (IEnumerable<SocialFilmPlatform.Models.Diary>)ViewBag.Diaries;
+                if (diaries.Any())
+                {
+                    <div class="row">
+                        @foreach (var diary in diaries)
+                        {
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100 shadow-sm border-0" style="background-color: #fff;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a asp-controller="Diaries" asp-action="Show" asp-route-id="@diary.Id" class="text-decoration-none text-dark" style="font-family: var(--font-display);">
+                                                @diary.Name
+                                            </a>
+                                        </h5>
+                                        <p class="card-text text-muted small">
+                                            Created: @diary.CreatedAt.ToString("MMM dd, yyyy")
+                                        </p>
+                                        @if(!diary.IsPublic && ViewBag.IsOwner)
+                                        {
+                                            <span class="badge bg-secondary">Private</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success" style="background-color: var(--vintage-gold) !important; color: black;">Public</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">No lists found.</p>
+                }
+            }
+        </div>
+    </div>
+</div>
