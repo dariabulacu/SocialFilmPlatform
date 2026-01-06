@@ -285,6 +285,13 @@
                 <p class="fs-4 fst-italic text-muted mb-4" style="font-family: var(--font-heading);">@Model.Director</p>
                 
                 <div class="d-flex gap-3">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <button type="button" class="btn btn-archive" data-bs-toggle="modal" data-bs-target="#addToListModal">
+                            <i class="bi bi-bookmark-plus me-2"></i>ADD TO LIST
+                        </button>
+                    }
+                    
                     @if (poateEdita || esteAdmin || esteOwner)
                     {
                         <a class="btn btn-archive" asp-action="Edit" asp-route-id="@Model.Id">
@@ -297,6 +304,38 @@
                             </button>
                         </form>
                     }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add to List Modal -->
+<div class="modal fade" id="addToListModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-0 border-0 shadow-lg">
+            <div class="modal-header border-bottom border-dark bg-light">
+                <h5 class="modal-title" style="font-family: var(--font-display);">Add to List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form asp-controller="MovieDiaries" asp-action="New" method="post" id="addToListForm">
+                    <input type="hidden" name="MovieId" value="@Model.Id" />
+                    <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                    
+                    <div class="mb-3">
+                        <label for="diarySelect" class="form-label" style="font-family: var(--font-body);">Select a List</label>
+                        <select class="form-select rounded-0" id="diarySelect" name="DiaryId" required>
+                            <option value="">Loading lists...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-dark rounded-0 text-uppercase">Save to List</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <a asp-controller="Diaries" asp-action="New" class="text-muted small text-decoration-underline">Create a new list</a>
                 </div>
             </div>
         </div>
@@ -354,6 +393,34 @@
                     </div>
                 }
             </section>
+
+            <!-- Trailer -->
+            @if (!string.IsNullOrEmpty(Model.TrailerUrl))
+            {
+                string videoId = "";
+                try {
+                     var uri = new Uri(Model.TrailerUrl);
+                     var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+                     if (query.AllKeys.Contains("v"))
+                     {
+                         videoId = query["v"];
+                     }
+                     else if (uri.Segments.LastOrDefault() != null)
+                     {
+                         videoId = uri.Segments.Last();
+                     }
+                } catch {}
+
+                if (!string.IsNullOrEmpty(videoId))
+                {
+                     <section class="mb-5">
+                        <h3 class="section-title">Official Trailer</h3>
+                        <div class="ratio ratio-16x9 shadow-sm">
+                            <iframe src="https://www.youtube.com/embed/@videoId" title="YouTube video player" allowfullscreen style="border:0;"></iframe>
+                        </div>
+                    </section>
+                }
+            }
 
             <!-- Reviews -->
             <section>
@@ -509,6 +576,39 @@
             }
             document.getElementById('reviewContent').value = content;
         });
+
+        // Add to List Modal Logic
+        var addToListModal = document.getElementById('addToListModal');
+        if (addToListModal) {
+            addToListModal.addEventListener('show.bs.modal', function (event) {
+                var select = document.getElementById('diarySelect');
+                
+                // Only fetch if empty or dummy
+                if (select.options.length <= 1) {
+                    fetch('/MovieDiaries/GetMyDiaries')
+                        .then(response => response.json())
+                        .then(data => {
+                            select.innerHTML = '';
+                            if (data.length === 0) {
+                                var option = document.createElement('option');
+                                option.text = "No lists found";
+                                select.add(option);
+                            } else {
+                                data.forEach(item => {
+                                    var option = document.createElement('option');
+                                    option.value = item.id; // Correct casing from JSON default
+                                    option.text = item.name;
+                                    select.add(option);
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error loading lists:', error);
+                            select.innerHTML = '<option>Error loading lists</option>';
+                        });
+                }
+            });
+        }
 
         // Voting Logic
         document.querySelectorAll('.vote-btn').forEach(btn => {

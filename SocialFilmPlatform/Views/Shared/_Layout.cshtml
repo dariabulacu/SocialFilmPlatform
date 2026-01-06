@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/css/dark-theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SocialFilmPlatform.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/video-bg.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/vintage-dropdowns.css" asp-append-version="true" />
     
     <!-- Vintage Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:ital,wght@0,300;0,400;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -28,6 +29,24 @@
             background-color: var(--vintage-bg) !important;
             color: var(--vintage-text);
             font-family: var(--font-body);
+        }
+
+        /* Override Dark Theme Text Colors for Vintage Layout */
+        body:not(.home-body) h1, 
+        body:not(.home-body) h2, 
+        body:not(.home-body) h3, 
+        body:not(.home-body) h4, 
+        body:not(.home-body) h5, 
+        body:not(.home-body) h6 {
+            color: #000 !important;
+        }
+
+        body:not(.home-body) .text-dark {
+            color: #212529 !important;
+        }
+        
+        body:not(.home-body) .text-muted {
+            color: #6c757d !important;
         }
 
         .navbar-vintage {
@@ -96,6 +115,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Actors" asp-action="Index">Actors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Diaries" asp-action="Index">Lists</a>
                         </li>
 
                     </ul>

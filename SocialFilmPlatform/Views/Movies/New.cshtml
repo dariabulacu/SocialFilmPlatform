@@ -49,6 +49,12 @@
                         </div>
 
                         <div class="mb-3 mt-3">
+                            <label asp-for="TrailerUrl" class="form-label">Link Trailer (YouTube)</label>
+                            <input asp-for="TrailerUrl" class="form-control" placeholder="https://www.youtube.com/watch?v=..." />
+                            <span asp-validation-for="TrailerUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 mt-3">
                             <label class="form-label">Imagine (Poster/Backdrop)</label>
                             <input type="file" name="Image" class="form-control" accept="image/*" />
                             <span asp-validation-for="ImageUrl" class="text-danger"></span>

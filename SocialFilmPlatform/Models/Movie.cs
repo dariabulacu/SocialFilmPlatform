@@ -14,6 +14,8 @@ namespace SocialFilmPlatform.Models
         public DateTime ReleaseDate { get; set; }
         public string? ImageUrl { get; set; }
         
+        public string? TrailerUrl { get; set; }
+        
         public virtual ICollection<Actor> Actors { get; set; } = [];
         
         public virtual ICollection<Review> Reviews { get; set; } = [];

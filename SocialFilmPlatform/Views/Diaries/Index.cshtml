@@ -1,0 +1,227 @@
+@model IEnumerable<SocialFilmPlatform.Models.Diary>
+@{
+    ViewData["Title"] = "Public Lists";
+}
+
+<style>
+    /* Reusing vintage style consistent with Movies */
+    :root {
+        --vintage-bg: #fdfbf7;
+        --vintage-text: #1a1a1a;
+        --vintage-gold: #c4a055;
+        --font-display: 'Cinzel', serif;
+        --font-body: 'Lato', sans-serif;
+    }
+
+    h2 {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #111;
+        margin-bottom: 2rem;
+    }
+
+    .btn-action {
+        background: transparent;
+        border: 1px solid #333;
+        color: #333;
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s;
+        border-radius: 0;
+        text-decoration: none;
+    }
+
+    .btn-action:hover, .btn-action.active {
+        background: #111;
+        color: #fff;
+    }
+
+    .search-vintage input {
+        border: none;
+        border-bottom: 1px solid #333;
+        background: transparent;
+        border-radius: 0;
+        font-family: var(--font-body);
+        padding: 0.8rem 0;
+        color: #111;
+    }
+    
+    .search-vintage input:focus {
+        border-color: var(--vintage-gold);
+        box-shadow: none;
+    }
+
+    .diary-card {
+        background: transparent;
+        border: 1px solid #ddd;
+        padding: 1.5rem;
+        height: 100%;
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    .diary-card:hover {
+        border-color: var(--vintage-gold);
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .diary-title {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        color: #000;
+        text-transform: uppercase;
+    }
+
+    .diary-meta {
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    .diary-preview {
+        display: flex;
+        gap: 5px;
+        margin-top: 1rem;
+        height: 80px;
+        overflow: hidden;
+    }
+
+    .diary-preview img {
+        width: 60px;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.8;
+    }
+
+    .pagination .page-link {
+        border: none;
+        background: transparent;
+        color: #333;
+        font-family: var(--font-display);
+        margin: 0 5px;
+    }
+
+    .pagination .page-link:hover {
+        color: var(--vintage-gold);
+    }
+    
+    .filter-links a {
+        color: #888;
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        text-decoration: none;
+        margin-left: 1rem;
+    }
+    
+    .filter-links a.active {
+        color: #000;
+        border-bottom: 2px solid var(--vintage-gold);
+    }
+</style>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-end mb-5 border-bottom border-dark pb-3">
+        <h2 class="mb-0">Member Lists</h2>
+        
+        <div class="dropdown">
+            <button class="btn btn-outline-dark rounded-0 dropdown-toggle text-uppercase" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-family: var(--font-display); letter-spacing: 1px;">
+                Sort By: @(ViewBag.SortOrder == "popular" ? "Popularity" : "Recent")
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end rounded-0 shadow-sm" aria-labelledby="sortDropdown">
+                <li>
+                    <a class="dropdown-item @(ViewBag.SortOrder != "popular" ? "active bg-light text-dark fw-bold" : "")" 
+                       href="@Url.Action("Index", new { sort = "recent", search = ViewBag.SearchString })">
+                        Most Recent
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item @(ViewBag.SortOrder == "popular" ? "active bg-light text-dark fw-bold" : "")" 
+                       href="@Url.Action("Index", new { sort = "popular", search = ViewBag.SearchString })">
+                        Most Popular
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <form method="GET" class="search-vintage">
+                <input type="hidden" name="sort" value="@ViewBag.SortOrder" />
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search lists..." name="search"
+                           value="@ViewBag.SearchString">
+                    <button class="btn btn-action" type="submit">SEARCH</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if(ViewBag.Message != null)
+    {
+        <div class="alert alert-light border border-dark text-center mb-4">
+            @ViewBag.Message
+        </div>
+    }
+
+    <!-- Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var diary in ViewBag.Diaries)
+        {
+            <div class="col">
+                <a asp-action="Show" asp-route-id="@diary.Id" class="text-decoration-none">
+                    <div class="diary-card">
+                        <h5 class="diary-title text-truncate">@diary.Name</h5>
+                        <div class="diary-meta">
+                            <span><i class="bi bi-person"></i> @(diary.User?.UserName ?? "Unknown")</span>
+                            <span class="mx-2">•</span>
+                            <span>@diary.CreatedAt.ToString("MMM yyyy")</span>
+                        </div>
+                        <div class="text-secondary small mb-3 text-truncate">
+                            @(diary.Description ?? "No description.")
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <span class="text-warning"><i class="bi bi-heart-fill"></i> @(diary.DiaryVotes?.Count ?? 0)</span>
+                            <span class="text-muted small">@((diary.MovieDiaries?.Count ?? 0)) movies</span>
+                        </div>
+                        
+                        <!-- Movie Preview Strip -->
+                        @if(diary.MovieDiaries != null && diary.MovieDiaries.Count > 0)
+                        {
+                            <div class="diary-preview">
+                                @foreach(var md in ((ICollection<SocialFilmPlatform.Models.MovieDiary>)diary.MovieDiaries).Take(4))
+                                {
+                                    <img src="@(string.IsNullOrEmpty(md.Movie?.ImageUrl) ? "https://via.placeholder.com/60x80" : md.Movie.ImageUrl)" 
+                                         alt="Movie Cover">
+                                }
+                            </div>
+                        }
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-5 d-flex justify-content-center">
+        <nav>
+            <ul class="pagination">
+                @for (int i = 1; i <= ViewBag.lastPage; i++)
+                {
+                    <li class="page-item @(Context.Request.Query["page"] == i.ToString() ? "active" : "")"> 
+                        <a class="page-link" href="@ViewBag.PaginationBaseUrl@i">@(i)</a> 
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>

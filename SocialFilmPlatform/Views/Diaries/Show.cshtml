@@ -1,0 +1,254 @@
+@model SocialFilmPlatform.Models.Diary
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = Model.Name;
+    var currentUser = UserManager.GetUserId(User);
+}
+
+<style>
+    :root {
+        --vintage-bg: #fdfbf7;
+        --vintage-text: #1a1a1a;
+        --vintage-gold: #c4a055;
+        --font-display: 'Cinzel', serif;
+        --font-body: 'Lato', sans-serif;
+    }
+
+    .diary-header {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .diary-title-large {
+        font-family: var(--font-display);
+        font-size: 3rem;
+        color: #111;
+        margin-bottom: 0.5rem;
+    }
+
+    .diary-meta {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: #666;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .meta-sep {
+        width: 4px;
+        height: 4px;
+        background: var(--vintage-gold);
+        border-radius: 50%;
+    }
+
+    .diary-content {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #333;
+        margin-bottom: 3rem;
+    }
+
+    /* Movie Collection Grid */
+    .movie-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 2rem;
+    }
+
+    .movie-card-mini {
+        transition: transform 0.3s;
+        text-decoration: none;
+        color: #000;
+        display: block;
+    }
+    
+    .movie-card-mini:hover {
+        transform: translateY(-5px);
+        color: var(--vintage-gold);
+    }
+
+    .poster-frame {
+        aspect-ratio: 2/3;
+        overflow: hidden;
+        margin-bottom: 0.8rem;
+        border: 1px solid #eee;
+    }
+
+    .poster-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: sepia(10%);
+        transition: filter 0.3s;
+    }
+    
+    .movie-card-mini:hover .poster-img {
+        filter: sepia(0%);
+    }
+
+    .movie-title-mini {
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 0;
+        line-height: 1.2;
+    }
+
+    .movie-year {
+        font-size: 0.8rem;
+        color: #888;
+    }
+
+    /* Voting */
+    .vote-section {
+        margin-top: 1rem;
+    }
+
+    .btn-vote {
+        border: 1px solid #ccc;
+        background: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+    
+    .btn-vote.voted {
+        background: var(--vintage-gold);
+        border-color: var(--vintage-gold);
+        color: #fff;
+    }
+    
+    .btn-vote:hover {
+        border-color: var(--vintage-gold);
+    }
+    
+    .movie-card-wrapper:hover .movie-card-mini {
+        transform: translateY(-5px);
+        color: var(--vintage-gold);
+    }
+    
+    .movie-card-wrapper:hover .poster-img {
+         filter: sepia(0%);
+    }
+    
+    /* Override original hover since we moved it to wrapper */
+    .movie-card-mini:hover {
+        transform: none !important; 
+        color: inherit !important;
+    }
+
+</style>
+
+<div class="container py-5">
+    <div class="diary-header text-center">
+        <h1 class="diary-title-large">@Model.Name</h1>
+        
+        <div class="diary-meta justify-content-center">
+            <span>Created by <strong>@(Model.User?.UserName ?? "Unknown")</strong></span>
+            <span class="meta-sep"></span>
+            <span>@Model.CreatedAt.ToString("MMMM dd, yyyy")</span>
+            <span class="meta-sep"></span>
+            <span>@(Model.MovieDiaries?.Count ?? 0) films</span>
+        </div>
+
+        <div class="vote-section">
+            @if (User.Identity.IsAuthenticated)
+            {
+               <form asp-action="Vote" asp-route-id="@Model.Id" method="post" class="d-inline">
+                   <button type="submit" class="btn-vote @(ViewBag.UserHasVoted == true ? "voted" : "")">
+                       <i class="bi @(ViewBag.UserHasVoted == true ? "bi-heart-fill" : "bi-heart")"></i>
+                       <span>@(Model.DiaryVotes?.Count ?? 0)</span>
+                   </button>
+               </form>
+            }
+            else
+            {
+                <span class="btn-vote disabled" title="Login to vote">
+                    <i class="bi bi-heart"></i> @(Model.DiaryVotes?.Count ?? 0)
+                </span>
+            }
+        </div>
+    </div>
+
+    <!-- Content / Description -->
+    @if (!string.IsNullOrEmpty(Model.Content) || !string.IsNullOrEmpty(Model.Description))
+    {
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="diary-content text-center">
+                    @Html.Raw(Model.Content ?? Model.Description)
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Movies List -->
+    <div class="mt-5">
+        <h3 class="text-center mb-5" style="font-family: var(--font-display); letter-spacing: 2px;">Featured Films</h3>
+        
+        @if (Model.MovieDiaries != null && Model.MovieDiaries.Any())
+        {
+            <div class="movie-grid">
+                @foreach (var md in Model.MovieDiaries)
+                {
+                    var movie = md.Movie;
+                    if(movie != null)
+                    {
+                         var posterUrl = string.IsNullOrEmpty(movie.ImageUrl) 
+                            ? "https://via.placeholder.com/300x450?text=No+Poster" 
+                            : movie.ImageUrl;
+                            
+                        <div class="movie-card-wrapper position-relative">
+                            <a href="/Movies/Show/@movie.Id" class="movie-card-mini">
+                                <div class="poster-frame">
+                                    <img src="@posterUrl" class="poster-img" alt="@movie.Title">
+                                </div>
+                                <div class="text-center">
+                                    <h6 class="movie-title-mini">@movie.Title</h6>
+                                    <div class="movie-year">@movie.ReleaseDate.ToString("yyyy")</div>
+                                </div>
+                            </a>
+                            
+                            @if(Model.UserId == currentUser || User.IsInRole("Admin"))
+                            {
+                                <form asp-controller="MovieDiaries" asp-action="Delete" asp-route-id="@md.Id" method="post" class="position-absolute top-0 end-0 m-1">
+                                    <button type="submit" class="btn btn-sm btn-danger rounded-circle p-0 d-flex align-items-center justify-content-center shadow" 
+                                            style="width: 24px; height: 24px;"
+                                            title="Remove from list"
+                                            onclick="return confirm('Remove this movie from the list?');">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted fst-italic py-5 border rounded bg-light">
+                No films in this list yet.
+            </div>
+        }
+    </div>
+
+    <!-- Actions -->
+    @if (Model.UserId == currentUser || User.IsInRole("Admin"))
+    {
+        <div class="text-center mt-5 pt-4 border-top">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark rounded-0 px-4">EDIT LIST</a>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline ms-2">
+                <button type="submit" class="btn btn-danger rounded-0 px-4" 
+                        onclick="return confirm('Delete this list permanently?');">DELETE</button>
+            </form>
+        </div>
+    }
+</div>

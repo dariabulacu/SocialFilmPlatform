@@ -1,0 +1,59 @@
+/* Vintage Dropdown Styling */
+
+:root {
+    --vintage-bg: #fdfbf7;
+    --vintage-text: #1a1a1a;
+    --vintage-gold: #c4a055;
+    --font-display: 'Cinzel', serif;
+    --font-body: 'Lato', sans-serif;
+}
+
+.dropdown-menu {
+    background-color: var(--vintage-bg);
+    border: 1px solid #ddd;
+    border-radius: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 0;
+    margin-top: 5px;
+}
+
+.dropdown-item {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--vintage-text);
+    padding: 0.75rem 1.25rem;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: #111;
+    color: #fff;
+    padding-left: 1.5rem; /* Slight slide effect */
+}
+
+/* Specific styling for active items */
+.dropdown-item.active {
+    background-color: #eee;
+    color: #111;
+    font-weight: bold;
+}
+
+.dropdown-item.active:hover {
+    background-color: #111;
+    color: #fff;
+}
+
+.dropdown-divider {
+    border-top: 1px solid #ddd;
+    margin: 0;
+}
+
+/* Adjust toggle button when open */
+.dropdown-toggle[aria-expanded="true"] {
+    color: var(--vintage-gold) !important;
+}
+
+/* Navbar specific tweaks if needed */
+.navbar .dropdown-menu {
+    border: 1px solid #111; /* Darker border for contrast against header if needed */
+}
