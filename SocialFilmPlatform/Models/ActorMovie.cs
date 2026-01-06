@@ -11,7 +11,7 @@ namespace SocialFilmPlatform.Models
         public virtual Actor? Actor { get; set; }
         public virtual Movie? Movie { get; set; }
         
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }
 
