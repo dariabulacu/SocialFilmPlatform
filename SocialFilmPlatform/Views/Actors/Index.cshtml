@@ -1,43 +1,226 @@
 @model IEnumerable<SocialFilmPlatform.Models.Actor>
-@{
-    ViewData["Title"] = "Actori";
-    var poateEdita = (ViewBag.AfisareButoane as bool?) ?? false;
-}
 
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Actori</h1>
-        @if (poateEdita)
+<style>
+    :root {
+        --hollywood-bg: #fdfbf7;
+        --hollywood-text: #1a1a1a;
+        --hollywood-gold: #c4a055;
+        --font-display: 'Cinzel', serif;
+        --font-body: 'Lato', sans-serif;
+    }
+
+    h2 {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #111;
+        margin-bottom: 2rem;
+    }
+
+    /* Search Bar */
+    .search-vintage input {
+        border: none;
+        border-bottom: 1px solid #333;
+        background: transparent;
+        border-radius: 0;
+        font-family: var(--font-body);
+        padding: 0.8rem 0;
+        color: #111;
+    }
+    
+    .search-vintage input:focus {
+        background: transparent;
+        box-shadow: none;
+        border-color: var(--hollywood-gold);
+        color: #000;
+    }
+
+    .btn-search {
+        border: 1px solid #333;
+        background: transparent;
+        color: #333;
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        border-radius: 0;
+    }
+
+    .btn-search:hover {
+        background: #111;
+        color: #fff;
+    }
+
+    .btn-add-actor {
+        background: #111;
+        color: #fff !important;
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 0;
+        padding: 0.6rem 1.5rem;
+        border: 1px solid #111;
+        transition: all 0.3s;
+    }
+    
+    .btn-add-actor:hover {
+        background: transparent;
+        color: #111 !important;
+    }
+
+    /* Actor Card */
+    .actor-card-vintage {
+        background: transparent;
+        border: none;
+        transition: transform 0.3s;
+    }
+
+    .actor-card-vintage:hover {
+        transform: translateY(-5px);
+    }
+    
+    .card-img-wrapper {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        aspect-ratio: 2/3;
+    }
+
+    .card-img-vintage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: sepia(20%) contrast(95%);
+        transition: filter 0.3s, transform 0.5s;
+    }
+
+    .actor-card-vintage:hover .card-img-vintage {
+        filter: sepia(0%) contrast(100%);
+        transform: scale(1.03);
+    }
+
+    .card-title-vintage {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+        color: #000;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Pagination */
+    .pagination {
+        border-top: 1px solid #ddd;
+        padding-top: 2rem;
+        justify-content: center;
+    }
+
+    .page-link {
+        border: none;
+        background: transparent;
+        color: #333;
+        font-family: var(--font-display);
+        font-weight: 700;
+        margin: 0 5px;
+        border-radius: 50% !important;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .page-link:hover, .page-item.active .page-link {
+        background: #111;
+        color: #fff;
+    }
+
+    .alert-custom {
+        background: #fff;
+        border: 1px solid #333;
+        font-family: var(--font-body);
+        border-radius: 0;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-end mb-5 border-bottom border-dark pb-3">
+        <h2 class="mb-0">Actors Directory</h2>
+        
+        @if (ViewBag.AfisareButoane == true)
         {
-            <a asp-action="New" class="btn btn-primary rounded-pill">
-                <i class="bi bi-plus-lg me-1"></i>Adaugă Actor
+            <a asp-controller="Actors" asp-action="New" class="btn btn-add-actor">
+                <i class="bi bi-plus-lg me-2"></i>Add Actor
             </a>
         }
     </div>
 
-    @if (ViewBag.Message != null)
+    @if(ViewBag.Message != null)
     {
-        <div class="alert @ViewBag.Alert p-3 rounded-3 mb-4">
+        <div class="alert alert-custom text-center mb-5 p-3">
             @ViewBag.Message
         </div>
     }
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    <!-- Search -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <form method="GET" class="search-vintage">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search actors..." name="search"
+                           value="@ViewBag.SearchString">
+                    <button class="btn btn-search px-4" type="submit">SEARCH</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Actor Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-5">
         @foreach (var actor in ViewBag.Actors)
         {
             var photoUrl = string.IsNullOrEmpty(actor.PhotoUrl) 
-                ? "https://ui-avatars.com/api/?name=" + actor.Name + "&size=250&background=random" 
+                ? "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop" 
                 : actor.PhotoUrl;
 
             <div class="col">
-                <div class="card h-100 shadow-sm border-0">
-                    <img src="@photoUrl" class="card-img-top" alt="@actor.Name" style="height: 250px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">@actor.Name</h5>
-                        <a asp-action="Show" asp-route-id="@actor.Id" class="btn btn-outline-primary btn-sm stretched-link">Detalii</a>
-                    </div>
+                <div class="actor-card-vintage h-100">
+                    <a asp-controller="Actors" asp-action="Show" asp-route-id="@actor.Id" class="text-decoration-none">
+                        <div class="card-img-wrapper">
+                            <img src="@photoUrl" class="card-img-vintage" alt="@actor.Name">
+                        </div>
+                        <div class="text-center">
+                            <h5 class="card-title-vintage text-truncate">@actor.Name</h5>
+                        </div>
+                    </a>
                 </div>
             </div>
         }
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-5">
+        <nav aria-label="Actor directory pagination">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="@ViewBag.PaginationBaseUrl=1" aria-label="First">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= ViewBag.lastPage; i++)
+                {
+                    <li class="page-item @(Context.Request.Query["page"] == i.ToString() ? "active" : "")"> 
+                        <a class="page-link" href="@ViewBag.PaginationBaseUrl=@i">@(i)</a> 
+                    </li>
+                }
+
+                <li class="page-item">
+                    <a class="page-link" href="@ViewBag.PaginationBaseUrl=@(ViewBag.lastPage)" aria-label="Last">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>

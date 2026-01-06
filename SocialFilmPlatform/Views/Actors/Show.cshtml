@@ -1,65 +1,133 @@
 @model SocialFilmPlatform.Models.Actor
-@{
-    ViewData["Title"] = Model.Name;
-    var poateEdita = (ViewBag.AfisareButoane as bool?) ?? false;
-    var photoUrl = string.IsNullOrEmpty(Model.PhotoUrl) 
-        ? "https://ui-avatars.com/api/?name=" + Model.Name + "&size=400&background=random" 
-        : Model.PhotoUrl;
-}
+
+<style>
+    .actor-details-card {
+        background: var(--vintage-bg);
+        border: none;
+    }
+
+    .actor-name {
+        font-family: var(--font-display);
+        color: #000;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+    }
+
+    .actor-description {
+        font-family: var(--font-body);
+        line-height: 1.8;
+        color: #333;
+        font-size: 1.1rem;
+    }
+
+    .filmography-title {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 1.5rem;
+        border-bottom: 2px solid #111;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .role-badge {
+        background: #111;
+        color: #fff;
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+        letter-spacing: 1px;
+    }
+</style>
 
 <div class="container py-5">
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow border-0">
-                <img src="@photoUrl" class="card-img-top" alt="@Model.Name">
-                <div class="card-body text-center">
-                    <h3 class="card-title fw-bold">@Model.Name</h3>
-                    @if (poateEdita)
-                    {
-                        <div class="d-grid gap-2 mt-3">
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editează</a>
-                            <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
-                                <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Sigur ștergi acest actor?')">Șterge</button>
-                            </form>
-                        </div>
-                    }
-                </div>
-            </div>
+    
+    @if(TempData["message"] != null)
+    {
+        <div class="alert @TempData["messageType"] p-3 mb-4 rounded-0">
+            @TempData["message"]
         </div>
-        
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body">
-                    <h4 class="card-title border-bottom pb-2 mb-3">Biografie</h4>
-                    <p class="card-text" style="white-space: pre-wrap;">@Model.Description</p>
-                </div>
-            </div>
+    }
 
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h4 class="card-title border-bottom pb-2 mb-3">Filmografie (@(Model.ActorMovies?.Count ?? 0))</h4>
-                    @if (Model.ActorMovies?.Any() == true)
-                    {
-                        <div class="list-group list-group-flush">
-                            @foreach (var am in Model.ActorMovies)
-                            {
-                                <a href="/Movies/Show/@am.MovieId" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    <span>@am.Movie?.Title</span>
-                                    <span class="badge bg-secondary rounded-pill">@am.Movie?.ReleaseDate.Year</span>
-                                </a>
-                            }
-                        </div>
-                    }
-                    else
-                    {
-                        <p class="text-muted">Niciun film adăugat.</p>
-                    }
-                </div>
+    <div class="row">
+        <!-- Actor Image -->
+        <div class="col-md-4 mb-4">
+            @{
+                var photoUrl = string.IsNullOrEmpty(Model.PhotoUrl) 
+                    ? "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500&auto=format&fit=crop" 
+                    : Model.PhotoUrl;
+            }
+            <div class="card border-0 rounded-0 shadow-sm">
+                <img src="@photoUrl" class="card-img-top rounded-0" alt="@Model.Name" style="filter: sepia(10%);">
             </div>
             
-            <div class="mt-3">
-                <a asp-action="Index" class="btn btn-outline-secondary">Înapoi la listă</a>
-            </div>
+            @if (ViewBag.AfisareButoane == true)
+            {
+                <div class="d-flex flex-column gap-2 mt-3">
+                    <a asp-controller="Actors" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark rounded-0 w-100 font-monospace text-uppercase">
+                        <i class="bi bi-pencil me-2"></i>Edit Actor
+                    </a>
+                    <form method="post" asp-controller="Actors" asp-action="Delete" asp-route-id="@Model.Id">
+                        <button type="submit" class="btn btn-danger rounded-0 w-100 font-monospace text-uppercase" onclick="return confirm('Are you sure you want to delete this actor?')">
+                            <i class="bi bi-trash me-2"></i>Delete Actor
+                        </button>
+                    </form>
+                </div>
+            }
         </div>
+
+        <!-- Actor Info -->
+        <div class="col-md-8">
+            <h1 class="actor-name">@Model.Name</h1>
+            
+            <div class="actor-description mb-5">
+                @Model.Description
+            </div>
+
+            <!-- Filmography -->
+            @if(Model.ActorMovies != null && Model.ActorMovies.Any())
+            {
+                <h3 class="filmography-title">Filmography</h3>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    @foreach(var am in Model.ActorMovies)
+                    {
+                        if(am.Movie != null)
+                        {
+                            var posterUrl = string.IsNullOrEmpty(am.Movie.ImageUrl) 
+                                ? "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=500&auto=format&fit=crop" 
+                                : am.Movie.ImageUrl;
+
+                            <div class="col">
+                                <div class="card h-100 border-0 bg-transparent">
+                                    <a asp-controller="Movies" asp-action="Show" asp-route-id="@am.Movie.Id" class="text-decoration-none text-dark">
+                                        <div class="position-relative mb-2">
+                                            <img src="@posterUrl" class="w-100 shadow-sm" style="aspect-ratio: 2/3; object-fit: cover; filter: sepia(20%);" alt="@am.Movie.Title">
+                                        </div>
+                                        <h6 class="font-monospace text-uppercase mb-1 text-truncate fw-bold" style="color: #000 !important; font-family: var(--font-display); letter-spacing: 0.5px; font-weight: 900;">@am.Movie.Title</h6>
+                                        <div class="small mb-2 fw-bold" style="color: #000 !important;">@am.Movie.ReleaseDate.ToString("yyyy")</div>
+                                        <span class="role-badge">Actor</span>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-light border rounded-0 text-center text-muted font-monospace">
+                    No movies listed for this actor yet.
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="mt-5 pt-4 border-top">
+        <a asp-action="Index" class="btn btn-outline-dark rounded-0 font-monospace text-uppercase">
+            <i class="bi bi-arrow-left me-2"></i>Back to Directory
+        </a>
     </div>
 </div>
