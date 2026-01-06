@@ -1,0 +1,49 @@
+@model SocialFilmPlatform.Models.ApplicationUser
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h3 class="text-center" style="font-family: var(--font-display);">Edit Profile</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Update" method="post" enctype="multipart/form-data">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label">First Name</label>
+                                <input asp-for="FirstName" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label">Last Name</label>
+                                <input asp-for="LastName" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">About Me</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Tell us about your movie taste..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Profile Picture</label>
+                            <input type="file" name="ProfileImage" class="form-control" accept="image/*" />
+                            @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                            {
+                                <div class="mt-2">
+                                    <small class="text-muted">Current Image:</small><br/>
+                                    <img src="@Model.ProfilePictureUrl" style="height: 50px; width: 50px; object-fit: cover;" class="rounded-circle border" />
+                                </div>
+                            }
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-dark">Update Profile</button>
+                            <a asp-action="Show" asp-route-userId="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
