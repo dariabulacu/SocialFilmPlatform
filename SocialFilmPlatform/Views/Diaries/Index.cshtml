@@ -174,7 +174,7 @@
 
     <!-- Grid -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var diary in ViewBag.Diaries)
+        @foreach (SocialFilmPlatform.Models.Diary diary in ViewBag.Diaries)
         {
             <div class="col">
                 <a asp-action="Show" asp-route-id="@diary.Id" class="text-decoration-none">
@@ -185,9 +185,20 @@
                             <span class="mx-2">•</span>
                             <span>@diary.CreatedAt.ToString("MMM yyyy")</span>
                         </div>
-                        <div class="text-secondary small mb-3 text-truncate">
+                        <div class="text-secondary small mb-2 text-truncate">
                             @(diary.Description ?? "No description.")
                         </div>
+                        
+                        @if(diary.Tags != null && diary.Tags.Any())
+                        {
+                            <div class="mb-3">
+                                @foreach(var tag in ((IEnumerable<SocialFilmPlatform.Models.Tag>)diary.Tags).Take(3))
+                                {
+                                    <span class="badge bg-light text-dark border fw-normal" style="font-size: 0.7rem;">#@tag.Name</span>
+                                }
+                                @if(diary.Tags.Count > 3) { <span class="text-muted small">+@(diary.Tags.Count - 3)</span> }
+                            </div>
+                        }
                         
                         <div class="d-flex justify-content-between align-items-center mt-auto">
                             <span class="text-warning"><i class="bi bi-heart-fill"></i> @(diary.DiaryVotes?.Count ?? 0)</span>

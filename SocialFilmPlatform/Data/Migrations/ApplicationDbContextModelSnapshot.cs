@@ -22,6 +22,36 @@ namespace SocialFilmPlatform.Data.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("CategoryDiary", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiariesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoriesId", "DiariesId");
+
+                    b.HasIndex("DiariesId");
+
+                    b.ToTable("CategoryDiary");
+                });
+
+            modelBuilder.Entity("DiaryTag", b =>
+                {
+                    b.Property<int>("DiariesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DiariesId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("DiaryTag");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -289,6 +319,26 @@ namespace SocialFilmPlatform.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("SocialFilmPlatform.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("SocialFilmPlatform.Models.Diary", b =>
                 {
                     b.Property<int>("Id")
@@ -501,6 +551,56 @@ namespace SocialFilmPlatform.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ReviewVotes");
+                });
+
+            modelBuilder.Entity("SocialFilmPlatform.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("CategoryDiary", b =>
+                {
+                    b.HasOne("SocialFilmPlatform.Models.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialFilmPlatform.Models.Diary", null)
+                        .WithMany()
+                        .HasForeignKey("DiariesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiaryTag", b =>
+                {
+                    b.HasOne("SocialFilmPlatform.Models.Diary", null)
+                        .WithMany()
+                        .HasForeignKey("DiariesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialFilmPlatform.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

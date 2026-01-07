@@ -45,7 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var diary in ViewBag.Diaries)
+                    @foreach (SocialFilmPlatform.Models.Diary diary in ViewBag.Diaries)
                     {
                         <tr>
                             <td>
@@ -55,6 +55,14 @@
                                 @if(!string.IsNullOrEmpty(diary.Description))
                                 {
                                     <div class="text-muted small text-truncate" style="max-width: 300px;">@diary.Description</div>
+                                }
+                                @if(diary.Categories != null && diary.Categories.Any())
+                                {
+                                     <div class="mt-1">
+                                        @foreach(var cat in diary.Categories) {
+                                            <span class="badge bg-secondary" style="font-size: 0.65rem;">@cat.Name</span>
+                                        }
+                                     </div>
                                 }
                             </td>
                             <td>

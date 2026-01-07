@@ -8,7 +8,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment="">
+    <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment=".">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/DiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DiariesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ApplicationDbContext.cs" afterDir="false" />
@@ -22,14 +24,16 @@
       <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105210001_AddReviewVotes.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105221237_AddImageFields.Designer.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105221237_AddImageFields.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Diary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Diary.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Movie.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Movie.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Movies/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/Edit.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Movies/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/New.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Movies/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/Show.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Shared/_LoginPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_LoginPartial.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106170645_MergedColleagueChanges.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106170645_MergedColleagueChanges.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106180406_AddDescriptionToUser.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106180406_AddDescriptionToUser.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/MovieDiary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/MovieDiary.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Diaries/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/Show.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/MovieDiaries/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MovieDiaries/New.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +46,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="gabi-branch" />
+        <entry key="$PROJECT_DIR$/.." value="gabi1-branch" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -82,13 +86,18 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "gabi-branch",
+    "git-widget-placeholder": "gabi2-branch",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.SocialFilmPlatform: http">
@@ -186,12 +195,12 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="." />
     <MESSAGE value="Rebased with Main and started working on Movies CRUD and Views, still got bugs." />
     <MESSAGE value="Partial View" />
     <MESSAGE value="Add controllers for Actors, Diaries, and M:M relationships" />
     <MESSAGE value="Frontend for Actors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Frontend for Actors" />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
