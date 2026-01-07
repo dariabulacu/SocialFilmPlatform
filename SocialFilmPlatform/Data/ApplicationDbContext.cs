@@ -21,6 +21,8 @@ namespace SocialFilmPlatform.Data
         public DbSet<ReviewVote> ReviewVotes { get; set; }
         public DbSet<DiaryVote> DiaryVotes { get; set; }
         public DbSet<ActorMovie> ActorMovies { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
