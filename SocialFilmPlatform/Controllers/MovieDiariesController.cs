@@ -5,17 +5,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
 using SocialFilmPlatform.Models;
+using SocialFilmPlatform.Services;
 
 namespace SocialFilmPlatform.Controllers
 {
     public class MovieDiariesController(
         ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager) : Controller
+        RoleManager<IdentityRole> roleManager,
+        IAiService aiService) : Controller
     {
         private readonly ApplicationDbContext db = context;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+        private readonly IAiService _aiService = aiService;
 
         [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Index()
@@ -53,7 +56,7 @@ namespace SocialFilmPlatform.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User,Editor,Admin")]
-        public IActionResult New(MovieDiary movieDiary, string? returnUrl = null)
+        public async Task<IActionResult> New(MovieDiary movieDiary, string? returnUrl = null, List<string>? SelectedTags = null, List<string>? SelectedCategories = null)
         {
             var diary = db.Diaries.Find(movieDiary.DiaryId);
             var currentUserId = _userManager.GetUserId(User);

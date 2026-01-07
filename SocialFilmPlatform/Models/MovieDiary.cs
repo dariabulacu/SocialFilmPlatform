@@ -11,9 +11,10 @@ namespace SocialFilmPlatform.Models
         public virtual Movie? Movie { get; set; }
         public virtual Diary? Diary { get; set; }
         
-        public DateTime DiaryTime { get; set; }
+    public DateTime DiaryTime { get; set; }
         public string Name { get; set; }
-        
+
+
     }
 }
 

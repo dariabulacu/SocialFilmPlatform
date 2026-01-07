@@ -20,6 +20,8 @@ namespace SocialFilmPlatform.Models
 
         public virtual ICollection<MovieDiary> MovieDiaries { get; set; } = [];
         public virtual ICollection<DiaryVote> DiaryVotes { get; set; } = [];
+        public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+        public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
     }
 }
 

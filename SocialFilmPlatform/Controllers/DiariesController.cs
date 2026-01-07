@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialFilmPlatform.Data;
+using SocialFilmPlatform.Services;
 using SocialFilmPlatform.Models;
 using Ganss.Xss;
 
@@ -11,11 +12,13 @@ namespace SocialFilmPlatform.Controllers
     public class DiariesController(
         ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager) : Controller
+        RoleManager<IdentityRole> roleManager,
+        IAiService aiService) : Controller
     {
         private readonly ApplicationDbContext db = context;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+        private readonly IAiService _aiService = aiService;
 
         // Public Index: Shows all public diaries or own private diaries mixed? 
         // Requirement: "Orice utilizator ... poate vizualiza bookmark-urile publice"
@@ -30,6 +33,8 @@ namespace SocialFilmPlatform.Controllers
                                            .Include(d => d.User)
                                            .Include(d => d.MovieDiaries).ThenInclude(md => md.Movie)
                                            .Include(d => d.DiaryVotes)
+                                           .Include(d => d.Tags)
+                                           .Include(d => d.Categories)
                                            .Where(d => d.IsPublic);
 
             if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
@@ -89,6 +94,8 @@ namespace SocialFilmPlatform.Controllers
                             .Include(d => d.User)
                             .Include(d => d.MovieDiaries).ThenInclude(md => md.Movie)
                             .Include(d => d.DiaryVotes)
+                            .Include(d => d.Tags)
+                            .Include(d => d.Categories)
                             .OrderByDescending(d => d.CreatedAt)
                             .ToList();
             
@@ -101,6 +108,8 @@ namespace SocialFilmPlatform.Controllers
             var diary = db.Diaries
                 .Include(d => d.User)
                 .Include(d => d.MovieDiaries).ThenInclude(md => md.Movie)
+                .Include(d => d.Tags)
+                .Include(d => d.Categories)
                 .Include(d => d.DiaryVotes)
                 .FirstOrDefault(d => d.Id == id);
 
@@ -197,7 +206,11 @@ namespace SocialFilmPlatform.Controllers
         [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Edit(int id)
         {
-            var diary = db.Diaries.Find(id);
+            var diary = db.Diaries
+                .Include(d => d.Tags)
+                .Include(d => d.Categories)
+                .FirstOrDefault(d => d.Id == id);
+
             if (diary is null)
             {
                 return NotFound();
@@ -211,14 +224,21 @@ namespace SocialFilmPlatform.Controllers
                  return RedirectToAction("Index");
             }
 
+            ViewBag.AllTags = db.Tags.OrderBy(t => t.Name).Select(t => t.Name).ToList();
+            ViewBag.AllCategories = db.Categories.OrderBy(c => c.Name).Select(c => c.Name).ToList();
+
             return View(diary);
         }
 
         [HttpPost]
         [Authorize(Roles = "User,Editor,Admin")]
-        public IActionResult Edit(int id, Diary requestDiary)
+        public IActionResult Edit(int id, Diary requestDiary, string? TagsInput, string? CategoriesInput)
         {
-            var diary = db.Diaries.Find(id);
+            var diary = db.Diaries
+                .Include(d => d.Tags)
+                .Include(d => d.Categories)
+                .FirstOrDefault(d => d.Id == id);
+
             if (diary is null)
             {
                 return NotFound();
@@ -238,6 +258,40 @@ namespace SocialFilmPlatform.Controllers
                 diary.Description = requestDiary.Description != null ? sanitizer.Sanitize(requestDiary.Description) : null;
                 diary.Content = requestDiary.Content != null ? sanitizer.Sanitize(requestDiary.Content) : null;
                 diary.IsPublic = requestDiary.IsPublic;
+
+                // Update Tags
+                diary.Tags.Clear();
+                if (!string.IsNullOrEmpty(TagsInput))
+                {
+                    var tagNames = TagsInput.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(t => t.Trim()).Distinct();
+                    foreach (var tagName in tagNames)
+                    {
+                        var tag = db.Tags.FirstOrDefault(t => t.Name == tagName);
+                        if (tag == null)
+                        {
+                            tag = new Tag { Name = tagName, IsPublic = true };
+                            db.Tags.Add(tag);
+                        }
+                        diary.Tags.Add(tag);
+                    }
+                }
+
+                // Update Categories
+                diary.Categories.Clear();
+                if (!string.IsNullOrEmpty(CategoriesInput))
+                {
+                    var catNames = CategoriesInput.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(c => c.Trim()).Distinct();
+                    foreach (var catName in catNames)
+                    {
+                        var cat = db.Categories.FirstOrDefault(c => c.Name == catName);
+                        if (cat == null)
+                        {
+                            cat = new Category { Name = catName, IsPublic = true };
+                            db.Categories.Add(cat);
+                        }
+                        diary.Categories.Add(cat);
+                    }
+                }
                 
                 db.SaveChanges();
                 TempData["message"] = "List updated successfully!";
@@ -270,6 +324,30 @@ namespace SocialFilmPlatform.Controllers
             TempData["message"] = "List deleted successfully!";
             TempData["messageType"] = "success";
             return RedirectToAction("MyDiaries");
+        }
+        [HttpPost]
+        [Authorize(Roles = "User,Editor,Admin")]
+        public async Task<IActionResult> SuggestTags(int diaryId)
+        {
+            var diary = await db.Diaries
+                .Include(d => d.MovieDiaries)
+                .ThenInclude(md => md.Movie)
+                .FirstOrDefaultAsync(d => d.Id == diaryId);
+
+            if (diary == null) return NotFound("Diary not found");
+
+            var currentUserId = _userManager.GetUserId(User);
+            if (diary.UserId != currentUserId && !User.IsInRole("Admin")) return Forbid();
+
+            var movieTitles = diary.MovieDiaries.Select(md => md.Movie.Title).ToList();
+            if (!movieTitles.Any())
+            {
+                return Ok(new { tags = new List<string>(), categories = new List<string>(), message = "No movies in list to analyze." });
+            }
+
+            var (tags, categories) = await _aiService.SuggestTagsForListAsync(diary.Name, diary.Description ?? "", movieTitles);
+
+            return Ok(new { tags, categories });
         }
     }
 }
