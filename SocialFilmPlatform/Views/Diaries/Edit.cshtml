@@ -2,14 +2,58 @@
 
 @{
     ViewData["Title"] = "Edit List";
+    var allTags = ViewBag.AllTags as List<string> ?? new List<string>();
+    var allCategories = ViewBag.AllCategories as List<string> ?? new List<string>();
 }
+
+<style>
+    .tag-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        background-color: #fff;
+        min-height: 45px; /* ensure it looks like an input */
+        align-items: center;
+    }
+
+    .tag-pill {
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 1rem;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .tag-pill .remove-tag {
+        cursor: pointer;
+        color: #6c757d;
+        font-weight: bold;
+    }
+    .tag-pill .remove-tag:hover {
+        color: #dc3545;
+    }
+
+    .tag-input-field {
+        border: none;
+        outline: none;
+        flex-grow: 1;
+        min-width: 100px;
+        background: transparent;
+    }
+</style>
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2 class="text-center mb-4" style="font-family: 'Cinzel', serif;">Edit List</h2>
-            
-            <form asp-action="Edit" method="post">
+         
+            <form asp-action="Edit" method="post" id="editForm">
                 <input type="hidden" asp-for="Id" />
                 
                 <div class="mb-3">
@@ -37,6 +81,47 @@
                     </label>
                 </div>
 
+                <!-- TAGS INPUT -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tags</label>
+                    <div id="tagsContainer" class="tag-container" onclick="document.getElementById('newTagInput').focus()">
+                        <!-- Pills will go here -->
+                        <input type="text" id="newTagInput" class="tag-input-field" placeholder="Add tag..." list="tagsList" autocomplete="off">
+                    </div>
+                    <datalist id="tagsList">
+                        @foreach(var tag in allTags) {
+                            <option value="@tag"></option>
+                        }
+                    </datalist>
+                    <input type="hidden" name="TagsInput" id="TagsInput" value="@string.Join(",", Model.Tags.Select(t => t.Name))" />
+                    <small class="text-muted">Type and press Enter to add a new tag.</small>
+                </div>
+
+                <!-- CATEGORIES INPUT -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Categories</label>
+                    <div id="catsContainer" class="tag-container" onclick="document.getElementById('newCatInput').focus()">
+                        <!-- Pills will go here -->
+                        <input type="text" id="newCatInput" class="tag-input-field" placeholder="Add category..." list="catsList" autocomplete="off">
+                    </div>
+                    <datalist id="catsList">
+                        @foreach(var cat in allCategories) {
+                             <option value="@cat"></option>
+                        }
+                    </datalist>
+                    <input type="hidden" name="CategoriesInput" id="CategoriesInput" value="@string.Join(",", Model.Categories.Select(c => c.Name))" />
+                    <small class="text-muted">Type and press Enter to add a new category.</small>
+                </div>
+
+                <div class="mb-4">
+                    <button type="button" id="btnSuggestAi" class="btn btn-outline-info w-100 py-2">
+                        Suggest with AI
+                    </button>
+                    <div id="aiLoading" class="text-center mt-2 d-none">
+                        <small class="text-muted">Analyzing movies...</small>
+                    </div>
+                </div>
+
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-dark rounded-0 py-2 text-uppercase">Save Changes</button>
                     <a asp-action="MyDiaries" class="btn btn-outline-secondary rounded-0">Cancel</a>
@@ -48,4 +133,151 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // --- Chip Logic Manager ---
+        function ChipManager(containerId, inputId, hiddenInputId) {
+            this.container = document.getElementById(containerId);
+            this.input = document.getElementById(inputId);
+            this.hiddenInput = document.getElementById(hiddenInputId);
+            this.chips = []; // Array of strings
+
+            // Init from hidden input
+            if(this.hiddenInput.value) {
+                this.chips = this.hiddenInput.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
+                this.render();
+            }
+
+            // Event Listeners
+            this.input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.addChip(this.input.value);
+                    this.input.value = '';
+                }
+            });
+            
+            // Handle selection from datalist (change event)
+            this.input.addEventListener('change', (e) => {
+                 // Check if value exists in datalist if we wanted strict enforcement, but we allow new tags user typed
+                 if(this.input.value.trim().length > 0) {
+                     this.addChip(this.input.value);
+                     this.input.value = '';
+                 }
+            });
+        }
+
+        ChipManager.prototype.addChip = function(text) {
+            text = text.trim();
+            if(!text) return;
+            if(this.chips.includes(text)) return; // No duplicates
+
+            this.chips.push(text);
+            this.updateHidden();
+            this.render();
+        };
+
+        ChipManager.prototype.removeChip = function(text) {
+            this.chips = this.chips.filter(c => c !== text);
+            this.updateHidden();
+            this.render();
+        };
+        
+        ChipManager.prototype.setChips = function(newChips) {
+            // Merge unique new chips
+            newChips.forEach(c => {
+                 if(!this.chips.includes(c)) this.chips.push(c);
+            });
+            this.updateHidden();
+            this.render();
+        }
+
+        ChipManager.prototype.updateHidden = function() {
+            this.hiddenInput.value = this.chips.join(',');
+        };
+
+        ChipManager.prototype.render = function() {
+            // Clear existing pills (keep input)
+            // Easier to just rebuild everything before input
+            
+            // Remove all .tag-pill
+            const pills = this.container.querySelectorAll('.tag-pill');
+            pills.forEach(p => p.remove());
+
+            // Insert before input
+            this.chips.forEach(chip => {
+                const pill = document.createElement('div');
+                pill.className = 'tag-pill';
+                pill.innerHTML = `<span>${chip}</span> <span class="remove-tag">&times;</span>`;
+                
+                pill.querySelector('.remove-tag').onclick = (e) => {
+                    e.stopPropagation(); // Don't focus input
+                    this.removeChip(chip);
+                };
+                
+                this.container.insertBefore(pill, this.input);
+            });
+        };
+
+        // --- Init Managers ---
+        const tagsManager = new ChipManager('tagsContainer', 'newTagInput', 'TagsInput');
+        const catsManager = new ChipManager('catsContainer', 'newCatInput', 'CategoriesInput');
+
+
+        // --- AI Logic ---
+        document.getElementById('btnSuggestAi').addEventListener('click', function() {
+            var diaryId = @Model.Id;
+            var btn = this;
+            var loading = document.getElementById('aiLoading');
+            
+            btn.disabled = true;
+            loading.classList.remove('d-none');
+
+            // Find valid token
+            var token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+            fetch('/Diaries/SuggestTags?diaryId=' + diaryId, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': token
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                let found = false;
+
+                if (data.tags && data.tags.length > 0) {
+                    tagsManager.setChips(data.tags);
+                    found = true;
+                }
+                
+                if (data.categories && data.categories.length > 0) {
+                     catsManager.setChips(data.categories);
+                     found = true;
+                }
+                
+                if (data.message) {
+                    if(!found) alert(data.message); // Only alert specific messages if main job failed
+                } else if (!found) {
+                     alert("AI could not generate suggestions. Please try again or check your API key.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to get suggestions.');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                loading.classList.add('d-none');
+            });
+        });
+        
+        // Prevent form submission on regular Enter key if focused on inputs
+        document.getElementById('editForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && (e.target.id === 'newTagInput' || e.target.id === 'newCatInput')) {
+                e.preventDefault();
+            }
+        });
+    </script>
 }
