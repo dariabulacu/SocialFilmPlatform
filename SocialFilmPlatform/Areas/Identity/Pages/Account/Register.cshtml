@@ -82,6 +82,25 @@
             <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-4 text-center" role="alert"></div>
                 
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.FirstName" class="form-label">First Name</label>
+                        <input asp-for="Input.FirstName" class="form-control form-control-vintage" aria-required="true" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.LastName" class="form-label">Last Name</label>
+                        <input asp-for="Input.LastName" class="form-control form-control-vintage" aria-required="true" />
+                        <span asp-validation-for="Input.LastName" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Description" class="form-label">About Me</label>
+                    <textarea asp-for="Input.Description" class="form-control form-control-vintage" rows="3" aria-required="true"></textarea>
+                    <span asp-validation-for="Input.Description" class="text-danger small"></span>
+                </div>
+
                 <div class="mb-3">
                     <label asp-for="Input.Email" class="form-label">Email Address</label>
                     <input asp-for="Input.Email" class="form-control form-control-vintage" autocomplete="username" aria-required="true" />
