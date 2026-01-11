@@ -1,0 +1,57 @@
+@model IEnumerable<SocialFilmPlatform.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Community";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 style="font-family: 'Cinzel', serif;">COMMUNITY & USERS</h2>
+        <p class="text-muted">Find other film enthusiasts to follow.</p>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <form asp-action="Index" method="get" class="d-flex gap-2">
+                <input type="text" name="search" class="form-control form-control-lg" placeholder="Search by name or username..." value="@ViewBag.SearchString">
+                <button type="submit" class="btn btn-dark px-4">Search</button>
+            </form>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center">
+            <p class="text-muted">No users found matching your search.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var user in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm border-0 text-center">
+                        <div class="card-body d-flex flex-column align-items-center">
+                            @if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
+                            {
+                                <img src="@user.ProfilePictureUrl" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover; border: 2px solid var(--vintage-gold);" alt="@user.UserName">
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Default Profile">
+                            }
+                            
+                            <h5 class="card-title mb-1" style="font-family: var(--font-display);">
+                                @(user.FirstName) @(user.LastName)
+                            </h5>
+                            <p class="text-muted small mb-3">@@@user.UserName</p>
+                            
+                            <a asp-action="Show" asp-route-userId="@user.Id" class="btn btn-outline-dark btn-sm mt-auto stretched-link">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
