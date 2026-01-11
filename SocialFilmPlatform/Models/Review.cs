@@ -9,7 +9,11 @@ namespace SocialFilmPlatform.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Review content is required")]
+        [StringLength(2000, MinimumLength = 5, ErrorMessage = "Review must be between 5 and 2000 characters")]
         public string Content { get; set; }
+
         public DateTime DatePosted { get; set; }
         
         //fk to movie

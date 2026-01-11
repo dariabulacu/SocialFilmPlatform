@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace SocialFilmPlatform.Models
 {
     public class ApplicationUser : IdentityUser 
     {
+        [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters")]
         public string? FirstName { get; set; }
+
+        [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters")]
         public string? LastName { get; set; }
 
         public string? ProfilePictureUrl { get; set; }
 
+        [StringLength(1000, ErrorMessage = "Description cannot exceed 1000 characters")]
         public string? Description { get; set; }
 
         //un user poate sa lase un singur review per film, dar le poate edita sau sterge
