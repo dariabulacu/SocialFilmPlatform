@@ -1,10 +1,10 @@
 @model SocialFilmPlatform.Models.Movie
 @{
-    ViewData["Title"] = "Adaugă film";
+    ViewData["Title"] = "Add Movie";
     var genreItems = ViewBag.Genres as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
 }
 
-<h2 class="text-center mt-5">Adaugă un film</h2>
+<h2 class="text-center mt-5">Add a Movie</h2>
 
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -15,62 +15,62 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <div class="mb-3">
-                            <label asp-for="Title" class="form-label">Titlu film</label>
+                            <label asp-for="Title" class="form-label">Movie Title</label>
                             <input asp-for="Title" class="form-control" />
                             <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Director" class="form-label">Regizor</label>
+                            <label asp-for="Director" class="form-label">Director</label>
                             <input asp-for="Director" class="form-control" />
                             <span asp-validation-for="Director" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Description" class="form-label">Descriere</label>
+                            <label asp-for="Description" class="form-label">Description</label>
                             <textarea name="Description" id="Description" style="display:none;"></textarea>
                             <div id="descriptionEditor" style="height: 200px; background: white;"></div>
-                            <small class="text-muted">Folosește bara de instrumente pentru a formata textul</small>
+                            <small class="text-muted">Use the toolbar to format text</small>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
 
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label asp-for="Score" class="form-label">Scor</label>
+                                <label asp-for="Score" class="form-label">Score</label>
                                 <input asp-for="Score" type="number" step="0.1" class="form-control" />
                                 <span asp-validation-for="Score" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="ReleaseDate" class="form-label">Data lansării</label>
+                                <label asp-for="ReleaseDate" class="form-label">Release Date</label>
                                 <input asp-for="ReleaseDate" type="date" class="form-control" />
                                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="mb-3 mt-3">
-                            <label asp-for="TrailerUrl" class="form-label">Link Trailer (YouTube)</label>
+                            <label asp-for="TrailerUrl" class="form-label">Trailer Link (YouTube)</label>
                             <input asp-for="TrailerUrl" class="form-control" placeholder="https://www.youtube.com/watch?v=..." />
                             <span asp-validation-for="TrailerUrl" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3 mt-3">
-                            <label class="form-label">Imagine (Poster/Backdrop)</label>
+                            <label class="form-label">Image (Poster/Backdrop)</label>
                             <input type="file" name="Image" class="form-control" accept="image/*" />
                             <span asp-validation-for="ImageUrl" class="text-danger"></span>
                         </div>
 
                         <div class="mt-3">
-                            <label asp-for="GenreId" class="form-label">Gen cinematografic</label>
+                            <label asp-for="GenreId" class="form-label">Genre</label>
                             <select asp-for="GenreId" asp-items="genreItems" class="form-select">
-                                <option value="">Selectează genul</option>
+                                <option value="">Select Genre</option>
                             </select>
                             <span asp-validation-for="GenreId" class="text-danger"></span>
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
-                            <a asp-action="Index" class="btn btn-outline-secondary">Înapoi la listă</a>
-                            <button type="submit" class="btn btn-success" id="submitBtn">Salvează</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+                            <button type="submit" class="btn btn-success" id="submitBtn">Save</button>
                         </div>
                     </form>
                 </div>
@@ -88,10 +88,10 @@
     
     
     <script>
-        // Inițializează editorul Quill pentru descriere
+
         var quillDescription = new Quill('#descriptionEditor', {
             theme: 'snow',
-            placeholder: 'Scrie descrierea filmului aici... Folosește bara de instrumente pentru formatare.',
+            placeholder: 'Write movie description here... Use the toolbar for formatting.',
             modules: {
                 toolbar: [
                     [{ 'header': [1, 2, 3, false] }],
@@ -104,14 +104,14 @@
             }
         });
 
-        // Actualizează câmpul ascuns la fiecare schimbare
+
         quillDescription.on('text-change', function() {
             var content = quillDescription.root.innerHTML;
             document.getElementById('Description').value = content;
             console.log('Description updated:', content.substring(0, 100));
         });
 
-        // La submit, salvează conținutul HTML în câmpul ascuns
+
         document.querySelector('form').addEventListener('submit', function(e) {
             var content = quillDescription.root.innerHTML;
             var textContent = quillDescription.getText().trim();
@@ -120,14 +120,14 @@
             console.log('Content length:', content.length);
             console.log('Text content:', textContent);
             
-            // Verifică dacă editorul este gol
+
             if (textContent.length === 0) {
                 e.preventDefault();
-                alert('Te rog să adaugi o descriere pentru film.');
+                alert('Please add a description for the movie.');
                 return false;
             }
             
-            // Setează valoarea în câmpul textarea
+
             document.getElementById('Description').value = content;
             console.log('Final description value set');
         });

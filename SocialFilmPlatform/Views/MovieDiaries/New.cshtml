@@ -1,7 +1,7 @@
 @model SocialFilmPlatform.Models.MovieDiary
 
 @{
-    ViewData["Title"] = "Add Movie to List";
+    ViewData["Title"] = "Add Movie to Diary";
 }
 
 <div class="container mt-5">
@@ -9,14 +9,14 @@
         <div class="col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white border-bottom-0 pb-0">
-                    <h3 class="text-center" style="font-family: var(--font-display);">Add Movie to List</h3>
+                    <h3 class="text-center" style="font-family: var(--font-display);">Add Movie to Diary</h3>
                 </div>
                 <div class="card-body">
                     <form asp-action="New" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="mb-3">
-                            <label class="form-label text-muted small text-uppercase">Select List</label>
+                            <label class="form-label text-muted small text-uppercase">Select Diary</label>
                             <select asp-for="DiaryId" class="form-select rounded-0" asp-items="ViewBag.Diaries"></select>
                             <span asp-validation-for="DiaryId" class="text-danger"></span>
                         </div>
@@ -30,7 +30,7 @@
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-dark rounded-0">ADD TO LIST</button>
+                            <button type="submit" class="btn btn-dark rounded-0">ADD TO DIARY</button>
                             <a asp-controller="Diaries" asp-action="MyDiaries" class="btn btn-outline-secondary rounded-0">Cancel</a>
                         </div>
                     </form>

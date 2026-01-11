@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,43 @@ namespace SocialFilmPlatform.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _env;
 
-        public ProfilesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
+        public ProfilesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment env)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
             _env = env;
+        }
+
+        public async Task<IActionResult> Index(string? search)
+        {
+            var usersQuery = _context.Users.AsQueryable();
+
+
+            var currentUserId = _userManager.GetUserId(User);
+            if (currentUserId != null)
+            {
+                usersQuery = usersQuery.Where(u => u.Id != currentUserId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.Trim();
+                usersQuery = usersQuery.Where(u => 
+                    u.UserName.Contains(search) || 
+                    (u.FirstName != null && u.FirstName.Contains(search)) || 
+                    (u.LastName != null && u.LastName.Contains(search)));
+                
+                ViewBag.SearchString = search;
+            }
+            
+
+            var users = await usersQuery.Take(50).ToListAsync();
+            
+            return View(users);
         }
 
         public async Task<IActionResult> Show(string userId)
@@ -27,7 +58,7 @@ namespace SocialFilmPlatform.Controllers
 
             if (user == null)
             {
-                // If no userId provided, try to show current user profile
+
                 var currentUser = await _userManager.GetUserAsync(User);
                 if (currentUser != null && string.IsNullOrEmpty(userId))
                 {
@@ -39,7 +70,7 @@ namespace SocialFilmPlatform.Controllers
             var viewer = await _userManager.GetUserAsync(User);
             bool isOwner = viewer != null && viewer.Id == user.Id;
 
-            // Filter diaries: Show all if owner, else show only public
+
             var visibleDiaries = isOwner 
                 ? user.Diaries 
                 : user.Diaries.Where(d => d.IsPublic).ToList();
@@ -47,7 +78,32 @@ namespace SocialFilmPlatform.Controllers
             ViewBag.IsOwner = isOwner;
             ViewBag.Diaries = visibleDiaries;
 
+
+            if (User.IsInRole("Admin"))
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                ViewBag.UserRoles = userRoles;
+                ViewBag.AllRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+            }
+
             return View(user);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChangeRole(string userId, string newRole)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            await _userManager.AddToRoleAsync(user, newRole);
+
+            TempData["message"] = $"Role changed to {newRole} for user {user.UserName}";
+            TempData["messageType"] = "alert-success";
+
+            return RedirectToAction("Show", new { userId = userId });
         }
 
         [HttpGet]

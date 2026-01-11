@@ -26,10 +26,10 @@ namespace SocialFilmPlatform.Controllers
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
         private readonly IWebHostEnvironment _env = env;
 
-        // [Authorize(Roles = "User,Editor,Admin")] // Allow everyone to view
+
         public IActionResult Index()
         {
-            IQueryable<Movie> movies = db.Movies
+            var movies = db.Movies
                 .Include(m => m.Genre)
                 .Include(m => m.User)
                 .Include(m => m.ActorMovies).ThenInclude(am => am.Actor)
@@ -44,22 +44,39 @@ namespace SocialFilmPlatform.Controllers
             }
             
             var search = "";
-            if(Convert.ToString(HttpContext.Request.Query["search"]) != null)
+            if (!string.IsNullOrWhiteSpace(HttpContext.Request.Query["search"]))
             {
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
                 
-                List<int> articleIds = db.Movies.Where(
-                    at => at.Title.Contains(search) ||
-                          at.Director.Contains(search) ||
-                          at.Description.Contains(search)
-                ).Select(at => at.Id).ToList();
-                
-                movies = movies.Where(m => articleIds.Contains(m.Id));
+                movies = movies.Where(m => 
+                    m.Title.Contains(search) || 
+                    m.Director.Contains(search) ||
+                    m.Description.Contains(search) ||
+                    (m.Genre != null && m.Genre.GenreName.Contains(search))
+                );
             }
             
-            ViewBag.SearchString = search;
 
-            int _perPage = 3;
+            var sortOrder = HttpContext.Request.Query["sort"].ToString();
+            if (string.IsNullOrEmpty(sortOrder)) sortOrder = "recent";
+
+            if (sortOrder == "popular")
+            {
+
+                movies = movies.OrderByDescending(m => m.Reviews.Count)
+                               .ThenByDescending(m => m.Score)
+                               .ThenByDescending(m => m.Id);
+            }
+            else // recent
+            {
+                movies = movies.OrderByDescending(m => m.ReleaseDate)
+                               .ThenByDescending(m => m.Id);
+            }
+
+            ViewBag.SearchString = search;
+            ViewBag.SortOrder = sortOrder;
+
+            int _perPage = 6;
             int totalItems = movies.Count();
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
             var offset = 0;
@@ -70,16 +87,12 @@ namespace SocialFilmPlatform.Controllers
             var paginatedMovies = movies.Skip(offset).Take(_perPage).ToList();
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
             ViewBag.Movies = paginatedMovies;
-            ViewBag.Articles = paginatedMovies;
+            
 
-            if (search != "")
-            {
-                ViewBag.PaginationBaseUrl = "/Movies/Index?search=" + search + "&page=";
-            }
-            else
-            {
-                ViewBag.PaginationBaseUrl = "/Movies/Index?page=";
-            }
+            var baseUrl = "/Movies/Index?";
+            if (!string.IsNullOrEmpty(search)) baseUrl += $"search={search}&";
+            if (!string.IsNullOrEmpty(sortOrder)) baseUrl += $"sort={sortOrder}&";
+            ViewBag.PaginationBaseUrl = baseUrl + "page=";
 
             return View();
         }
@@ -195,7 +208,7 @@ namespace SocialFilmPlatform.Controllers
                 return View(movie);
             }
 
-            TempData["message"] = "Nu aveți dreptul să modificați un film care nu vă aparține.";
+            TempData["message"] = "You do not have permission to modify a movie that does not belong to you.";
             TempData["messageType"] = "alert-danger";
             return RedirectToAction("Index");
         }
@@ -217,13 +230,13 @@ namespace SocialFilmPlatform.Controllers
                     db.Movies.Remove(movie);
                     db.SaveChanges();
 
-                    TempData["message"] = "Filmul a fost șters.";
+                    TempData["message"] = "Movie deleted.";
                     TempData["messageType"] = "alert-success";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["message"] = "Nu aveti dreptul sa stergeti un film care nu va apartine";
+                    TempData["message"] = "You do not have permission to delete a movie that does not belong to you.";
                     TempData["messageType"] = "alert-danger";
                     return RedirectToAction("Index");
                 }
@@ -282,12 +295,12 @@ namespace SocialFilmPlatform.Controllers
 
                 await db.SaveChangesAsync();
 
-                TempData["message"] = "Filmul a fost actualizat.";
+                TempData["message"] = "Movie updated.";
                 TempData["messageType"] = "alert-success";
                 return RedirectToAction("Index");
             }
 
-            TempData["message"] = "Nu aveți dreptul să modificați un film care nu vă aparține.";
+            TempData["message"] = "You do not have permission to modify a movie that does not belong to you.";
             TempData["messageType"] = "alert-danger";
             return RedirectToAction("Index");
         }

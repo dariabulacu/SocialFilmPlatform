@@ -47,7 +47,7 @@ namespace SocialFilmPlatform.Controllers
             {
                 db.Genres.Add(genre);
                 db.SaveChanges();
-                TempData["message"] = "Genul cu numele " + genre.GenreName + " a fost adăugat!";
+                TempData["message"] = "The genre with name " + genre.GenreName + " has been added!";
                 return RedirectToAction("Index");
             }
             else
@@ -76,7 +76,7 @@ namespace SocialFilmPlatform.Controllers
             {
                 genre.GenreName = requestGenre.GenreName;
                 db.SaveChanges();
-                TempData["message"] = "Genul a fost modificat!";
+                TempData["message"] = "The genre has been modified!";
                 return RedirectToAction("Index");
             }
             else
@@ -96,12 +96,12 @@ namespace SocialFilmPlatform.Controllers
             else{
                 if (genre.Movies?.Any() == true)
                 {
-                    TempData["message"] = "Genul selectat nu poate fi sters atata timp cat exista filme asociate.";
+                    TempData["message"] = "The selected genre cannot be deleted while there are associated movies.";
                     return RedirectToAction("Index");   
                 }
                 db.Genres.Remove(genre);
                 db.SaveChanges();
-                TempData["message"] = "Genul a fost sters.";
+                TempData["message"] = "The genre has been deleted.";
                 return RedirectToAction("Index");   
             }
         }

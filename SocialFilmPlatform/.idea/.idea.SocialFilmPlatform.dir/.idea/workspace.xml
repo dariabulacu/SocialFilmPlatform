@@ -8,32 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment=".">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/DiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DiariesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105210001_AddReviewVotes.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105210001_AddReviewVotes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105221237_AddImageFields.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105221237_AddImageFields.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106170645_MergedColleagueChanges.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106170645_MergedColleagueChanges.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106180406_AddDescriptionToUser.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106180406_AddDescriptionToUser.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/MovieDiary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/MovieDiary.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Diaries/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/Show.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/MovieDiaries/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MovieDiaries/New.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
+    <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Areas/Identity/Pages/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Areas/Identity/Pages/Account/Register.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Areas/Identity/Pages/Account/Register.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Areas/Identity/Pages/Account/Register.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/ActorsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ActorsController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="gabi1-branch" />
+        <entry key="$PROJECT_DIR$/.." value="gabi-branch1" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -66,6 +44,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Controllers/MoviesController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/ReviewVote.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/gabrielrachieru/RiderProjects/SocialFilmPlatform/SocialFilmPlatform/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -86,7 +65,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "gabi2-branch",
+    "git-widget-placeholder": "gabi-final",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -144,6 +123,7 @@
       <workItem from="1765838952670" duration="169000" />
       <workItem from="1765840745235" duration="670000" />
       <workItem from="1765841434098" duration="582000" />
+      <workItem from="1768135507372" duration="9132000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -185,7 +165,47 @@
       <option name="project" value="LOCAL" />
       <updated>1767660677508</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added required validations for forms and models&#10;&#10;Changed language inconsistencies &#10;&#10;UI tweaks">
+      <option name="closed" value="true" />
+      <created>1768137855638</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1768137855638</updated>
+    </task>
+    <task id="LOCAL-00007" summary=".">
+      <option name="closed" value="true" />
+      <created>1768137875509</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1768137875509</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Community feature&#10;Admin can change users roles">
+      <option name="closed" value="true" />
+      <created>1768138783385</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1768138783385</updated>
+    </task>
+    <task id="LOCAL-00009" summary="better search engine&#10;&#10;seeddata">
+      <option name="closed" value="true" />
+      <created>1768143411413</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1768143411413</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Made code clearer and better indentation, Removed useless comments">
+      <option name="closed" value="true" />
+      <created>1768143901208</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1768143901209</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,8 +219,12 @@
     <MESSAGE value="Partial View" />
     <MESSAGE value="Add controllers for Actors, Diaries, and M:M relationships" />
     <MESSAGE value="Frontend for Actors" />
+    <MESSAGE value="Added required validations for forms and models&#10;&#10;Changed language inconsistencies &#10;&#10;UI tweaks" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="Community feature&#10;Admin can change users roles" />
+    <MESSAGE value="better search engine&#10;&#10;seeddata" />
+    <MESSAGE value="Made code clearer and better indentation, Removed useless comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made code clearer and better indentation, Removed useless comments" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

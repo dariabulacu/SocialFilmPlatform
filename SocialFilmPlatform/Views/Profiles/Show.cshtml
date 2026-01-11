@@ -20,23 +20,51 @@
 
                     @if (ViewBag.IsOwner)
                     {
-                        <a asp-action="Edit" class="btn btn-outline-dark btn-sm mt-2">Editează Profilul</a>
+                        <a asp-action="Edit" class="btn btn-outline-dark btn-sm mt-2">Edit Profile</a>
                     }
                 </div>
             </div>
             
-             <div class="card shadow-sm border-0 mt-3" style="background-color: var(--vintage-bg);">
+            <div class="card shadow-sm border-0 mt-3" style="background-color: var(--vintage-bg);">
                 <div class="card-body text-start">
                     <h5 style="font-family: var(--font-display); border-bottom: 2px solid var(--vintage-gold); padding-bottom: 5px;">About</h5>
                     <p class="mt-2">@(Model.Description ?? "No description added yet.")</p>
                 </div>
             </div>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="card shadow-sm border-0 mt-3 bg-white">
+                    <div class="card-header bg-danger text-white">
+                        <strong>Admin Panel</strong>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Current Role:</strong> @(ViewBag.UserRoles != null ? string.Join(", ", ViewBag.UserRoles) : "None")</p>
+                        
+                        <form asp-action="ChangeRole" method="post" class="mt-2">
+                            <input type="hidden" name="userId" value="@Model.Id" />
+                            <div class="input-group">
+                                <select name="newRole" class="form-select">
+                                    @if(ViewBag.AllRoles != null)
+                                    {
+                                        foreach(var role in ViewBag.AllRoles)
+                                        {
+                                            <option value="@role">@role</option>
+                                        }
+                                    }
+                                </select>
+                                <button type="submit" class="btn btn-danger">Update Role</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
         </div>
 
         <!-- Main Content (Diaries) -->
         <div class="col-md-8">
             <h2 class="mb-4" style="font-family: var(--font-display);">
-                @(ViewBag.IsOwner ? "My Lists" : "Public Lists")
+                @(ViewBag.IsOwner ? "My Diaries" : "Public Diaries")
             </h2>
 
             @if (ViewBag.Diaries != null) // Cast to generic list for safety if needed
@@ -74,7 +102,7 @@
                 }
                 else
                 {
-                    <p class="text-muted">No lists found.</p>
+                    <p class="text-muted">No diaries found.</p>
                 }
             }
         </div>

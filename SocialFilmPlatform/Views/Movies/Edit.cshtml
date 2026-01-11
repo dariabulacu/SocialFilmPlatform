@@ -1,6 +1,6 @@
 @model SocialFilmPlatform.Models.Movie
 
-<h2 class="text-center mt-5">Editare film</h2>
+<h2 class="text-center mt-5">Edit Movie</h2>
 
 <br />
 
@@ -12,24 +12,24 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
 
                 <div class="form-group">
-                    <label asp-for="Title" class="form-label">Titlu film</label>
+                    <label asp-for="Title" class="form-label">Movie Title</label>
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                     <br />
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Director" class="form-label">Regizor</label>
+                    <label asp-for="Director" class="form-label">Director</label>
                     <input asp-for="Director" class="form-control" />
                     <span asp-validation-for="Director" class="text-danger"></span>
                     <br />
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Description" class="form-label">Descriere film</label>
+                    <label asp-for="Description" class="form-label">Movie Description</label>
                     <input type="hidden" asp-for="Description" />
                     <div id="descriptionEditor" style="height: 200px; background: white;"></div>
-                    <small class="text-muted">Folosește bara de instrumente pentru a formata textul</small>
+                    <small class="text-muted">Use the toolbar to format text</small>
                     <span asp-validation-for="Description" class="text-danger"></span>
                     <br />
                 </div>
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="ReleaseDate" class="form-label">Data lansării</label>
+                    <label asp-for="ReleaseDate" class="form-label">Release Date</label>
                     <input asp-for="ReleaseDate" type="date" class="form-control" />
                     <span asp-validation-for="ReleaseDate" class="text-danger"></span>
                     <br />
@@ -56,13 +56,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Schimbă Imaginea (Poster/Backdrop)</label>
+                    <label class="form-label">Change Image (Poster/Backdrop)</label>
                     <input type="file" name="Image" class="form-control" accept="image/*" />
                     <span asp-validation-for="ImageUrl" class="text-danger"></span>
                     @if (!string.IsNullOrEmpty(Model.ImageUrl))
                     {
                         <div class="mt-2">
-                           <small>Imagine curentă:</small>
+                           <small>Current Image:</small>
                            <img src="@Model.ImageUrl" style="height: 50px;" class="rounded ms-2"/>
                         </div>
                     }
@@ -70,15 +70,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="GenreId" class="form-label">Selectează genul</label>
+                    <label asp-for="GenreId" class="form-label">Select Genre</label>
                     <select asp-for="GenreId" asp-items="ViewBag.Genres" class="form-control">
-                        <option value="">Selectează genul</option>
+                        <option value="">Select Genre</option>
                     </select>
                     <span asp-validation-for="GenreId" class="text-danger"></span>
                     <br />
                 </div>
 
-                <button class="btn btn-sm btn-success" type="submit">Modifică film</button>
+                <button class="btn btn-sm btn-success" type="submit">Update Movie</button>
             </form>
         </div>
     </div>
@@ -92,10 +92,10 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     
     <script>
-        // Inițializează editorul Quill pentru descriere
+
         var quillDescription = new Quill('#descriptionEditor', {
             theme: 'snow',
-            placeholder: 'Scrie descrierea filmului aici...',
+            placeholder: 'Write movie description here...',
             modules: {
                 toolbar: [
                     [{ 'header': [1, 2, 3, false] }],
@@ -128,7 +128,7 @@
             
             if (textContent.length === 0) {
                 e.preventDefault();
-                alert('Te rog să adaugi o descriere pentru film.');
+                alert('Please add a description for the movie.');
                 return false;
             }
             

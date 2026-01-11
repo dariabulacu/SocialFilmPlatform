@@ -98,6 +98,21 @@ namespace SocialFilmPlatform.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "First Name is required.")]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "First Name must be between 2 and 50 characters.")]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required(ErrorMessage = "Last Name is required.")]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "Last Name must be between 2 and 50 characters.")]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required(ErrorMessage = "About Me is required.")]
+            [StringLength(500, MinimumLength = 10, ErrorMessage = "About Me must be at least 10 characters long.")]
+            [Display(Name = "About Me")]
+            public string Description { get; set; }
         }
 
 
@@ -114,6 +129,12 @@ namespace SocialFilmPlatform.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.Description = Input.Description;
+                user.ProfilePictureUrl = "/images/default-profile.png"; // Set default avatar
+                user.EmailConfirmed = true; // Auto-confirm for ease of testing user logic
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

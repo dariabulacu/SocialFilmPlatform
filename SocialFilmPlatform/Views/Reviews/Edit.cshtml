@@ -1,24 +1,24 @@
 ﻿@model SocialFilmPlatform.Models.Review
 
 <div class="container py-4">
-    <h2>Editare recenzie</h2>
+    <h2>Edit Review</h2>
     <br />
 
     <form asp-action="Edit" asp-controller="Reviews" asp-route-id="@Model.Id" method="post" id="editReviewForm">
         <input type="hidden" asp-for="Content" id="reviewContent" />
         
         <div class="form-group">
-            <label class="form-label">Conținut recenzie</label>
+            <label class="form-label">Review Content</label>
             <br />
             <div id="editor" style="height: 300px; background: white;"></div>
-            <small class="text-muted">Folosește bara de instrumente pentru a formata textul</small>
+            <small class="text-muted">Use the toolbar to format text</small>
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
 
         <br /><br />
 
-        <button class="btn btn-primary" type="submit">Editează recenzia</button>
-        <a asp-controller="Movies" asp-action="Index" class="btn btn-secondary">Anulează</a>
+        <button class="btn btn-primary" type="submit">Edit Review</button>
+        <a asp-controller="Movies" asp-action="Index" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 
@@ -30,10 +30,10 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     
     <script>
-        // Inițializează editorul Quill
+
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Scrie recenzia ta aici...',
+            placeholder: 'Write your review here...',
             modules: {
                 toolbar: [
                     [{ 'header': [1, 2, 3, false] }],
@@ -46,18 +46,18 @@
             }
         });
 
-        // Încarcă conținutul existent în editor
+
         var existingContent = @Html.Raw(Json.Serialize(Model.Content ?? ""));
         quill.root.innerHTML = existingContent;
 
-        // La submit, salvează conținutul HTML în câmpul ascuns
+
         document.getElementById('editReviewForm').addEventListener('submit', function(e) {
             var content = quill.root.innerHTML;
             
-            // Verifică dacă editorul este gol
+
             if (quill.getText().trim().length === 0) {
                 e.preventDefault();
-                alert('Te rog să scrii o recenzie înainte de a trimite.');
+                alert('Please write a review before submitting.');
                 return false;
             }
             

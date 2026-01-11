@@ -23,7 +23,7 @@ namespace SocialFilmPlatform.Controllers
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
         private readonly IWebHostEnvironment _env = env;
 
-        // [Authorize(Roles = "User,Editor,Admin")] // Public access
+
         public IActionResult Index()
         {
             var search = "";
@@ -34,6 +34,7 @@ namespace SocialFilmPlatform.Controllers
 
             var actorsQuery = db.Actors
                 .Include(a => a.ActorMovies).ThenInclude(am => am.Movie)
+                .OrderBy(a => a.Name)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(search))
@@ -48,7 +49,7 @@ namespace SocialFilmPlatform.Controllers
 
             ViewBag.SearchString = search;
 
-            int _perPage = 3;
+            int _perPage = 8;
             int totalItems = actorsQuery.Count();
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
             var offset = 0;
@@ -75,7 +76,7 @@ namespace SocialFilmPlatform.Controllers
                 ViewBag.Alert = TempData["messageType"];
             }
 
-            // Set access rights for buttons in view
+
             SetAccessRights();
             
             return View();
@@ -93,12 +94,12 @@ namespace SocialFilmPlatform.Controllers
                 return NotFound();
             }
 
-            // Get movies not already associated with this actor
+
             var existingMovieIds = actor.ActorMovies.Select(am => am.MovieId).ToList();
             var availableMovies = db.Movies
                 .Where(m => !existingMovieIds.Contains(m.Id))
                 .OrderBy(m => m.Title)
-                .Select(m => new { m.Id, m.Title }) // Projection for efficiency
+
                 .ToList();
 
             ViewBag.AllMovies = new SelectList(availableMovies, "Id", "Title");

@@ -9,11 +9,16 @@ using SocialFilmPlatform.Data;
 
 #nullable disable
 
-namespace SocialFilmPlatform.Data.Migrations
+namespace SocialFilmPlatform.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:SocialFilmPlatform/Data/Migrations/20260106192811_FixActorMovieSchema.Designer.cs
     [Migration("20260106192811_FixActorMovieSchema")]
     partial class FixActorMovieSchema
+========
+    [Migration("20260111145007_InitialCreate")]
+    partial class InitialCreate
+>>>>>>>> 8e694cf51e63050ebba5ad5c3fd010517ed1ebf6:SocialFilmPlatform/Migrations/20260111145007_InitialCreate.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +30,39 @@ namespace SocialFilmPlatform.Data.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+<<<<<<<< HEAD:SocialFilmPlatform/Data/Migrations/20260106192811_FixActorMovieSchema.Designer.cs
+========
+            modelBuilder.Entity("CategoryDiary", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiariesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoriesId", "DiariesId");
+
+                    b.HasIndex("DiariesId");
+
+                    b.ToTable("CategoryDiary");
+                });
+
+            modelBuilder.Entity("DiaryTag", b =>
+                {
+                    b.Property<int>("DiariesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DiariesId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("DiaryTag");
+                });
+
+>>>>>>>> 8e694cf51e63050ebba5ad5c3fd010517ed1ebf6:SocialFilmPlatform/Migrations/20260111145007_InitialCreate.Designer.cs
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -178,7 +216,8 @@ namespace SocialFilmPlatform.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("PhotoUrl")
                         .HasColumnType("longtext");
@@ -229,7 +268,8 @@ namespace SocialFilmPlatform.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -239,10 +279,12 @@ namespace SocialFilmPlatform.Data.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -292,6 +334,30 @@ namespace SocialFilmPlatform.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+<<<<<<<< HEAD:SocialFilmPlatform/Data/Migrations/20260106192811_FixActorMovieSchema.Designer.cs
+========
+            modelBuilder.Entity("SocialFilmPlatform.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+>>>>>>>> 8e694cf51e63050ebba5ad5c3fd010517ed1ebf6:SocialFilmPlatform/Migrations/20260111145007_InitialCreate.Designer.cs
             modelBuilder.Entity("SocialFilmPlatform.Models.Diary", b =>
                 {
                     b.Property<int>("Id")
@@ -307,14 +373,16 @@ namespace SocialFilmPlatform.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
@@ -364,7 +432,8 @@ namespace SocialFilmPlatform.Data.Migrations
 
                     b.Property<string>("GenreName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -381,13 +450,15 @@ namespace SocialFilmPlatform.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(5000)
+                        .HasColumnType("varchar(5000)");
 
                     b.Property<string>("Director")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<int?>("GenreId")
+                    b.Property<int>("GenreId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
@@ -401,7 +472,8 @@ namespace SocialFilmPlatform.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("TrailerUrl")
                         .HasColumnType("longtext");
@@ -458,7 +530,8 @@ namespace SocialFilmPlatform.Data.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
 
                     b.Property<DateTime>("DatePosted")
                         .HasColumnType("datetime(6)");
@@ -506,6 +579,60 @@ namespace SocialFilmPlatform.Data.Migrations
                     b.ToTable("ReviewVotes");
                 });
 
+<<<<<<<< HEAD:SocialFilmPlatform/Data/Migrations/20260106192811_FixActorMovieSchema.Designer.cs
+========
+            modelBuilder.Entity("SocialFilmPlatform.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("CategoryDiary", b =>
+                {
+                    b.HasOne("SocialFilmPlatform.Models.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialFilmPlatform.Models.Diary", null)
+                        .WithMany()
+                        .HasForeignKey("DiariesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiaryTag", b =>
+                {
+                    b.HasOne("SocialFilmPlatform.Models.Diary", null)
+                        .WithMany()
+                        .HasForeignKey("DiariesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialFilmPlatform.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+>>>>>>>> 8e694cf51e63050ebba5ad5c3fd010517ed1ebf6:SocialFilmPlatform/Migrations/20260111145007_InitialCreate.Designer.cs
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -611,7 +738,9 @@ namespace SocialFilmPlatform.Data.Migrations
                 {
                     b.HasOne("SocialFilmPlatform.Models.Genre", "Genre")
                         .WithMany("Movies")
-                        .HasForeignKey("GenreId");
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SocialFilmPlatform.Models.ApplicationUser", "User")
                         .WithMany("Movies")

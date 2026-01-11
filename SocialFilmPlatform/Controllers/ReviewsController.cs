@@ -52,7 +52,7 @@ namespace SocialFilmPlatform.Controllers
             var existingReview = db.Reviews.FirstOrDefault(r => r.MovieId == rev.MovieId && r.UserId == rev.UserId);
             if (existingReview != null)
             {
-                TempData["message"] = "Ai lăsat deja o recenzie pentru acest film. O poți edita pe cea existentă.";
+                TempData["message"] = "You have already left a review for this movie. You can edit the existing one.";
                 TempData["messageType"] = "alert-warning";
                  return RedirectToAction("Show", "Movies", new { id = rev.MovieId });
             }
@@ -61,7 +61,7 @@ namespace SocialFilmPlatform.Controllers
             {
                 db.Reviews.Add(rev);    
                 db.SaveChanges();
-                TempData["message"] = "Recenzia a fost adăugată!";
+                TempData["message"] = "Review added!";
                 TempData["messageType"] = "success";
                 return RedirectToAction("Show", "Movies", new { id = rev.MovieId });
             }
@@ -86,7 +86,7 @@ namespace SocialFilmPlatform.Controllers
             var currentUserId = _userManager.GetUserId(User);
             if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
-                TempData["message"] = "Nu aveți dreptul să ștergeți această recenzie.";
+                TempData["message"] = "You do not have permission to delete this review.";
                 TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Show", "Movies", new { id = rev.MovieId });
             }
@@ -95,7 +95,7 @@ namespace SocialFilmPlatform.Controllers
             db.Reviews.Remove(rev);
             db.SaveChanges();
             
-            TempData["message"] = "Recenzia a fost ștearsă.";
+            TempData["message"] = "Review deleted.";
             TempData["messageType"] = "alert-success";
             return RedirectToAction("Show", "Movies", new { id = movieId });
         }
@@ -116,7 +116,7 @@ namespace SocialFilmPlatform.Controllers
             var currentUserId = _userManager.GetUserId(User);
             if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
-                TempData["message"] = "Nu aveți dreptul să editați această recenzie.";
+                TempData["message"] = "You do not have permission to edit this review.";
                 TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Show", "Movies", new { id = rev.MovieId });
             }
@@ -139,7 +139,7 @@ namespace SocialFilmPlatform.Controllers
             var currentUserId = _userManager.GetUserId(User);
             if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
-                TempData["message"] = "Nu aveți dreptul să editați această recenzie.";
+                TempData["message"] = "You do not have permission to edit this review.";
                 TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Show", "Movies", new { id = rev.MovieId });
             }
@@ -149,7 +149,7 @@ namespace SocialFilmPlatform.Controllers
                 rev.Content = requestRev.Content;
                 db.SaveChanges();
                 
-                TempData["message"] = "Recenzia a fost actualizată.";
+                TempData["message"] = "Review updated.";
                 TempData["messageType"] = "alert-success";
                 return RedirectToAction("Show", "Movies", new { id = rev.MovieId });
             }
@@ -169,19 +169,19 @@ namespace SocialFilmPlatform.Controllers
             {
                 if (existingVote.IsLike == isLike)
                 {
-                    // Toggle off if clicking the same vote again
+
                     db.ReviewVotes.Remove(existingVote);
                 }
                 else
                 {
-                    // Change vote type
+
                     existingVote.IsLike = isLike;
                     db.ReviewVotes.Update(existingVote);
                 }
             }
             else
             {
-                // New vote
+
                 var vote = new ReviewVote
                 {
                     ReviewId = reviewId,
@@ -196,7 +196,7 @@ namespace SocialFilmPlatform.Controllers
             var likesCount = db.ReviewVotes.Count(v => v.ReviewId == reviewId && v.IsLike);
             var dislikesCount = db.ReviewVotes.Count(v => v.ReviewId == reviewId && !v.IsLike);
             
-            // Re-fetch vote status for frontend update
+
             var currentVote = db.ReviewVotes.FirstOrDefault(v => v.ReviewId == reviewId && v.UserId == userId);
             var status = currentVote == null ? "none" : (currentVote.IsLike ? "like" : "dislike");
 
