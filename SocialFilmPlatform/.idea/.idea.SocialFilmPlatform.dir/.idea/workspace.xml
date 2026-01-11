@@ -8,31 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment=".">
-      <change beforePath="$PROJECT_DIR$/Areas/Identity/Pages/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Areas/Identity/Pages/Account/Register.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/GenresController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/GenresController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/MoviesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MoviesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/ReviewsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ReviewsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Actor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Actor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/ApplicationUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/ApplicationUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Category.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Category.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Diary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Diary.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Genre.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Genre.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Movie.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Movie.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Review.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Review.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Tag.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Tag.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Actors/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/Edit.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Actors/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/New.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Diaries/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/Edit.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Home/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Movies/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/Edit.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Movies/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/New.cshtml" afterDir="false" />
+    <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Controllers/ProfilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ProfilesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/Profiles/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Profiles/Show.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Reviews/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Reviews/Edit.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Shared/MovieInfo.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/MovieInfo.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Shared/_ReviewItem.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_ReviewItem.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.Development.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +122,7 @@
       <workItem from="1765838952670" duration="169000" />
       <workItem from="1765840745235" duration="670000" />
       <workItem from="1765841434098" duration="582000" />
-      <workItem from="1768135507372" duration="2240000" />
+      <workItem from="1768135507372" duration="3215000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -185,7 +164,23 @@
       <option name="project" value="LOCAL" />
       <updated>1767660677508</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added required validations for forms and models&#10;&#10;Changed language inconsistencies &#10;&#10;UI tweaks">
+      <option name="closed" value="true" />
+      <created>1768137855638</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1768137855638</updated>
+    </task>
+    <task id="LOCAL-00007" summary=".">
+      <option name="closed" value="true" />
+      <created>1768137875509</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1768137875509</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +194,7 @@
     <MESSAGE value="Partial View" />
     <MESSAGE value="Add controllers for Actors, Diaries, and M:M relationships" />
     <MESSAGE value="Frontend for Actors" />
+    <MESSAGE value="Added required validations for forms and models&#10;&#10;Changed language inconsistencies &#10;&#10;UI tweaks" />
     <MESSAGE value="." />
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
