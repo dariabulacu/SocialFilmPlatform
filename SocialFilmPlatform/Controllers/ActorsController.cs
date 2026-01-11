@@ -82,7 +82,6 @@ namespace SocialFilmPlatform.Controllers
             return View();
         }
 
-        // [Authorize(Roles = "User,Editor,Admin")] // Public access
         public IActionResult Show(int id)
         {
             var actor = db.Actors

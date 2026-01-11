@@ -41,7 +41,6 @@ namespace SocialFilmPlatform.Data
                 .WithMany(d => d.MovieDiaries)
                 .HasForeignKey(md => md.DiaryId);
             
-            //m:m movie and actor
             modelBuilder.Entity<ActorMovie>()
                 .HasKey(md => md.Id);
 
@@ -55,12 +54,10 @@ namespace SocialFilmPlatform.Data
                 .WithMany(d => d.ActorMovies)
                 .HasForeignKey(md => md.ActorId);
 
-            // Constraint unic: un user poate vota un singur review o singura data
             modelBuilder.Entity<ReviewVote>()
                 .HasIndex(rv => new { rv.ReviewId, rv.UserId })
                 .IsUnique();
             
-            // Constraint unic: un user poate vota un singur diary o singura data
             modelBuilder.Entity<DiaryVote>()
                 .HasIndex(dv => new { dv.DiaryId, dv.UserId })
                 .IsUnique();

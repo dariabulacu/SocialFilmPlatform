@@ -92,9 +92,8 @@ namespace SocialFilmPlatform.Controllers
 
 
             movieDiary.DiaryTime = DateTime.Now;
-            if (string.IsNullOrEmpty(movieDiary.Name)) movieDiary.Name = "Entry"; // dummy value to satisfy required if any
+            if (string.IsNullOrEmpty(movieDiary.Name)) movieDiary.Name = "Entry";
 
-            // Clear validation errors for fields we just set or don't care about
             ModelState.Remove(nameof(movieDiary.DiaryTime));
             ModelState.Remove(nameof(movieDiary.Name));
             ModelState.Remove(nameof(movieDiary.Movie));
@@ -120,7 +119,6 @@ namespace SocialFilmPlatform.Controllers
 
             if (!string.IsNullOrEmpty(returnUrl))
             {
-                 // Debug: what failed?
                  var errors = string.Join("; ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
                  TempData["message"] = "Failed to add movie. " + errors; 
                  TempData["messageType"] = "alert-danger";

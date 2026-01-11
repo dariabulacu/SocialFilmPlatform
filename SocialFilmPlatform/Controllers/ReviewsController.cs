@@ -44,11 +44,9 @@ namespace SocialFilmPlatform.Controllers
         [Authorize]
         public IActionResult New(Review rev)
         {
-            // Setează UserId din user-ul curent logat
             rev.UserId = _userManager.GetUserId(User);
             rev.DatePosted = DateTime.Now;
             
-            // Regula: Un user nu poate lasa mai multe recenzii la acelasi film
             var existingReview = db.Reviews.FirstOrDefault(r => r.MovieId == rev.MovieId && r.UserId == rev.UserId);
             if (existingReview != null)
             {
@@ -82,7 +80,6 @@ namespace SocialFilmPlatform.Controllers
                 return NotFound();
             }
 
-            // Verifică dacă user-ul curent este proprietarul review-ului SAU Admin/Editor
             var currentUserId = _userManager.GetUserId(User);
             if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
@@ -110,9 +107,6 @@ namespace SocialFilmPlatform.Controllers
                 return NotFound();
             }
 
-            // Verifică dacă user-ul curent este proprietarul review-ului SAU Admin
-            // Adminii/Editorii pot edita recenzii? De obicei moderatorii sterg, nu editeaza textul userului. 
-            // Dar pentru consistenta, permitem Admin/Editor sa modifice daca e nevoie (cenzura partiala).
             var currentUserId = _userManager.GetUserId(User);
             if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
@@ -135,7 +129,6 @@ namespace SocialFilmPlatform.Controllers
                 return NotFound();
             }
 
-            // Verifică dacă user-ul curent este proprietarul review-ului
             var currentUserId = _userManager.GetUserId(User);
             if (rev.UserId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Editor"))
             {
@@ -169,19 +162,16 @@ namespace SocialFilmPlatform.Controllers
             {
                 if (existingVote.IsLike == isLike)
                 {
-
                     db.ReviewVotes.Remove(existingVote);
                 }
                 else
                 {
-
                     existingVote.IsLike = isLike;
                     db.ReviewVotes.Update(existingVote);
                 }
             }
             else
             {
-
                 var vote = new ReviewVote
                 {
                     ReviewId = reviewId,

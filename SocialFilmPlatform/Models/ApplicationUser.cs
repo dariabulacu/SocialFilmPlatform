@@ -18,14 +18,10 @@ namespace SocialFilmPlatform.Models
         [StringLength(1000, ErrorMessage = "Description cannot exceed 1000 characters")]
         public string? Description { get; set; }
 
-        //un user poate sa lase un singur review per film, dar le poate edita sau sterge
-        //de asemenea poate sa dea like la review-ul altui user 
         public virtual ICollection<Review> Reviews { get; set; } = [];
 
-        //un user poate posta mai multe filme (doar adminii)
         public virtual ICollection<Movie> Movies { get; set; } = [];
 
-        //un user poate sa creeze mai multe liste cu filme whatever 
         public virtual ICollection<Diary> Diaries { get; set; } = [];
 
         [NotMapped]
