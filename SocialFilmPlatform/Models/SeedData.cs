@@ -170,7 +170,7 @@ namespace SocialFilmPlatform.Models
                             Description = "An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into much more.",
                             Score = 8.7f,
                             ReleaseDate = new DateTime(1999, 10, 15),
-                            GenreId = GetGenreId("Thriller"),
+                            GenreId = GetGenreId("Action"),
                             UserId = EDITOR_ID,
                             TrailerUrl = "https://www.youtube.com/watch?v=SUXWAEX2jlg",
                             ImageUrl = "/images/movies/fightclub_1280.jpg"
