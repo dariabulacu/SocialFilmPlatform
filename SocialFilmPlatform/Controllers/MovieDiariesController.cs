@@ -61,7 +61,7 @@ namespace SocialFilmPlatform.Controllers
             var diary = db.Diaries.Find(movieDiary.DiaryId);
             var currentUserId = _userManager.GetUserId(User);
 
-            // Validation: Does diary exist? Is it mine?
+
             if (diary == null || (diary.UserId != currentUserId && !User.IsInRole("Admin")))
             {
                 if (!string.IsNullOrEmpty(returnUrl))
@@ -75,7 +75,7 @@ namespace SocialFilmPlatform.Controllers
                 return RedirectToAction("Index", "Diaries");
             }
 
-            // Check duplicate
+
             var existing = db.MovieDiaries.FirstOrDefault(md => md.DiaryId == movieDiary.DiaryId && md.MovieId == movieDiary.MovieId);
             if (existing != null)
             {
@@ -90,7 +90,7 @@ namespace SocialFilmPlatform.Controllers
                  return RedirectToAction("Show", "Diaries", new { id = diary.Id });
             }
 
-            // Manually populate fields that might be causing validation errors
+
             movieDiary.DiaryTime = DateTime.Now;
             if (string.IsNullOrEmpty(movieDiary.Name)) movieDiary.Name = "Entry"; // dummy value to satisfy required if any
 
@@ -117,7 +117,7 @@ namespace SocialFilmPlatform.Controllers
                 return RedirectToAction("Show", "Diaries", new { id = diary.Id });
             }
             
-            // If invalid and returnUrl exists, we should probably still go back
+
             if (!string.IsNullOrEmpty(returnUrl))
             {
                  // Debug: what failed?

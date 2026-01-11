@@ -16,7 +16,7 @@ namespace SocialFilmPlatform.Models
 
         public DateTime DatePosted { get; set; }
         
-        //fk to movie
+
         public int? MovieId { get; set; }
         //proprietatea de navigare
 

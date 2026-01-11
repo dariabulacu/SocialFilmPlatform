@@ -26,7 +26,7 @@ namespace SocialFilmPlatform.Controllers
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
         private readonly IWebHostEnvironment _env = env;
 
-        // [Authorize(Roles = "User,Editor,Admin")] // Allow everyone to view
+
         public IActionResult Index()
         {
             var movies = db.Movies
@@ -56,13 +56,13 @@ namespace SocialFilmPlatform.Controllers
                 );
             }
             
-            // Sorting Logic
+
             var sortOrder = HttpContext.Request.Query["sort"].ToString();
-            if (string.IsNullOrEmpty(sortOrder)) sortOrder = "recent"; // Default
+            if (string.IsNullOrEmpty(sortOrder)) sortOrder = "recent";
 
             if (sortOrder == "popular")
             {
-                // Proxy for popularity: Number of Reviews + Score
+
                 movies = movies.OrderByDescending(m => m.Reviews.Count)
                                .ThenByDescending(m => m.Score)
                                .ThenByDescending(m => m.Id);
@@ -76,7 +76,7 @@ namespace SocialFilmPlatform.Controllers
             ViewBag.SearchString = search;
             ViewBag.SortOrder = sortOrder;
 
-            int _perPage = 6; // Increased slightly for better grid view
+            int _perPage = 6;
             int totalItems = movies.Count();
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
             var offset = 0;
@@ -88,7 +88,7 @@ namespace SocialFilmPlatform.Controllers
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
             ViewBag.Movies = paginatedMovies;
             
-            // Generate Pagination Base URL
+
             var baseUrl = "/Movies/Index?";
             if (!string.IsNullOrEmpty(search)) baseUrl += $"search={search}&";
             if (!string.IsNullOrEmpty(sortOrder)) baseUrl += $"sort={sortOrder}&";

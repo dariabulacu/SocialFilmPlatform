@@ -88,7 +88,7 @@
     
     
     <script>
-        // Init Quill editor for description
+
         var quillDescription = new Quill('#descriptionEditor', {
             theme: 'snow',
             placeholder: 'Write movie description here... Use the toolbar for formatting.',
@@ -104,14 +104,14 @@
             }
         });
 
-        // Update hidden field on change
+
         quillDescription.on('text-change', function() {
             var content = quillDescription.root.innerHTML;
             document.getElementById('Description').value = content;
             console.log('Description updated:', content.substring(0, 100));
         });
 
-        // On submit, save contents to hidden field
+
         document.querySelector('form').addEventListener('submit', function(e) {
             var content = quillDescription.root.innerHTML;
             var textContent = quillDescription.getText().trim();
@@ -120,14 +120,14 @@
             console.log('Content length:', content.length);
             console.log('Text content:', textContent);
             
-            // Check if empty
+
             if (textContent.length === 0) {
                 e.preventDefault();
                 alert('Please add a description for the movie.');
                 return false;
             }
             
-            // Set value
+
             document.getElementById('Description').value = content;
             console.log('Final description value set');
         });

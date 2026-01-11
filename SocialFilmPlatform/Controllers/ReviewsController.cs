@@ -169,19 +169,19 @@ namespace SocialFilmPlatform.Controllers
             {
                 if (existingVote.IsLike == isLike)
                 {
-                    // Toggle off if clicking the same vote again
+
                     db.ReviewVotes.Remove(existingVote);
                 }
                 else
                 {
-                    // Change vote type
+
                     existingVote.IsLike = isLike;
                     db.ReviewVotes.Update(existingVote);
                 }
             }
             else
             {
-                // New vote
+
                 var vote = new ReviewVote
                 {
                     ReviewId = reviewId,
@@ -196,7 +196,7 @@ namespace SocialFilmPlatform.Controllers
             var likesCount = db.ReviewVotes.Count(v => v.ReviewId == reviewId && v.IsLike);
             var dislikesCount = db.ReviewVotes.Count(v => v.ReviewId == reviewId && !v.IsLike);
             
-            // Re-fetch vote status for frontend update
+
             var currentVote = db.ReviewVotes.FirstOrDefault(v => v.ReviewId == reviewId && v.UserId == userId);
             var status = currentVote == null ? "none" : (currentVote.IsLike ? "like" : "dislike");
 
