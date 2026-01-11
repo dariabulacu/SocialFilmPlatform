@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "My Lists";
+    ViewData["Title"] = "My Diaries";
 }
 
 <style>
@@ -17,9 +17,9 @@
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom border-dark">
-        <h2 style="font-family: 'Cinzel', serif;">My Lists</h2>
+        <h2 style="font-family: 'Cinzel', serif;">My Diaries</h2>
         <a asp-action="New" class="btn btn-dark rounded-0 text-uppercase" style="font-family: 'Cinzel', serif; letter-spacing: 1px;">
-            <i class="bi bi-plus-lg"></i> New List
+            <i class="bi bi-plus-lg"></i> New Diary
         </a>
     </div>
 
@@ -82,7 +82,7 @@
                                 <a asp-action="Edit" asp-route-id="@diary.Id" class="btn btn-sm btn-outline-dark rounded-0 me-1">Edit</a>
                                 <form asp-action="Delete" asp-route-id="@diary.Id" method="post" class="d-inline">
                                     <button type="submit" class="btn btn-sm btn-danger rounded-0" 
-                                            onclick="return confirm('Are you sure you want to delete this list?');">
+                                            onclick="return confirm('Are you sure you want to delete this diary?');">
                                         Delete
                                     </button>
                                 </form>
@@ -96,8 +96,8 @@
     else
     {
         <div class="text-center py-5 text-muted">
-            <p class="fs-5">You haven't created any lists yet.</p>
-            <a asp-action="New" class="btn btn-outline-dark rounded-0 mt-3">Start your first list</a>
+            <p class="fs-5">You haven't created any diaries yet.</p>
+            <a asp-action="New" class="btn btn-outline-dark rounded-0 mt-3">Start your first diary</a>
         </div>
     }
 </div>

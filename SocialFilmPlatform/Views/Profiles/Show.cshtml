@@ -64,7 +64,7 @@
         <!-- Main Content (Diaries) -->
         <div class="col-md-8">
             <h2 class="mb-4" style="font-family: var(--font-display);">
-                @(ViewBag.IsOwner ? "My Lists" : "Public Lists")
+                @(ViewBag.IsOwner ? "My Diaries" : "Public Diaries")
             </h2>
 
             @if (ViewBag.Diaries != null) // Cast to generic list for safety if needed
@@ -102,7 +102,7 @@
                 }
                 else
                 {
-                    <p class="text-muted">No lists found.</p>
+                    <p class="text-muted">No diaries found.</p>
                 }
             }
         </div>

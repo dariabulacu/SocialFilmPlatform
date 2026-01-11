@@ -1,6 +1,6 @@
 @model IEnumerable<SocialFilmPlatform.Models.Diary>
 @{
-    ViewData["Title"] = "Public Lists";
+    ViewData["Title"] = "Public Diaries";
 }
 
 <style>
@@ -128,7 +128,7 @@
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-end mb-5 border-bottom border-dark pb-3">
-        <h2 class="mb-0">Member Lists</h2>
+        <h2 class="mb-0">Member Diaries</h2>
         
         <div class="dropdown">
             <button class="btn btn-outline-dark rounded-0 dropdown-toggle text-uppercase" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-family: var(--font-display); letter-spacing: 1px;">
@@ -157,7 +157,7 @@
             <form method="GET" class="search-vintage">
                 <input type="hidden" name="sort" value="@ViewBag.SortOrder" />
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search lists..." name="search"
+                    <input type="text" class="form-control" placeholder="Search diaries..." name="search"
                            value="@ViewBag.SearchString">
                     <button class="btn btn-action" type="submit">SEARCH</button>
                 </div>

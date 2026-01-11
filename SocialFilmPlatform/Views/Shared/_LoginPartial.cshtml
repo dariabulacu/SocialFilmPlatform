@@ -12,7 +12,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" asp-area="" asp-controller="Profiles" asp-action="Show" asp-route-userId="">My Profile</a></li>
-            <li><a class="dropdown-item" asp-area="" asp-controller="Diaries" asp-action="MyDiaries">My Lists</a></li>
+            <li><a class="dropdown-item" asp-area="" asp-controller="Diaries" asp-action="MyDiaries">My Diaries</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>
                 <form class="form-line" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
