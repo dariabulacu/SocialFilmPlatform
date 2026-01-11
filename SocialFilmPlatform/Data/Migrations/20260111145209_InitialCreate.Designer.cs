@@ -12,13 +12,8 @@ using SocialFilmPlatform.Data;
 namespace SocialFilmPlatform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:SocialFilmPlatform/Data/Migrations/20260107152107_AddTagsAndCategoriesWithRelations.Designer.cs
-    [Migration("20260107152107_AddTagsAndCategoriesWithRelations")]
-    partial class AddTagsAndCategoriesWithRelations
-========
     [Migration("20260111145209_InitialCreate")]
     partial class InitialCreate
->>>>>>>> 8e694cf51e63050ebba5ad5c3fd010517ed1ebf6:SocialFilmPlatform/Data/Migrations/20260111145209_InitialCreate.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
