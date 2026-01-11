@@ -105,11 +105,12 @@ namespace SocialFilmPlatform.Models
                 if (!context.Actors.Any())
                 {
                      context.Actors.AddRange(
-                        new Actor { Name = "Leonardo DiCaprio", PhotoUrl = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200&h=200", Description = "American actor and film producer. Known for pending implementation." },
-                        new Actor { Name = "Christian Bale", PhotoUrl = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200&h=200", Description = "English actor known for intense method acting roles." },
-                        new Actor { Name = "Timothée Chalamet", PhotoUrl = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200", Description = "American and French actor with various accolades." },
-                        new Actor { Name = "Scarlett Johansson", PhotoUrl = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200&h=200", Description = "American actress and world's highest paid actress 2018." },
-                        new Actor { Name = "Robert Downey Jr.", PhotoUrl = "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80&w=200&h=200", Description = "American actor and producer, known for Iron Man role." }
+                        new Actor { Name = "Leonardo DiCaprio", PhotoUrl = "/images/actors/4bbb9907-1617-451f-81c2-0036395fa8ce.webp", Description = "American actor and film producer. Known for his work in biographical and period films." },
+                        new Actor { Name = "Christian Bale", PhotoUrl = "/images/actors/694f7e2e-e2a7-44a8-acbb-c7f0cd3384fd.png", Description = "English actor known for intense method acting roles." },
+                        new Actor { Name = "Timothée Chalamet", PhotoUrl = "/images/actors/770ca68b-13d5-45bc-8e33-5bef7872b24e.jfif", Description = "American and French actor with various accolades." },
+                        new Actor { Name = "Scarlett Johansson", PhotoUrl = "/images/actors/cca2c747-324e-4b81-8f3a-cfc76b155556.jpg", Description = "American actress and world's highest paid actress 2018." },
+                        new Actor { Name = "Robert Downey Jr.", PhotoUrl = "/images/actors/f196ec54-7198-43bb-876e-416e8f65f1e6.jpg", Description = "American actor and producer, known for Iron Man role." },
+                        new Actor { Name = "Keanu Reeves", PhotoUrl = "/images/actors/f9fda7db-f93e-4f42-97fe-11110565689b.jpg", Description = "Canadian actor known for his roles in The Matrix and John Wick series." }
                     );
                     context.SaveChanges();
                 }
@@ -131,7 +132,7 @@ namespace SocialFilmPlatform.Models
                             GenreId = GetGenreId("Sci-Fi"),
                             UserId = ADMIN_ID,
                             TrailerUrl = "https://www.youtube.com/watch?v=YoHD9XEInc0",
-                            ImageUrl = "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=1000&auto=format&fit=crop"
+                            ImageUrl = "/images/movies/0d5ccde1-1dcf-4a9a-bc7f-131ea9718ed4.jpg"
                         },
                         new Movie
                         {
@@ -143,7 +144,7 @@ namespace SocialFilmPlatform.Models
                             GenreId = GetGenreId("Action"),
                             UserId = EDITOR_ID,
                             TrailerUrl = "https://www.youtube.com/watch?v=EXeTwQWrcwY",
-                            ImageUrl = "https://images.unsplash.com/photo-1509347528160-9a9e33742cd4?q=80&w=1000&auto=format&fit=crop"
+                            ImageUrl = "/images/movies/250197b5-e45d-4870-8ef6-243211e49a29.jpg"
                         },
                         new Movie
                         {
@@ -155,7 +156,7 @@ namespace SocialFilmPlatform.Models
                             GenreId = GetGenreId("Sci-Fi"),
                             UserId = ADMIN_ID,
                             TrailerUrl = "https://www.youtube.com/watch?v=Way9Dexny3w",
-                            ImageUrl = "https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=1000&auto=format&fit=crop"
+                            ImageUrl = "/images/movies/2603c8ea-5aea-49e3-8172-af5207ddd6a1.jpg"
                         },
                         new Movie
                         {
@@ -167,7 +168,7 @@ namespace SocialFilmPlatform.Models
                             GenreId = GetGenreId("Drama"),
                             UserId = EDITOR_ID,
                             TrailerUrl = "https://www.youtube.com/watch?v=s7EdQ4FqbhY",
-                            ImageUrl = "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=1000&auto=format&fit=crop"
+                            ImageUrl = "/images/movies/509e04bb-1afb-40b8-8ea7-6552916ed727.jpg"
                         },
                         new Movie
                         {
@@ -179,7 +180,55 @@ namespace SocialFilmPlatform.Models
                             GenreId = GetGenreId("Comedy"),
                             UserId = ADMIN_ID,
                             TrailerUrl = "https://www.youtube.com/watch?v=1Fg5iHt5p60",
-                            ImageUrl = "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?q=80&w=1000&auto=format&fit=crop"
+                            ImageUrl = "/images/movies/8248f663-4cc1-4dac-a6b4-172d7d5349f0.jpg"
+                        },
+                        new Movie
+                        {
+                            Title = "Interstellar",
+                            Director = "Christopher Nolan",
+                            Description = "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+                            Score = 9.3f,
+                            ReleaseDate = new DateTime(2014, 11, 7),
+                            GenreId = GetGenreId("Sci-Fi"),
+                            UserId = ADMIN_ID,
+                            TrailerUrl = "https://www.youtube.com/watch?v=zSWdZVtXT7E",
+                            ImageUrl = "/images/movies/8b3e8e99-df2f-4a63-8978-9c415c77944c.webp"
+                        },
+                        new Movie
+                        {
+                            Title = "The Shawshank Redemption",
+                            Director = "Frank Darabont",
+                            Description = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+                            Score = 9.9f,
+                            ReleaseDate = new DateTime(1994, 9, 23),
+                            GenreId = GetGenreId("Drama"),
+                            UserId = EDITOR_ID,
+                            TrailerUrl = "https://www.youtube.com/watch?v=6hB3S9bIaco",
+                            ImageUrl = "/images/movies/d312d0bb-99d1-4963-9cd4-9e9c5d8f0761.webp"
+                        },
+                        new Movie
+                        {
+                            Title = "The Matrix",
+                            Director = "The Wachowskis",
+                            Description = "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+                            Score = 9.1f,
+                            ReleaseDate = new DateTime(1999, 3, 31),
+                            GenreId = GetGenreId("Sci-Fi"),
+                            UserId = ADMIN_ID,
+                            TrailerUrl = "https://www.youtube.com/watch?v=m8e-FF8MsqU",
+                            ImageUrl = "/images/movies/d3b94526-ff3d-4558-8001-167b310d6558.jpg"
+                        },
+                        new Movie
+                        {
+                            Title = "Fight Club",
+                            Director = "David Fincher",
+                            Description = "An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into much more.",
+                            Score = 8.7f,
+                            ReleaseDate = new DateTime(1999, 10, 15),
+                            GenreId = GetGenreId("Thriller"),
+                            UserId = EDITOR_ID,
+                            TrailerUrl = "https://www.youtube.com/watch?v=SUXWAEX2jlg",
+                            ImageUrl = "/images/movies/da533cb7-e6d9-42cd-b33e-ed7bb17258a5.jpg"
                         }
                     );
                     context.SaveChanges();
