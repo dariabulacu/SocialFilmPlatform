@@ -12,7 +12,7 @@ using SocialFilmPlatform.Data;
 namespace SocialFilmPlatform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260111145209_InitialCreate")]
+    [Migration("20260111160824_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
