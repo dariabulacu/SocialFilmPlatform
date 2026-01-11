@@ -9,31 +9,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment=".">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SocialFilmPlatform.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/DiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/DiariesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MovieDiariesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215130611_InitialCreate.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215143136_CreateDB.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20251215182055_UpdateReviewDatePosted.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105210001_AddReviewVotes.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105210001_AddReviewVotes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105221237_AddImageFields.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260105221237_AddImageFields.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106170645_MergedColleagueChanges.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106170645_MergedColleagueChanges.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106180406_AddDescriptionToUser.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260106180406_AddDescriptionToUser.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/MovieDiary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/MovieDiary.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/Diaries/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/Show.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/MovieDiaries/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MovieDiaries/New.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Areas/Identity/Pages/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Areas/Identity/Pages/Account/Register.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/GenresController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/GenresController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/MoviesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MoviesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/ReviewsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ReviewsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Actor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Actor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/ApplicationUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/ApplicationUser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Category.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Category.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Diary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Diary.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Genre.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Genre.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Movie.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Movie.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Review.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Review.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Tag.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Tag.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Actors/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/Edit.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Actors/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/New.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Diaries/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/Edit.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Movies/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/Edit.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Movies/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/New.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Profiles/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Profiles/Show.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Reviews/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Reviews/Edit.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Shared/MovieInfo.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/MovieInfo.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Shared/_ReviewItem.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_ReviewItem.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appsettings.Development.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +45,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="gabi1-branch" />
+        <entry key="$PROJECT_DIR$/.." value="gabi2-branch" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -86,7 +85,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "gabi2-branch",
+    "git-widget-placeholder": "gabi-branch1",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -144,6 +143,7 @@
       <workItem from="1765838952670" duration="169000" />
       <workItem from="1765840745235" duration="670000" />
       <workItem from="1765841434098" duration="582000" />
+      <workItem from="1768135507372" duration="2240000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />

@@ -195,7 +195,7 @@ namespace SocialFilmPlatform.Controllers
                 return View(movie);
             }
 
-            TempData["message"] = "Nu aveți dreptul să modificați un film care nu vă aparține.";
+            TempData["message"] = "You do not have permission to modify a movie that does not belong to you.";
             TempData["messageType"] = "alert-danger";
             return RedirectToAction("Index");
         }
@@ -217,13 +217,13 @@ namespace SocialFilmPlatform.Controllers
                     db.Movies.Remove(movie);
                     db.SaveChanges();
 
-                    TempData["message"] = "Filmul a fost șters.";
+                    TempData["message"] = "Movie deleted.";
                     TempData["messageType"] = "alert-success";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["message"] = "Nu aveti dreptul sa stergeti un film care nu va apartine";
+                    TempData["message"] = "You do not have permission to delete a movie that does not belong to you.";
                     TempData["messageType"] = "alert-danger";
                     return RedirectToAction("Index");
                 }
@@ -282,12 +282,12 @@ namespace SocialFilmPlatform.Controllers
 
                 await db.SaveChangesAsync();
 
-                TempData["message"] = "Filmul a fost actualizat.";
+                TempData["message"] = "Movie updated.";
                 TempData["messageType"] = "alert-success";
                 return RedirectToAction("Index");
             }
 
-            TempData["message"] = "Nu aveți dreptul să modificați un film care nu vă aparține.";
+            TempData["message"] = "You do not have permission to modify a movie that does not belong to you.";
             TempData["messageType"] = "alert-danger";
             return RedirectToAction("Index");
         }
