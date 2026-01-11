@@ -336,6 +336,54 @@ namespace SocialFilmPlatform.Models
                     }
                     context.SaveChanges();
                 }
+
+                if (!context.ActorMovies.Any())
+                {
+                    var actorUmaThurman = context.Actors.FirstOrDefault(a => a.Name == "Uma Thurman");
+                    var actorEdwardNorton = context.Actors.FirstOrDefault(a => a.Name == "Edward Norton");
+                    var actorBradPitt = context.Actors.FirstOrDefault(a => a.Name == "Brad Pitt");
+                    var actorWillemDafoe = context.Actors.FirstOrDefault(a => a.Name == "Willem Dafoe");
+                    var actorNaomiWatts = context.Actors.FirstOrDefault(a => a.Name == "Naomi Watts");
+                    var actorJackNance = context.Actors.FirstOrDefault(a => a.Name == "Jack Nance");
+
+                    var mMulhollandDrive = context.Movies.FirstOrDefault(m => m.Title == "Mulholland Drive");
+                    var mPulpFiction = context.Movies.FirstOrDefault(m => m.Title == "Pulp Fiction");
+                    var mGrandBudapest = context.Movies.FirstOrDefault(m => m.Title == "The Grand Budapest Hotel");
+                    var mFightClub = context.Movies.FirstOrDefault(m => m.Title == "Fight Club");
+                    var mEraserhead = context.Movies.FirstOrDefault(m => m.Title == "Eraserhead");
+
+                    var actorMovies = new List<ActorMovie>();
+
+                    // The Grand Budapest Hotel - Willem Dafoe, Edward Norton
+                    if (mGrandBudapest != null && actorWillemDafoe != null)
+                        actorMovies.Add(new ActorMovie { MovieId = mGrandBudapest.Id, ActorId = actorWillemDafoe.Id, Name = "J.G. Jopling" });
+                    if (mGrandBudapest != null && actorEdwardNorton != null)
+                        actorMovies.Add(new ActorMovie { MovieId = mGrandBudapest.Id, ActorId = actorEdwardNorton.Id, Name = "Henckels" });
+
+                    // Eraserhead - Jack Nance
+                    if (mEraserhead != null && actorJackNance != null)
+                        actorMovies.Add(new ActorMovie { MovieId = mEraserhead.Id, ActorId = actorJackNance.Id, Name = "Henry Spencer" });
+
+                    // Pulp Fiction - Uma Thurman
+                    if (mPulpFiction != null && actorUmaThurman != null)
+                        actorMovies.Add(new ActorMovie { MovieId = mPulpFiction.Id, ActorId = actorUmaThurman.Id, Name = "Mia Wallace" });
+
+                    // Fight Club - Brad Pitt, Edward Norton
+                    if (mFightClub != null && actorBradPitt != null)
+                        actorMovies.Add(new ActorMovie { MovieId = mFightClub.Id, ActorId = actorBradPitt.Id, Name = "Tyler Durden" });
+                    if (mFightClub != null && actorEdwardNorton != null)
+                        actorMovies.Add(new ActorMovie { MovieId = mFightClub.Id, ActorId = actorEdwardNorton.Id, Name = "The Narrator" });
+
+                    // Mulholland Drive - Naomi Watts
+                    if (mMulhollandDrive != null && actorNaomiWatts != null)
+                        actorMovies.Add(new ActorMovie { MovieId = mMulhollandDrive.Id, ActorId = actorNaomiWatts.Id, Name = "Betty Elms / Diane Selwyn" });
+
+                    if (actorMovies.Any())
+                    {
+                        context.ActorMovies.AddRange(actorMovies);
+                        context.SaveChanges();
+                    }
+                }
             }
         }
     }
