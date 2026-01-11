@@ -105,12 +105,14 @@ namespace SocialFilmPlatform.Models
                 if (!context.Actors.Any())
                 {
                      context.Actors.AddRange(
-                        new Actor { Name = "Leonardo DiCaprio", PhotoUrl = "/images/actors/4bbb9907-1617-451f-81c2-0036395fa8ce.webp", Description = "American actor and film producer. Known for his work in biographical and period films." },
-                        new Actor { Name = "Christian Bale", PhotoUrl = "/images/actors/694f7e2e-e2a7-44a8-acbb-c7f0cd3384fd.png", Description = "English actor known for intense method acting roles." },
-                        new Actor { Name = "Timothée Chalamet", PhotoUrl = "/images/actors/770ca68b-13d5-45bc-8e33-5bef7872b24e.jfif", Description = "American and French actor with various accolades." },
-                        new Actor { Name = "Scarlett Johansson", PhotoUrl = "/images/actors/cca2c747-324e-4b81-8f3a-cfc76b155556.jpg", Description = "American actress and world's highest paid actress 2018." },
-                        new Actor { Name = "Robert Downey Jr.", PhotoUrl = "/images/actors/f196ec54-7198-43bb-876e-416e8f65f1e6.jpg", Description = "American actor and producer, known for Iron Man role." },
-                        new Actor { Name = "Keanu Reeves", PhotoUrl = "/images/actors/f9fda7db-f93e-4f42-97fe-11110565689b.jpg", Description = "Canadian actor known for his roles in The Matrix and John Wick series." }
+                        new Actor { Name = "Uma Thurman", PhotoUrl = "/images/actors/Uma_Thurman_2014_(cropped).jpg", Description = "Uma Karuna Thurman is an American actress, writer, producer and model. She has acted in a variety of films, from romantic comedies and dramas to science fiction and action films.", },
+                        new Actor { Name = "Edward Norton", PhotoUrl = "/images/actors/Ed_Norton_Shankbone_Metropolitan_Opera_2009.jpg", Description = "Edward Harrison Norton (born August 18, 1969) is a European-American businessman, entrepreneur, actor, producer, director and screenwriter.", },
+                        new Actor { Name = "Brad Pitt", PhotoUrl = "/images/actors/bradpitt.jpg", Description = "William Bradley Pitt (born December 18, 1963) is an American actor and film producer. He has received various accolades, including two Academy Awards, two British Academy Film Awards, two Golden Globe Awards, and a Primetime Emmy Award.", },
+                        new Actor { Name = "Willem Dafoe", PhotoUrl = "/images/actors/Willem_Dafoe-63668_(cropped).jpg", Description = "William James \"Willem\" Dafoe (born July 22, 1955) is an American actor. Known for his prolific career portraying diverse roles in both mainstream and arthouse films, he is the recipient of various accolades, including the Volpi Cup for Best Actor as well as nominations for four Academy Awards.", },
+                        new Actor { Name = "Naomi Watts", PhotoUrl = "/images/actors/cca2c747-324e-4b81-8f3a-cfc76b155556.jpg", Description = "Naomi Ellen Watts is a British actress. Known for her work predominantly in independent films with dark or tragic themes, she has received various accolades, including nominations for two Academy Awards, a Primetime Emmy Award, and two Golden Globe Awards." },
+                        new Actor { Name = "Jack Nance", PhotoUrl= "/images/actors/f196ec54-7198-43bb-876e-416e8f65f1e6.jpg", Description= "Marvin John \"Jack\" Nance was an American actor. A frequent collaborator of filmmaker David Lynch, he starred in Lynch's directorial debut Eraserhead and continued to work with Lynch throughout his career, including a recurring role as Pete Martell on Twin Peaks." }
+
+
                     );
                     context.SaveChanges();
                 }
@@ -124,40 +126,17 @@ namespace SocialFilmPlatform.Models
                     context.Movies.AddRange(
                         new Movie
                         {
-                            Title = "Inception",
-                            Director = "Christopher Nolan",
-                            Description = "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+                            Title = "Mulholland Drive",
+                            Director = "David Lynch",
+                            Description = "A love story in the city of dreams.\r\nBlonde Betty Elms has only just arrived in Hollywood to become a movie star when she meets an enigmatic brunette with amnesia. Meanwhile, as the two set off to solve the second woman’s identity, filmmaker Adam Kesher runs into ominous trouble while casting his latest project.",
                             Score = 9.5f,
-                            ReleaseDate = new DateTime(2010, 7, 16),
-                            GenreId = GetGenreId("Sci-Fi"),
+                            ReleaseDate = new DateTime(2001, 10, 19),
+                            GenreId = GetGenreId("Thriller"),
                             UserId = ADMIN_ID,
-                            TrailerUrl = "https://www.youtube.com/watch?v=YoHD9XEInc0",
-                            ImageUrl = "/images/movies/0d5ccde1-1dcf-4a9a-bc7f-131ea9718ed4.jpg"
+                            TrailerUrl = "https://youtu.be/jbZJ487oJlY?si=U-P5E18fPDBPjgJ6",
+                            ImageUrl = "/images/movies/Mulholland-Drive.jpg"
                         },
-                        new Movie
-                        {
-                            Title = "The Dark Knight",
-                            Director = "Christopher Nolan",
-                            Description = "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-                            Score = 9.8f,
-                            ReleaseDate = new DateTime(2008, 7, 18),
-                            GenreId = GetGenreId("Action"),
-                            UserId = EDITOR_ID,
-                            TrailerUrl = "https://www.youtube.com/watch?v=EXeTwQWrcwY",
-                            ImageUrl = "/images/movies/250197b5-e45d-4870-8ef6-243211e49a29.jpg"
-                        },
-                        new Movie
-                        {
-                            Title = "Dune: Part Two",
-                            Director = "Denis Villeneuve",
-                            Description = "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family.",
-                            Score = 9.2f,
-                            ReleaseDate = new DateTime(2024, 3, 1),
-                            GenreId = GetGenreId("Sci-Fi"),
-                            UserId = ADMIN_ID,
-                            TrailerUrl = "https://www.youtube.com/watch?v=Way9Dexny3w",
-                            ImageUrl = "/images/movies/2603c8ea-5aea-49e3-8172-af5207ddd6a1.jpg"
-                        },
+                        
                         new Movie
                         {
                             Title = "Pulp Fiction",
@@ -168,7 +147,7 @@ namespace SocialFilmPlatform.Models
                             GenreId = GetGenreId("Drama"),
                             UserId = EDITOR_ID,
                             TrailerUrl = "https://www.youtube.com/watch?v=s7EdQ4FqbhY",
-                            ImageUrl = "/images/movies/509e04bb-1afb-40b8-8ea7-6552916ed727.jpg"
+                            ImageUrl = "/images/movies/pulpfiction.jpg"
                         },
                         new Movie
                         {
@@ -179,45 +158,11 @@ namespace SocialFilmPlatform.Models
                             ReleaseDate = new DateTime(2014, 3, 28),
                             GenreId = GetGenreId("Comedy"),
                             UserId = ADMIN_ID,
-                            TrailerUrl = "https://www.youtube.com/watch?v=1Fg5iHt5p60",
-                            ImageUrl = "/images/movies/8248f663-4cc1-4dac-a6b4-172d7d5349f0.jpg"
+                            TrailerUrl = "https://youtu.be/1Fg5iWmQjwk?si=jKKlDzeJf3PVXvmA",
+                            ImageUrl = "/images/movies/0d5ccde1-1dcf-4a9a-bc7f-131ea9718ed4.jpg"
                         },
-                        new Movie
-                        {
-                            Title = "Interstellar",
-                            Director = "Christopher Nolan",
-                            Description = "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-                            Score = 9.3f,
-                            ReleaseDate = new DateTime(2014, 11, 7),
-                            GenreId = GetGenreId("Sci-Fi"),
-                            UserId = ADMIN_ID,
-                            TrailerUrl = "https://www.youtube.com/watch?v=zSWdZVtXT7E",
-                            ImageUrl = "/images/movies/8b3e8e99-df2f-4a63-8978-9c415c77944c.webp"
-                        },
-                        new Movie
-                        {
-                            Title = "The Shawshank Redemption",
-                            Director = "Frank Darabont",
-                            Description = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-                            Score = 9.9f,
-                            ReleaseDate = new DateTime(1994, 9, 23),
-                            GenreId = GetGenreId("Drama"),
-                            UserId = EDITOR_ID,
-                            TrailerUrl = "https://www.youtube.com/watch?v=6hB3S9bIaco",
-                            ImageUrl = "/images/movies/d312d0bb-99d1-4963-9cd4-9e9c5d8f0761.webp"
-                        },
-                        new Movie
-                        {
-                            Title = "The Matrix",
-                            Director = "The Wachowskis",
-                            Description = "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
-                            Score = 9.1f,
-                            ReleaseDate = new DateTime(1999, 3, 31),
-                            GenreId = GetGenreId("Sci-Fi"),
-                            UserId = ADMIN_ID,
-                            TrailerUrl = "https://www.youtube.com/watch?v=m8e-FF8MsqU",
-                            ImageUrl = "/images/movies/d3b94526-ff3d-4558-8001-167b310d6558.jpg"
-                        },
+                       
+                       
                         new Movie
                         {
                             Title = "Fight Club",
@@ -228,8 +173,45 @@ namespace SocialFilmPlatform.Models
                             GenreId = GetGenreId("Thriller"),
                             UserId = EDITOR_ID,
                             TrailerUrl = "https://www.youtube.com/watch?v=SUXWAEX2jlg",
-                            ImageUrl = "/images/movies/da533cb7-e6d9-42cd-b33e-ed7bb17258a5.jpg"
-                        }
+                            ImageUrl = "/images/movies/fightclub_1280.jpg"
+                        },
+                         new Movie
+                         {
+                             Title = "Fantastic Mr. Fox",
+                             Director = "Wes Anderson",
+                             Description = "Mr Fox, a family man, goes back to his ways of stealing, unable to resist his animal instincts. However, he finds himself trapped when three farmers decide to kill him and his kind.",
+                             Score = 8.7f,
+                             ReleaseDate = new DateTime(2009, 9, 20),
+                             GenreId = GetGenreId("Comedy"),
+                             UserId = EDITOR_ID,
+                             TrailerUrl = "https://youtu.be/n2igjYFojUo?si=WjuvAQHHPZWpvPBV",
+                             ImageUrl = "/images/movies/fantasticmrfox.jpg"
+                         },
+                             new Movie
+                             {
+                                 Title = "Eraserhead",
+                                 Director = "David Lynch",
+                                 Description = "Henry, who's trying to survive the gloomy industrial landscape, discovers that he has become a father. His baby turns out to be a mutant lizard-like creature whose endless wailing drives him insane.",
+                                 Score = 7.2f,
+                                 ReleaseDate = new DateTime(1977, 3, 17),
+                                 GenreId = GetGenreId("Thriller"),
+                                 UserId = EDITOR_ID,
+                                 TrailerUrl = "https://youtu.be/7WAzFWu2tVw?si=wijO8mwA96y0clCD",
+                                 ImageUrl = "/images/movies/2603c8ea-5aea-49e3-8172-af5207ddd6a1.jpg"
+                             },
+                              new Movie
+                              {
+                                  Title = "Spellbound",
+                                  Director = "Alfred Hitchcock",
+                                  Description = "Dr Anthony Edwardes arrives at a mental hospital to join as the director. Later, Dr Constance discovers that Edwardes is an impostor who does not recall his past.",
+                                  Score = 7.5f,
+                                  ReleaseDate = new DateTime(1945, 10, 28),
+                                  GenreId = GetGenreId("Drama"),
+                                  UserId = ADMIN_ID,
+                                  TrailerUrl = "https://youtu.be/HIBaGIUbXqI?si=JxJ-ZdxIiO8-aqoh",
+                                  ImageUrl = "/images/movies/250197b5-e45d-4870-8ef6-243211e49a29.jpg"
+                              }
+
                     );
                     context.SaveChanges();
                 }
@@ -250,55 +232,64 @@ namespace SocialFilmPlatform.Models
                     var catFavorites = context.Categories.First(c => c.Name == "Favorites");
                     var catToWatch = context.Categories.First(c => c.Name == "To Watch");
 
-                    var mInception = context.Movies.FirstOrDefault(m => m.Title == "Inception");
-                    var mDarkKnight = context.Movies.FirstOrDefault(m => m.Title == "The Dark Knight");
+                    var mMulhollandDrive = context.Movies.FirstOrDefault(m => m.Title == "Mulholland Drive");
+                    var mEraserhead = context.Movies.FirstOrDefault(m => m.Title == "Eraserhead");
+                    var mSpellbound = context.Movies.FirstOrDefault(m => m.Title == "Spellbound");
+                    var mGrandBudapest = context.Movies.FirstOrDefault(m => m.Title == "The Grand Budapest Hotel");
+                    var mFantasticMrFox = context.Movies.FirstOrDefault(m => m.Title == "Fantastic Mr. Fox");
 
                     var tagClassic = new Tag { Name = "classic" };
                     var tagMustWatch = new Tag { Name = "must-watch" };
-                    var tagScifi = new Tag { Name = "scifi" };
-
+                    var tagSurreal = new Tag { Name = "surreal" };
+                    var tagWhimsical = new Tag { Name = "whimsical" };
 
                     
                     var d1 = new Diary
                     {
-                        Name = "Cinematic Masterpieces",
-                        Description = "A collection of films essential for any cinephile.",
-                        Content = "These movies define their genres.",
+                        Name = "David Lynch's Mind-Bending Cinema",
+                        Description = "A journey through the surreal and haunting worlds of David Lynch, plus Hitchcock's psychological masterpiece.",
+                        Content = "These films explore the darkest corners of the human psyche through dreamlike narratives and unforgettable imagery.",
                         IsPublic = true,
                         CreatedAt = DateTime.Now.AddDays(-10),
                         UserId = ADMIN_ID,
                         Categories = new List<Category> { catFavorites },
-                        Tags = new List<Tag> { tagClassic, tagMustWatch }
+                        Tags = new List<Tag> { tagClassic, tagSurreal }
                     };
 
+                    var movieDiariesList1 = new List<MovieDiary>();
+                    if (mMulhollandDrive != null)
+                        movieDiariesList1.Add(new MovieDiary { MovieId = mMulhollandDrive.Id, Name = "-", DiaryTime = DateTime.Now });
+                    if (mEraserhead != null)
+                        movieDiariesList1.Add(new MovieDiary { MovieId = mEraserhead.Id, Name = "-", DiaryTime = DateTime.Now });
+                    if (mSpellbound != null)
+                        movieDiariesList1.Add(new MovieDiary { MovieId = mSpellbound.Id, Name = "-", DiaryTime = DateTime.Now });
                     
-                    if (mInception != null && mDarkKnight != null)
-                    {
-                        d1.MovieDiaries = new List<MovieDiary> 
-                        { 
-                            new MovieDiary { MovieId = mInception.Id, Name = "-", DiaryTime = DateTime.Now },
-                            new MovieDiary { MovieId = mDarkKnight.Id, Name = "-", DiaryTime = DateTime.Now }
-                        };
-                    }
+                    if (movieDiariesList1.Any())
+                        d1.MovieDiaries = movieDiariesList1;
+                    
                     context.Diaries.Add(d1);
 
                     var d2 = new Diary
                     {
-                        Name = "Mind Bending Sci-Fi",
-                        Description = "Trippy movies that make you think.",
+                        Name = "Wes Anderson's Whimsical World",
+                        Description = "The distinctive, meticulously crafted visual style of Wes Anderson.",
+                        Content = "Symmetrical compositions, vibrant color palettes, and quirky characters define these cinematic gems.",
                         IsPublic = true,
-                        CreatedAt = DateTime.Now.AddDays(-2),
-                        UserId = USER_ID,
+                        CreatedAt = DateTime.Now.AddDays(-5),
+                        UserId = EDITOR_ID,
                         Categories = new List<Category> { catToWatch },
-                        Tags = new List<Tag> { tagScifi }
+                        Tags = new List<Tag> { tagWhimsical, tagMustWatch }
                     };
-                    if (mInception != null)
-                    {
-                        d2.MovieDiaries = new List<MovieDiary>
-                        {
-                            new MovieDiary { MovieId = mInception.Id, Name = "-", DiaryTime = DateTime.Now }
-                        };
-                    }
+
+                    var movieDiariesList2 = new List<MovieDiary>();
+                    if (mGrandBudapest != null)
+                        movieDiariesList2.Add(new MovieDiary { MovieId = mGrandBudapest.Id, Name = "-", DiaryTime = DateTime.Now });
+                    if (mFantasticMrFox != null)
+                        movieDiariesList2.Add(new MovieDiary { MovieId = mFantasticMrFox.Id, Name = "-", DiaryTime = DateTime.Now });
+                    
+                    if (movieDiariesList2.Any())
+                        d2.MovieDiaries = movieDiariesList2;
+                    
                     context.Diaries.Add(d2);
 
                     context.SaveChanges();
@@ -307,28 +298,40 @@ namespace SocialFilmPlatform.Models
 
                 if (!context.Reviews.Any())
                 {
-                    var mInception = context.Movies.FirstOrDefault(m => m.Title == "Inception");
-                    var mDarkKnight = context.Movies.FirstOrDefault(m => m.Title == "The Dark Knight");
+                    var mMulhollandDrive = context.Movies.FirstOrDefault(m => m.Title == "Mulholland Drive");
+                    var mPulpFiction = context.Movies.FirstOrDefault(m => m.Title == "Pulp Fiction");
+                    var mGrandBudapest = context.Movies.FirstOrDefault(m => m.Title == "The Grand Budapest Hotel");
 
-                    if (mInception != null)
+                    if (mMulhollandDrive != null)
                     {
                         context.Reviews.Add(new Review
                         {
-                            Content = "Absolutely mind-blowing visual effects and story.",
-                            DatePosted = DateTime.Now.AddDays(-5),
+                            Content = "A mesmerizing dive into the subconscious. Lynch at his absolute best!",
+                            DatePosted = DateTime.Now.AddDays(-8),
                             UserId = USER_ID,
-                            MovieId = mInception.Id
+                            MovieId = mMulhollandDrive.Id
                         });
                     }
 
-                    if (mDarkKnight != null)
+                    if (mPulpFiction != null)
                     {
                         context.Reviews.Add(new Review
                         {
-                            Content = "Heath Ledger is the best Joker ever. Period.",
-                            DatePosted = DateTime.Now.AddDays(-3),
+                            Content = "Tarantino's masterpiece. Non-linear storytelling at its finest.",
+                            DatePosted = DateTime.Now.AddDays(-5),
                             UserId = EDITOR_ID,
-                            MovieId = mDarkKnight.Id
+                            MovieId = mPulpFiction.Id
+                        });
+                    }
+
+                    if (mGrandBudapest != null)
+                    {
+                        context.Reviews.Add(new Review
+                        {
+                            Content = "Visually stunning with perfect symmetry. Wes Anderson's attention to detail is unmatched.",
+                            DatePosted = DateTime.Now.AddDays(-3),
+                            UserId = ADMIN_ID,
+                            MovieId = mGrandBudapest.Id
                         });
                     }
                     context.SaveChanges();
