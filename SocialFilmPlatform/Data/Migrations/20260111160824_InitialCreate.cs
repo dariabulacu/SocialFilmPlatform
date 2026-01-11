@@ -482,7 +482,7 @@ namespace SocialFilmPlatform.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ActorMovie",
+                name: "ActorMovies",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -494,14 +494,14 @@ namespace SocialFilmPlatform.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActorMovie", x => x.Id);
+                    table.PrimaryKey("PK_ActorMovies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ActorMovie_Actors_ActorId",
+                        name: "FK_ActorMovies_Actors_ActorId",
                         column: x => x.ActorId,
                         principalTable: "Actors",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ActorMovie_Movies_MovieId",
+                        name: "FK_ActorMovies_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id");
@@ -538,13 +538,13 @@ namespace SocialFilmPlatform.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActorMovie_ActorId",
-                table: "ActorMovie",
+                name: "IX_ActorMovies_ActorId",
+                table: "ActorMovies",
                 column: "ActorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActorMovie_MovieId",
-                table: "ActorMovie",
+                name: "IX_ActorMovies_MovieId",
+                table: "ActorMovies",
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
@@ -661,7 +661,7 @@ namespace SocialFilmPlatform.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ActorMovie");
+                name: "ActorMovies");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

@@ -9,10 +9,10 @@ using SocialFilmPlatform.Data;
 
 #nullable disable
 
-namespace SocialFilmPlatform.Migrations
+namespace SocialFilmPlatform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260111145007_InitialCreate")]
+    [Migration("20260111160824_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -244,7 +244,7 @@ namespace SocialFilmPlatform.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("ActorMovie");
+                    b.ToTable("ActorMovies");
                 });
 
             modelBuilder.Entity("SocialFilmPlatform.Models.ApplicationUser", b =>
