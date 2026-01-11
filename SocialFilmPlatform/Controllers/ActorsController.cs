@@ -49,7 +49,7 @@ namespace SocialFilmPlatform.Controllers
 
             ViewBag.SearchString = search;
 
-            int _perPage = 3;
+            int _perPage = 8;
             int totalItems = actorsQuery.Count();
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
             var offset = 0;
