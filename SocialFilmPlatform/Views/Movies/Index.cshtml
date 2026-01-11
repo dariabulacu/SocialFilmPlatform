@@ -157,10 +157,30 @@
         
         @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
         {
-            <a asp-controller="Movies" asp-action="New" class="btn btn-add-movie">
+            <a asp-controller="Movies" asp-action="New" class="btn btn-add-movie ms-3">
                 <i class="bi bi-plus-lg me-2"></i>Add Record
             </a>
         }
+        
+        <div class="dropdown ms-auto">
+            <button class="btn btn-outline-dark rounded-0 dropdown-toggle text-uppercase" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-family: var(--font-display); letter-spacing: 1px;">
+                Sort By: @(ViewBag.SortOrder == "popular" ? "Popularity" : "Recent")
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end rounded-0 shadow-sm" aria-labelledby="sortDropdown">
+                <li>
+                    <a class="dropdown-item @(ViewBag.SortOrder != "popular" ? "active bg-light text-dark fw-bold" : "")" 
+                       href="@Url.Action("Index", new { sort = "recent", search = ViewBag.SearchString })">
+                        Most Recent
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item @(ViewBag.SortOrder == "popular" ? "active bg-light text-dark fw-bold" : "")" 
+                       href="@Url.Action("Index", new { sort = "popular", search = ViewBag.SearchString })">
+                        Most Popular
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     @if(ViewBag.Message != null)
@@ -174,8 +194,9 @@
     <div class="row justify-content-center mb-5">
         <div class="col-md-6">
             <form method="GET" class="search-vintage">
+                <input type="hidden" name="sort" value="@ViewBag.SortOrder" />
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search archive..." name="search"
+                    <input type="text" class="form-control" placeholder="Search archive (title, genre, director)..." name="search"
                            value="@ViewBag.SearchString">
                     <button class="btn btn-search px-4" type="submit">SEARCH</button>
                 </div>

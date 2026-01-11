@@ -1,17 +1,17 @@
 @model SocialFilmPlatform.Models.Diary
 
 @{
-    ViewData["Title"] = "New List";
+    ViewData["Title"] = "New Diary";
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h2 class="text-center mb-4" style="font-family: 'Cinzel', serif;">Create New List</h2>
+            <h2 class="text-center mb-4" style="font-family: 'Cinzel', serif;">Create New Diary</h2>
             
             <form asp-action="New" method="post">
                 <div class="mb-3">
-                    <label asp-for="Name" class="form-label fw-bold">List Title</label>
+                    <label asp-for="Name" class="form-label fw-bold">Diary Title</label>
                     <input asp-for="Name" class="form-control" placeholder="e.g. My Favorite Sci-Fi Movies" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
@@ -32,12 +32,12 @@
                 <div class="form-check mb-4">
                     <input class="form-check-input" type="checkbox" asp-for="IsPublic" id="IsPublicCheck" checked>
                     <label class="form-check-label" for="IsPublicCheck">
-                        Public List (Visible to everyone)
+                        Public Diary (Visible to everyone)
                     </label>
                 </div>
 
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-dark rounded-0 py-2 text-uppercase">Create List</button>
+                    <button type="submit" class="btn btn-dark rounded-0 py-2 text-uppercase">Create Diary</button>
                     <a asp-action="MyDiaries" class="btn btn-outline-secondary rounded-0">Cancel</a>
                 </div>
             </form>

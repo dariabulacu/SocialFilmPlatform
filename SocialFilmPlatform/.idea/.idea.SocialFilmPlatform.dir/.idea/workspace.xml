@@ -9,9 +9,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="932761a7-d53d-46a6-b689-3987294f2171" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Controllers/ProfilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ProfilesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/ActorsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ActorsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/MoviesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MoviesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260107132401_Initial.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260107132401_Initial.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260107133044_AddTagsAndCategories.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260107133044_AddTagsAndCategories.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260107141420_PivotTagsToDiary.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/20260107141420_PivotTagsToDiary.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/SeedData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/SeedData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Actors/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Actors/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Diaries/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/Edit.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Diaries/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Diaries/MyDiaries.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/MyDiaries.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Diaries/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Diaries/New.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/MovieDiaries/New.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MovieDiaries/New.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Movies/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Movies/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Movies/Show.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/Profiles/Show.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Profiles/Show.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/Shared/_LoginPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Views/Shared/_LoginPartial.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +63,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Controllers/MoviesController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/ReviewVote.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/gabrielrachieru/RiderProjects/SocialFilmPlatform/SocialFilmPlatform/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -122,7 +142,7 @@
       <workItem from="1765838952670" duration="169000" />
       <workItem from="1765840745235" duration="670000" />
       <workItem from="1765841434098" duration="582000" />
-      <workItem from="1768135507372" duration="3215000" />
+      <workItem from="1768135507372" duration="7502000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -180,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768137875509</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Community feature&#10;Admin can change users roles">
+      <option name="closed" value="true" />
+      <created>1768138783385</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1768138783385</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,7 +224,8 @@
     <MESSAGE value="Frontend for Actors" />
     <MESSAGE value="Added required validations for forms and models&#10;&#10;Changed language inconsistencies &#10;&#10;UI tweaks" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="Community feature&#10;Admin can change users roles" />
+    <option name="LAST_COMMIT_MESSAGE" value="Community feature&#10;Admin can change users roles" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

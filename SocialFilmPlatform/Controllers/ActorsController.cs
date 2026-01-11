@@ -34,6 +34,7 @@ namespace SocialFilmPlatform.Controllers
 
             var actorsQuery = db.Actors
                 .Include(a => a.ActorMovies).ThenInclude(am => am.Movie)
+                .OrderBy(a => a.Name)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(search))
