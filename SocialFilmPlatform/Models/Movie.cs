@@ -42,14 +42,8 @@ namespace SocialFilmPlatform.Models
 
         [Required(ErrorMessage = "Please select a genre")]
         public int? GenreId { get; set; }
-        //proprietatea de navigare
-
-        //cheie externa (FK) - un film este postat de catre un user 
 
         public string? UserId { get; set; } 
-
-        //proprietatea de navigatie 
-        //un film estse postat de catre un user 
 
         public virtual ApplicationUser? User { get; set; }
         public virtual Genre? Genre { get; set; }

@@ -15,7 +15,10 @@ namespace SocialFilmPlatform.Models
 
                 const string ADMIN_ID = "8e445865-a24d-4543-a6c6-9443d048cdb0";
                 const string EDITOR_ID = "8e445865-a24d-4543-a6c6-9443d048cdb1";
+                const string EDITOR2_ID = "8e445865-a24d-4543-a6c6-9443d048cdb5";
                 const string USER_ID = "8e445865-a24d-4543-a6c6-9443d048cdb2";
+                const string USER2_ID = "8e445865-a24d-4543-a6c6-9443d048cdb3";
+                const string USER3_ID = "8e445865-a24d-4543-a6c6-9443d048cdb4";
 
                 const string ROLE_ADMIN_ID = "2c5e174e-3b0e-446f-86af-483d56fd7210";
                 const string ROLE_EDITOR_ID = "2c5e174e-3b0e-446f-86af-483d56fd7211";
@@ -63,6 +66,19 @@ namespace SocialFilmPlatform.Models
                         },
                         new ApplicationUser
                         {
+                            Id = EDITOR2_ID,
+                            UserName = "editor2@test.com",
+                            Email = "editor2@test.com",
+                            NormalizedEmail = "EDITOR2@TEST.COM",
+                            NormalizedUserName = "EDITOR2@TEST.COM",
+                            EmailConfirmed = true,
+                            PasswordHash = hasher.HashPassword(null, "Editor2!"),
+                            FirstName = "Sarah",
+                            LastName = "Mitchell",
+                            Description = "Content editor and film enthusiast."
+                        },
+                        new ApplicationUser
+                        {
                             Id = USER_ID,
                             UserName = "user@test.com",
                             Email = "user@test.com",
@@ -73,13 +89,42 @@ namespace SocialFilmPlatform.Models
                             FirstName = "Regular",
                             LastName = "User",
                             Description = "Standard user account."
+                        },
+                        new ApplicationUser
+                        {
+                            Id = USER2_ID,
+                            UserName = "john.smith@test.com",
+                            Email = "john.smith@test.com",
+                            NormalizedEmail = "JOHN.SMITH@TEST.COM",
+                            NormalizedUserName = "JOHN.SMITH@TEST.COM",
+                            EmailConfirmed = true,
+                            PasswordHash = hasher.HashPassword(null, "User2!"),
+                            FirstName = "John",
+                            LastName = "Smith",
+                            Description = "Movie lover and critic."
+                        },
+                        new ApplicationUser
+                        {
+                            Id = USER3_ID,
+                            UserName = "emma.jones@test.com",
+                            Email = "emma.jones@test.com",
+                            NormalizedEmail = "EMMA.JONES@TEST.COM",
+                            NormalizedUserName = "EMMA.JONES@TEST.COM",
+                            EmailConfirmed = true,
+                            PasswordHash = hasher.HashPassword(null, "User3!"),
+                            FirstName = "Emma",
+                            LastName = "Jones",
+                            Description = "Cinema enthusiast and blogger."
                         }
                     );
 
                     context.UserRoles.AddRange(
                         new IdentityUserRole<string> { RoleId = ROLE_ADMIN_ID, UserId = ADMIN_ID },
                         new IdentityUserRole<string> { RoleId = ROLE_EDITOR_ID, UserId = EDITOR_ID },
-                        new IdentityUserRole<string> { RoleId = ROLE_USER_ID, UserId = USER_ID }
+                        new IdentityUserRole<string> { RoleId = ROLE_EDITOR_ID, UserId = EDITOR2_ID },
+                        new IdentityUserRole<string> { RoleId = ROLE_USER_ID, UserId = USER_ID },
+                        new IdentityUserRole<string> { RoleId = ROLE_USER_ID, UserId = USER2_ID },
+                        new IdentityUserRole<string> { RoleId = ROLE_USER_ID, UserId = USER3_ID }
                     );
 
                     context.SaveChanges();
@@ -237,11 +282,17 @@ namespace SocialFilmPlatform.Models
                     var mSpellbound = context.Movies.FirstOrDefault(m => m.Title == "Spellbound");
                     var mGrandBudapest = context.Movies.FirstOrDefault(m => m.Title == "The Grand Budapest Hotel");
                     var mFantasticMrFox = context.Movies.FirstOrDefault(m => m.Title == "Fantastic Mr. Fox");
+                    var mPulpFiction = context.Movies.FirstOrDefault(m => m.Title == "Pulp Fiction");
+                    var mFightClub = context.Movies.FirstOrDefault(m => m.Title == "Fight Club");
 
                     var tagClassic = new Tag { Name = "classic" };
                     var tagMustWatch = new Tag { Name = "must-watch" };
                     var tagSurreal = new Tag { Name = "surreal" };
                     var tagWhimsical = new Tag { Name = "whimsical" };
+                    var tagCult = new Tag { Name = "cult-classic" };
+                    var tagIntense = new Tag { Name = "intense" };
+                    var tagThrilling = new Tag { Name = "thrilling" };
+                    var tagDarkComedy = new Tag { Name = "dark-comedy" };
 
                     
                     var d1 = new Diary
@@ -291,6 +342,79 @@ namespace SocialFilmPlatform.Models
                         d2.MovieDiaries = movieDiariesList2;
                     
                     context.Diaries.Add(d2);
+
+                    var d3 = new Diary
+                    {
+                        Name = "90s Cult Classics",
+                        Description = "Essential films that defined a generation and sparked countless discussions.",
+                        Content = "From Tarantino's non-linear storytelling to Fincher's dark psychological thriller, these films revolutionized cinema in the 1990s.",
+                        IsPublic = true,
+                        CreatedAt = DateTime.Now.AddDays(-3),
+                        UserId = USER_ID,
+                        Categories = new List<Category> { catFavorites },
+                        Tags = new List<Tag> { tagCult, tagClassic, tagMustWatch }
+                    };
+
+                    var movieDiariesList3 = new List<MovieDiary>();
+                    if (mPulpFiction != null)
+                        movieDiariesList3.Add(new MovieDiary { MovieId = mPulpFiction.Id, Name = "-", DiaryTime = DateTime.Now });
+                    if (mFightClub != null)
+                        movieDiariesList3.Add(new MovieDiary { MovieId = mFightClub.Id, Name = "-", DiaryTime = DateTime.Now });
+                    if (mMulhollandDrive != null)
+                        movieDiariesList3.Add(new MovieDiary { MovieId = mMulhollandDrive.Id, Name = "-", DiaryTime = DateTime.Now });
+                    
+                    if (movieDiariesList3.Any())
+                        d3.MovieDiaries = movieDiariesList3;
+                    
+                    context.Diaries.Add(d3);
+
+                    var d4 = new Diary
+                    {
+                        Name = "Action-Packed Thrillers",
+                        Description = "Edge-of-your-seat experiences that keep you gripped from start to finish.",
+                        Content = "High-intensity films that combine psychological depth with visceral action sequences.",
+                        IsPublic = true,
+                        CreatedAt = DateTime.Now.AddDays(-2),
+                        UserId = EDITOR_ID,
+                        Categories = new List<Category> { catFavorites },
+                        Tags = new List<Tag> { tagIntense, tagThrilling }
+                    };
+
+                    var movieDiariesList4 = new List<MovieDiary>();
+                    if (mFightClub != null)
+                        movieDiariesList4.Add(new MovieDiary { MovieId = mFightClub.Id, Name = "-", DiaryTime = DateTime.Now });
+                    if (mMulhollandDrive != null)
+                        movieDiariesList4.Add(new MovieDiary { MovieId = mMulhollandDrive.Id, Name = "-", DiaryTime = DateTime.Now });
+                    
+                    if (movieDiariesList4.Any())
+                        d4.MovieDiaries = movieDiariesList4;
+                    
+                    context.Diaries.Add(d4);
+
+                    var d5 = new Diary
+                    {
+                        Name = "Dark Comedy Masterpieces",
+                        Description = "Films that find humor in the darkness and challenge our perceptions.",
+                        Content = "A collection of movies that blend comedy with darker themes, offering unique perspectives on human nature.",
+                        IsPublic = true,
+                        CreatedAt = DateTime.Now.AddDays(-1),
+                        UserId = ADMIN_ID,
+                        Categories = new List<Category> { catToWatch },
+                        Tags = new List<Tag> { tagDarkComedy, tagWhimsical }
+                    };
+
+                    var movieDiariesList5 = new List<MovieDiary>();
+                    if (mPulpFiction != null)
+                        movieDiariesList5.Add(new MovieDiary { MovieId = mPulpFiction.Id, Name = "-", DiaryTime = DateTime.Now });
+                    if (mGrandBudapest != null)
+                        movieDiariesList5.Add(new MovieDiary { MovieId = mGrandBudapest.Id, Name = "-", DiaryTime = DateTime.Now });
+                    if (mFantasticMrFox != null)
+                        movieDiariesList5.Add(new MovieDiary { MovieId = mFantasticMrFox.Id, Name = "-", DiaryTime = DateTime.Now });
+                    
+                    if (movieDiariesList5.Any())
+                        d5.MovieDiaries = movieDiariesList5;
+                    
+                    context.Diaries.Add(d5);
 
                     context.SaveChanges();
                 }
@@ -354,27 +478,22 @@ namespace SocialFilmPlatform.Models
 
                     var actorMovies = new List<ActorMovie>();
 
-                    // The Grand Budapest Hotel - Willem Dafoe, Edward Norton
                     if (mGrandBudapest != null && actorWillemDafoe != null)
                         actorMovies.Add(new ActorMovie { MovieId = mGrandBudapest.Id, ActorId = actorWillemDafoe.Id, Name = "J.G. Jopling" });
                     if (mGrandBudapest != null && actorEdwardNorton != null)
                         actorMovies.Add(new ActorMovie { MovieId = mGrandBudapest.Id, ActorId = actorEdwardNorton.Id, Name = "Henckels" });
 
-                    // Eraserhead - Jack Nance
                     if (mEraserhead != null && actorJackNance != null)
                         actorMovies.Add(new ActorMovie { MovieId = mEraserhead.Id, ActorId = actorJackNance.Id, Name = "Henry Spencer" });
 
-                    // Pulp Fiction - Uma Thurman
                     if (mPulpFiction != null && actorUmaThurman != null)
                         actorMovies.Add(new ActorMovie { MovieId = mPulpFiction.Id, ActorId = actorUmaThurman.Id, Name = "Mia Wallace" });
 
-                    // Fight Club - Brad Pitt, Edward Norton
                     if (mFightClub != null && actorBradPitt != null)
                         actorMovies.Add(new ActorMovie { MovieId = mFightClub.Id, ActorId = actorBradPitt.Id, Name = "Tyler Durden" });
                     if (mFightClub != null && actorEdwardNorton != null)
                         actorMovies.Add(new ActorMovie { MovieId = mFightClub.Id, ActorId = actorEdwardNorton.Id, Name = "The Narrator" });
 
-                    // Mulholland Drive - Naomi Watts
                     if (mMulhollandDrive != null && actorNaomiWatts != null)
                         actorMovies.Add(new ActorMovie { MovieId = mMulhollandDrive.Id, ActorId = actorNaomiWatts.Id, Name = "Betty Elms / Diane Selwyn" });
 

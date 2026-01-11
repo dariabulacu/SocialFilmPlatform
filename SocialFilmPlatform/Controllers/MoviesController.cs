@@ -62,12 +62,11 @@ namespace SocialFilmPlatform.Controllers
 
             if (sortOrder == "popular")
             {
-
-                movies = movies.OrderByDescending(m => m.Reviews.Count)
-                               .ThenByDescending(m => m.Score)
+                movies = movies.OrderByDescending(m => m.Score)
+                               .ThenByDescending(m => m.Reviews.Count)
                                .ThenByDescending(m => m.Id);
             }
-            else // recent
+            else 
             {
                 movies = movies.OrderByDescending(m => m.ReleaseDate)
                                .ThenByDescending(m => m.Id);
@@ -96,8 +95,6 @@ namespace SocialFilmPlatform.Controllers
 
             return View();
         }
-
-        // [Authorize(Roles = "User,Editor,Admin")] // Allow everyone to view
 
         public IActionResult Show(int id)
         {
@@ -132,9 +129,6 @@ namespace SocialFilmPlatform.Controllers
             {
                 ViewBag.AfisareButoane = true;
             }
-            // Allow basic users to see buttons for their own content (handled in view usually, but setting flag here)
-            // Actually, existing logic was restrictive. Let's rely on View logic examining current user
-            // but here we just pass data.
             ViewBag.CurrentUser = _userManager.GetUserId(User);
 
             ViewBag.UserCurent = _userManager.GetUserId(User);
@@ -283,14 +277,6 @@ namespace SocialFilmPlatform.Controllers
                         await Image.CopyToAsync(stream);
                     }
                     movie.ImageUrl = "/images/movies/" + fileName;
-                }
-                else 
-                {
-                    // Keep existing if not null, or logic if users can paste URL ? 
-                    // Current request is for local files, but we might want to fallback to the existing URL if user didn't upload
-                    // But here requestMovie.ImageUrl might come from hidden field? No hidden field in View.
-                    // If Image is null, we just don't update ImageUrl, so it keeps old value.
-                    // EXCEPT if we want to allow clearing it? For now, let's just update if file provided.
                 }
 
                 await db.SaveChangesAsync();

@@ -20,15 +20,10 @@ namespace SocialFilmPlatform.Controllers
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
         private readonly IAiService _aiService = aiService;
 
-        // Public Index: Shows all public diaries or own private diaries mixed? 
-        // Requirement: "Orice utilizator ... poate vizualiza bookmark-urile publice"
-        // Also "Cauta si paginare"
         public IActionResult Index()
         {
-            var search = "";
-            var sortOrder = HttpContext.Request.Query["sort"].ToString(); // "recent" or "popular"
+            var sortOrder = HttpContext.Request.Query["sort"].ToString();
             
-            // Base query: All Public Diaries
             IQueryable<Diary> diaries = db.Diaries
                                            .Include(d => d.User)
                                            .Include(d => d.MovieDiaries).ThenInclude(md => md.Movie)
@@ -37,18 +32,18 @@ namespace SocialFilmPlatform.Controllers
                                            .Include(d => d.Categories)
                                            .Where(d => d.IsPublic);
 
+            var search = "";
             if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
             {
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
                 diaries = diaries.Where(d => d.Name.Contains(search) || (d.Description != null && d.Description.Contains(search)));
             }
 
-            // Sorting
             if (sortOrder == "popular")
             {
                 diaries = diaries.OrderByDescending(d => d.DiaryVotes.Count());
             }
-            else // Default to Recent
+            else
             {
                 diaries = diaries.OrderByDescending(d => d.CreatedAt);
             }
@@ -56,7 +51,6 @@ namespace SocialFilmPlatform.Controllers
             ViewBag.SearchString = search;
             ViewBag.SortOrder = sortOrder;
 
-            // Pagination
             int _perPage = 6;
             int totalItems = diaries.Count();
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
@@ -67,10 +61,10 @@ namespace SocialFilmPlatform.Controllers
             }
             var paginatedDiaries = diaries.Skip(offset).Take(_perPage).ToList();
             
+            
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
             ViewBag.Diaries = paginatedDiaries;
              
-            // Pagination Base URL building
             var baseUrl = "/Diaries/Index?";
             if (!string.IsNullOrEmpty(search)) baseUrl += $"search={search}&";
             if (!string.IsNullOrEmpty(sortOrder)) baseUrl += $"sort={sortOrder}&";
@@ -118,7 +112,6 @@ namespace SocialFilmPlatform.Controllers
                 return NotFound();
             }
 
-            // Privacy check
             var currentUserId = _userManager.GetUserId(User);
             if (!diary.IsPublic && diary.UserId != currentUserId && !User.IsInRole("Admin")) 
             {
@@ -151,7 +144,7 @@ namespace SocialFilmPlatform.Controllers
             var diary = db.Diaries.Include(d => d.DiaryVotes).FirstOrDefault(d => d.Id == id);
 
             if (diary == null) return NotFound();
-            if (!diary.IsPublic) return Forbid(); // Should voting be allowed on private lists? Probably not if they can't see them.
+            if (!diary.IsPublic) return Forbid();
 
             var existingVote = db.DiaryVotes.FirstOrDefault(dv => dv.DiaryId == id && dv.UserId == currentUserId);
 
@@ -198,7 +191,7 @@ namespace SocialFilmPlatform.Controllers
                 db.SaveChanges();
                 TempData["message"] = "List created successfully!";
                 TempData["messageType"] = "success";
-                return RedirectToAction("MyDiaries"); // Redirect to My Lists
+                return RedirectToAction("MyDiaries");
             }
             return View(diary);
         }
@@ -259,7 +252,6 @@ namespace SocialFilmPlatform.Controllers
                 diary.Content = requestDiary.Content != null ? sanitizer.Sanitize(requestDiary.Content) : null;
                 diary.IsPublic = requestDiary.IsPublic;
 
-                // Update Tags
                 diary.Tags.Clear();
                 if (!string.IsNullOrEmpty(TagsInput))
                 {
@@ -276,7 +268,6 @@ namespace SocialFilmPlatform.Controllers
                     }
                 }
 
-                // Update Categories
                 diary.Categories.Clear();
                 if (!string.IsNullOrEmpty(CategoriesInput))
                 {
