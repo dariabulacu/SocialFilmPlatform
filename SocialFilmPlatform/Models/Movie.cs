@@ -39,7 +39,7 @@ namespace SocialFilmPlatform.Models
         
         public virtual ICollection<ActorMovie> ActorMovies { get; set; } = [];
         
-        //fk
+
         [Required(ErrorMessage = "Please select a genre")]
         public int? GenreId { get; set; }
         //proprietatea de navigare

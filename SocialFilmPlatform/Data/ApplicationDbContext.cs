@@ -27,7 +27,6 @@ namespace SocialFilmPlatform.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //m:m movie and diary
             modelBuilder.Entity<MovieDiary>()
                 .HasKey(md => new { md.Id, md.MovieId, md.DiaryId });
 

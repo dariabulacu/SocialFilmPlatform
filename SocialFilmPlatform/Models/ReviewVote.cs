@@ -14,7 +14,7 @@ namespace SocialFilmPlatform.Models
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        // true = Like, false = Dislike
+
         public bool IsLike { get; set; }
     }
 }

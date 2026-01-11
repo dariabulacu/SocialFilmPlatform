@@ -12,8 +12,7 @@ namespace SocialFilmPlatform.Models
             using (var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
-                // 1. ROLES & USERS (Identity)
-                // We use specific IDs to easily link them later without querying
+
                 const string ADMIN_ID = "8e445865-a24d-4543-a6c6-9443d048cdb0";
                 const string EDITOR_ID = "8e445865-a24d-4543-a6c6-9443d048cdb1";
                 const string USER_ID = "8e445865-a24d-4543-a6c6-9443d048cdb2";
@@ -86,7 +85,7 @@ namespace SocialFilmPlatform.Models
                     context.SaveChanges();
                 }
 
-                // 2. GENRES
+
                 if (!context.Genres.Any())
                 {
                     context.Genres.AddRange(
@@ -102,7 +101,7 @@ namespace SocialFilmPlatform.Models
                     context.SaveChanges();
                 }
 
-                // 3. ACTORS
+
                 if (!context.Actors.Any())
                 {
                      context.Actors.AddRange(
@@ -115,10 +114,10 @@ namespace SocialFilmPlatform.Models
                     context.SaveChanges();
                 }
 
-                // 4. MOVIES
+
                 if (!context.Movies.Any())
                 {
-                    // Lookups for Genre IDs
+
                     int GetGenreId(string name) => context.Genres.FirstOrDefault(g => g.GenreName == name)?.Id ?? 0;
 
                     context.Movies.AddRange(
@@ -186,7 +185,7 @@ namespace SocialFilmPlatform.Models
                     context.SaveChanges();
                 }
 
-                // 5. DIARIES
+
                 if (!context.Categories.Any())
                 {
                     context.Categories.AddRange(
@@ -198,7 +197,7 @@ namespace SocialFilmPlatform.Models
 
                 if (!context.Diaries.Any())
                 {
-                    // Need IDs
+
                     var catFavorites = context.Categories.First(c => c.Name == "Favorites");
                     var catToWatch = context.Categories.First(c => c.Name == "To Watch");
 
@@ -209,7 +208,7 @@ namespace SocialFilmPlatform.Models
                     var tagMustWatch = new Tag { Name = "must-watch" };
                     var tagScifi = new Tag { Name = "scifi" };
 
-                    // Lists need to be instantiated carefully with collections
+
                     
                     var d1 = new Diary
                     {
@@ -222,8 +221,7 @@ namespace SocialFilmPlatform.Models
                         Categories = new List<Category> { catFavorites },
                         Tags = new List<Tag> { tagClassic, tagMustWatch }
                     };
-                    // Link movies via join table if using implicit, or explicit collection
-                    // Model has ICollection<MovieDiary>
+
                     
                     if (mInception != null && mDarkKnight != null)
                     {
@@ -257,7 +255,7 @@ namespace SocialFilmPlatform.Models
                     context.SaveChanges();
                 }
 
-                // 6. REVIEWS
+
                 if (!context.Reviews.Any())
                 {
                     var mInception = context.Movies.FirstOrDefault(m => m.Title == "Inception");

@@ -30,7 +30,7 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     
     <script>
-        // Init Quill
+
         var quill = new Quill('#editor', {
             theme: 'snow',
             placeholder: 'Write your review here...',
@@ -46,15 +46,15 @@
             }
         });
 
-        // Load existing content
+
         var existingContent = @Html.Raw(Json.Serialize(Model.Content ?? ""));
         quill.root.innerHTML = existingContent;
 
-        // On submit, save contents to hidden field
+
         document.getElementById('editReviewForm').addEventListener('submit', function(e) {
             var content = quill.root.innerHTML;
             
-            // Check if empty
+
             if (quill.getText().trim().length === 0) {
                 e.preventDefault();
                 alert('Please write a review before submitting.');

@@ -26,7 +26,7 @@ namespace SocialFilmPlatform.Controllers
         {
             var usersQuery = _context.Users.AsQueryable();
 
-            // Exclude current user
+
             var currentUserId = _userManager.GetUserId(User);
             if (currentUserId != null)
             {
@@ -44,7 +44,7 @@ namespace SocialFilmPlatform.Controllers
                 ViewBag.SearchString = search;
             }
             
-            // Limit results to avoid showing everyone initially if wanted, or just take 20
+
             var users = await usersQuery.Take(50).ToListAsync();
             
             return View(users);
@@ -58,7 +58,7 @@ namespace SocialFilmPlatform.Controllers
 
             if (user == null)
             {
-                // If no userId provided, try to show current user profile
+
                 var currentUser = await _userManager.GetUserAsync(User);
                 if (currentUser != null && string.IsNullOrEmpty(userId))
                 {
@@ -70,7 +70,7 @@ namespace SocialFilmPlatform.Controllers
             var viewer = await _userManager.GetUserAsync(User);
             bool isOwner = viewer != null && viewer.Id == user.Id;
 
-            // Filter diaries: Show all if owner, else show only public
+
             var visibleDiaries = isOwner 
                 ? user.Diaries 
                 : user.Diaries.Where(d => d.IsPublic).ToList();
@@ -78,7 +78,7 @@ namespace SocialFilmPlatform.Controllers
             ViewBag.IsOwner = isOwner;
             ViewBag.Diaries = visibleDiaries;
 
-            // Role Management Data (Only for Admins)
+
             if (User.IsInRole("Admin"))
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
