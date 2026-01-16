@@ -211,7 +211,11 @@ namespace SocialFilmPlatform.Controllers
         [Authorize(Roles = "Editor,Admin")]
         public IActionResult Delete(int id)
         {
-            var movie = db.Movies.Find(id);
+            var movie = db.Movies
+                .Include(m => m.ActorMovies)
+                .Include(m => m.Reviews)
+                .Include(m => m.MovieDiaries)
+                .FirstOrDefault(m => m.Id == id);
 
             if (movie is null)
             {
@@ -221,6 +225,26 @@ namespace SocialFilmPlatform.Controllers
             {
                 if(movie.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
                 {
+                    if (movie.ActorMovies != null && movie.ActorMovies.Any())
+                    {
+                        db.Set<ActorMovie>().RemoveRange(movie.ActorMovies);
+                    }
+
+                    if (movie.Reviews != null && movie.Reviews.Any())
+                    {
+                        foreach (var review in movie.Reviews)
+                        {
+                            var reviewVotes = db.Set<ReviewVote>().Where(rv => rv.ReviewId == review.Id);
+                            db.Set<ReviewVote>().RemoveRange(reviewVotes);
+                        }
+                        db.Reviews.RemoveRange(movie.Reviews);
+                    }
+
+                    if (movie.MovieDiaries != null && movie.MovieDiaries.Any())
+                    {
+                        db.MovieDiaries.RemoveRange(movie.MovieDiaries);
+                    }
+
                     db.Movies.Remove(movie);
                     db.SaveChanges();
 
