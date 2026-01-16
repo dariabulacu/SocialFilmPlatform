@@ -1,4 +1,4 @@
-# ?? Social Film Platform
+﻿# Social Film Platform
 
 <div align="center">
 
@@ -10,61 +10,58 @@
 
 *A modern film archiving and social platform with AI-powered features*
 
-[Features](#-features) � [Tech Stack](#-tech-stack) � [Installation](#-installation) � [Usage](#-usage) � [AI Features](#-ai-features)
+[Features](#features) • [Tech Stack](#tech-stack) • [Installation](#installation) • [Usage](#usage) • [AI Features](#ai-features)
 
 </div>
 
 ---
 
-## ?? About The Project
+## About The Project
 
-**Social Film Platform** is a comprehensive web application built with ASP.NET Core MVC that allows film enthusiasts to catalog, review, and share their favorite movies. The platform features a vintage cinema aesthetic combined with modern functionality, including AI-powered tag suggestions powered by Google Gemini.
+**Social Film Platform** is a web application built with ASP.NET Core MVC for film enthusiasts to catalog, review, and share movies. Features vintage cinema aesthetic with modern functionality and AI-powered tag suggestions.
 
-### ? Key Highlights
+### Key Highlights
 
-- ?? **Movie Archive** - Comprehensive database with genres, actors, trailers, and high-quality images
-- ?? **Personal Diaries** - Create curated film collections with custom tags and categories
-- ? **Review System** - Write, edit, and vote on movie reviews with like/dislike functionality
-- ?? **AI Integration** - Automatic tag and category suggestions using Google Gemini AI
-- ?? **Multi-Role System** - Admin, Editor, and User roles with granular permissions
-- ?? **Vintage UI/UX** - Classic Hollywood-inspired design with modern responsiveness
+- **Movie Archive** - Database with genres, actors, trailers, and images
+- **Personal Diaries** - Curated film collections with tags and categories
+- **Review System** - Write, edit, and vote on reviews
+- **AI Integration** - Automatic suggestions using Google Gemini
+- **Multi-Role System** - Admin, Editor, and User roles
+- **Vintage UI/UX** - Classic Hollywood-inspired design
 
 ---
 
-## ?? Features
+## Features
 
 ### Core Functionality
 
-#### ?? Movies
-- Full CRUD operations (Create, Read, Update, Delete)
-- Search and filter by title, director, description, and genre
-- Sort by popularity (score + reviews) or release date
-- Upload custom posters and embed YouTube trailers
-- Associate actors with movies
+**Movies**
+- CRUD operations
+- Search by title, director, genre
+- Sort by popularity or date
+- Upload posters, embed trailers
+- Associate with actors
 
-#### ?? Actors
-- Actor profiles with biography and filmography
-- Associate actors with multiple films
-- Upload actor photos
-- Browse complete filmography
+**Actors**
+- Profile pages with biography
+- Filmography listings
+- Photo uploads
 
-#### ?? Diaries (Movie Lists)
-- Create public or private movie collections
-- Add descriptions and detailed content
-- Tag system for categorization
-- Vote on other users' diaries
-- **AI-powered suggestions** for tags and categories
+**Diaries (Movie Lists)**
+- Public/private collections
+- Tag and category system
+- Vote on diaries
+- AI-powered suggestions
 
-#### ? Reviews
-- Write rich-text reviews (up to 2000 characters)
-- Like/Dislike voting system
-- Edit and delete own reviews
-- Admin/Editor moderation capabilities
+**Reviews**
+- Rich-text reviews (up to 2000 chars)
+- Like/Dislike voting
+- Edit/delete capabilities
+- Moderation tools
 
-#### ??? Organization
-- **Genres**: Action, Sci-Fi, Drama, Comedy, Thriller, Romance, Animation, Horror
-- **Tags**: User-defined tags for diaries (e.g., "cult-classic", "must-watch")
-- **Categories**: Broad classification (e.g., "Favorites", "To Watch")
+**Organization**
+- Genres: Action, Sci-Fi, Drama, Comedy, Thriller, Romance, Animation, Horror
+- User-defined tags and categories
 
 ### User Roles
 
@@ -76,9 +73,9 @@
 
 ---
 
-## ?? AI Features
+## AI Features
 
-The platform integrates **Google Gemini Flash AI** to provide intelligent content suggestions:
+The platform integrates **Google Gemini Flash AI** for intelligent content suggestions.
 
 ### How It Works
 
@@ -104,16 +101,16 @@ For a diary containing *Fight Club*, *Pulp Fiction*, and *Mulholland Drive*:
 ### AI Architecture
 
 ```
-User Request ? DiariesController.SuggestTags()
-                     ?
+User Request → DiariesController.SuggestTags()
+                     ↓
         Extract movie titles from diary
-                     ?
+                     ↓
         Build context-aware prompt
-                     ?
+                     ↓
         Google Gemini API call
-                     ?
+                     ↓
         Parse JSON response
-                     ?
+                     ↓
         Return tags + categories
 ```
 
@@ -121,7 +118,7 @@ User Request ? DiariesController.SuggestTags()
 
 ---
 
-## ??? Tech Stack
+## Tech Stack
 
 ### Backend
 - **Framework**: ASP.NET Core 9.0 MVC
@@ -150,7 +147,7 @@ User Request ? DiariesController.SuggestTags()
 
 ---
 
-## ?? Installation
+## Installation
 
 ### Prerequisites
 
@@ -217,134 +214,94 @@ Navigate to: `https://localhost:5001`
 
 ---
 
-## ?? Default User Accounts
+## Default User Accounts
 
 The database is seeded with test accounts:
 
-| Role | Email | Password | Description |
-|------|-------|----------|-------------|
-| **Admin** | admin@test.com | `Admin1!` | Full system access |
-| **Editor** | editor@test.com | `Editor1!` | Content management |
-| **User** | user@test.com | `User1!` | Standard user |
+| Role | Email | Password |
+|------|-------|----------|
+| **Admin** | admin@test.com | `Admin1!` |
+| **Editor** | editor@test.com | `Editor1!` |
+| **User** | user@test.com | `User1!` |
 
-?? **Change these passwords in production!**
+**Warning:** Change these passwords in production!
 
 ---
 
-## ?? Usage Guide
+## Usage Guide
 
 ### Creating a Movie (Editor/Admin)
 
-1. Navigate to **Movies** ? **Add Movie**
-2. Fill in required fields:
-   - Title, Director, Description
-   - Release Date, Score (1-10)
-   - Select Genre
-3. (Optional) Upload poster image
-4. (Optional) Add YouTube trailer URL
-5. Click **Save Movie**
+1. Navigate to Movies → Add Movie
+2. Fill required fields (title, director, description, date, score, genre)
+3. Optional: Upload poster, add trailer URL
+4. Click Save Movie
 
 ### Creating a Diary (All Users)
 
-1. Go to **Diaries** ? **Create New**
-2. Enter:
-   - Diary name
-   - Description
-   - Public/Private toggle
-3. Click **Create**
-4. Add movies via **Add to Diary** on movie pages
-5. Use **AI Suggest** to auto-generate tags
+1. Go to Diaries → Create New
+2. Enter name, description, public/private toggle
+3. Add movies from movie detail pages
+4. Use AI Suggest for auto-generated tags
 
 ### Writing a Review
 
-1. Navigate to a movie's detail page
-2. Scroll to **Critiques** section
-3. Use rich text editor (bold, italic support)
-4. Click **Publish**
-5. Vote on others' reviews with ??/??
-
-### AI Tag Suggestions
-
-1. Edit any diary with movies
-2. Click **Suggest with AI** button
-3. Wait for AI analysis (~2-5 seconds)
-4. Review suggested tags/categories
-5. Accept or modify suggestions
-6. Click **Save Changes**
+1. Go to movie detail page
+2. Use rich text editor in Critiques section
+3. Click Publish
+4. Vote on other reviews
 
 ---
 
-## ??? Project Structure
+## Project Structure
 
 ```
 SocialFilmPlatform/
-??? Controllers/           # MVC Controllers
-?   ??? MoviesController.cs
-?   ??? DiariesController.cs
-?   ??? ActorsController.cs
-?   ??? ReviewsController.cs
-?   ??? ...
-??? Models/               # Data Models
-?   ??? Movie.cs
-?   ??? Diary.cs
-?   ??? Review.cs
-?   ??? ApplicationUser.cs
-?   ??? SeedData.cs
-??? Views/                # Razor Views
-?   ??? Movies/
-?   ??? Diaries/
-?   ??? Actors/
-?   ??? Shared/
-??? Services/             # Business Logic
-?   ??? IAiService.cs
-?   ??? GeminiAiService.cs
-??? Data/                 # EF Core Context
-?   ??? ApplicationDbContext.cs
-?   ??? Migrations/
-??? wwwroot/              # Static Files
-?   ??? css/
-?   ??? js/
-?   ??? images/
-??? Program.cs            # App Entry Point
+├── Controllers/           # MVC Controllers
+│   ├── MoviesController.cs
+│   ├── DiariesController.cs
+│   ├── ActorsController.cs
+│   ├── ReviewsController.cs
+│   └── ...
+├── Models/               # Data Models
+│   ├── Movie.cs
+│   ├── Diary.cs
+│   ├── Review.cs
+│   ├── ApplicationUser.cs
+│   └── SeedData.cs
+├── Views/                # Razor Views
+│   ├── Movies/
+│   ├── Diaries/
+│   ├── Actors/
+│   └── Shared/
+├── Services/             # Business Logic
+│   ├── IAiService.cs
+│   └── GeminiAiService.cs
+├── Data/                 # EF Core Context
+│   ├── ApplicationDbContext.cs
+│   └── Migrations/
+├── wwwroot/              # Static Files
+│   ├── css/
+│   ├── js/
+│   └── images/
+└── Program.cs            # App Entry Point
 ```
 
 ---
 
-## ?? Database Schema
+## Database Schema
 
-### Core Entities
-
-```mermaid
-erDiagram
-    MOVIE ||--o{ REVIEW : has
-    MOVIE ||--o{ ACTORMOVIE : features
-    MOVIE }o--|| GENRE : belongs_to
-    MOVIE }o--|| USER : created_by
-    
-    ACTOR ||--o{ ACTORMOVIE : appears_in
-    
-    DIARY ||--o{ MOVIEDIARY : contains
-    DIARY ||--o{ DIARYVOTE : receives
-    DIARY }o--o{ TAG : has
-    DIARY }o--o{ CATEGORY : belongs_to
-    
-    REVIEW ||--o{ REVIEWVOTE : receives
-    REVIEW }o--|| USER : written_by
-    
-    USER ||--o{ DIARY : creates
-    USER ||--o{ MOVIE : uploads
-```
 
 ### Key Relationships
 
-- **Many-to-Many**: Movies ? Actors (via `ActorMovie`)
-- **Many-to-Many**: Diaries ? Movies (via `MovieDiary`)
-- **Many-to-Many**: Diaries ? Tags/Categories
-- **One-to-Many**: Movie ? Reviews, User ? Diaries
+- **Many-to-Many**: Movies ↔ Actors (via `ActorMovie`)
+- **Many-to-Many**: Diaries ↔ Movies (via `MovieDiary`)
+- **Many-to-Many**: Diaries ↔ Tags/Categories
+- **One-to-Many**: Movie → Reviews, User → Diaries
 
 ---
 
-## ?? Security Features
+## Security Features
 
 ### XSS Protection
 ```csharp
@@ -368,7 +325,7 @@ public IActionResult New() { ... }
 
 ---
 
-## ?? API Endpoints
+## API Endpoints
 
 ### Movie API (Internal)
 - `GET /Movies/Index` - List all movies (paginated)
@@ -388,158 +345,18 @@ public IActionResult New() { ... }
 
 ---
 
-## ?? Testing
+## Testing
 
 ### Database Seeding
-The application automatically seeds:
-- 3 user roles (Admin, Editor, User)
+The application automatically seeds test data:
+- 3 user roles
 - 6 test users
 - 8 genres
-- 6 actors (with images)
-- 7 movies (with posters and trailers)
+- 6 actors
+- 7 movies
 - 5 sample diaries
 - 3 sample reviews
 
-### Manual Testing
-1. Log in as different users
-2. Create movies/diaries/reviews
-3. Test AI suggestions (requires API key)
-4. Verify role permissions
-5. Test voting systems
-
 ---
 
-## ?? Troubleshooting
 
-### Database Connection Issues
-```bash
-# Test connection
-dotnet ef database drop
-dotnet ef database update
-```
-
-### AI Not Working
-- Verify API key in `appsettings.json`
-- Check API quota: [Google Cloud Console](https://console.cloud.google.com/)
-- Inspect browser console for errors
-
-### Images Not Loading
-- Ensure `/wwwroot/images/` folders exist:
-  ```bash
-  mkdir -p wwwroot/images/movies
-  mkdir -p wwwroot/images/actors
-  ```
-
-### Port Already in Use
-```bash
-# Change port in launchSettings.json
-"applicationUrl": "https://localhost:5002;http://localhost:5003"
-```
-
----
-
-## ?? Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Code Style
-- Follow [C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-- Use meaningful variable names
-- Add XML comments for public methods
-- Keep controllers thin (use services for logic)
-
----
-
-## ?? License
-
-This project is licensed under the MIT License - see below for details:
-
-```
-MIT License
-
-Copyright (c) 2025 Daria Bulacu
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
-
-## ????? Author
-
-**Daria Bulacu**
-
-- GitHub: [@dariabulacu](https://github.com/dariabulacu)
-- Project: [Social Film Platform](https://github.com/dariabulacu/SocialFilmPlatform)
-
----
-
-## ?? Acknowledgments
-
-- **Google Gemini** - AI-powered tag suggestions
-- **Bootstrap** - Responsive UI framework
-- **Quill.js** - Rich text editor
-- **Unsplash** - Placeholder images
-- **Entity Framework Core** - Database ORM
-- **ASP.NET Core** - Web framework
-
----
-
-## ?? Screenshots
-
-### Home Page
-![Home](docs/screenshots/home.png)
-
-### Movie Detail Page
-![Movie Detail](docs/screenshots/movie-detail.png)
-
-### Diary with AI Suggestions
-![Diary AI](docs/screenshots/diary-ai.png)
-
-### Review System
-![Reviews](docs/screenshots/reviews.png)
-
----
-
-## ?? Future Enhancements
-
-- [ ] Social features (follow users, activity feed)
-- [ ] Advanced search with filters
-- [ ] Watchlist functionality
-- [ ] Movie recommendations based on viewing history
-- [ ] API for mobile app integration
-- [ ] Multi-language support
-- [ ] Dark mode theme
-- [ ] Export diary to PDF
-- [ ] Integration with TMDB/IMDB APIs
-
----
-
-<div align="center">
-
-**? Star this repo if you found it helpful!**
-
-Made with ?? and ? by [Daria Bulacu](https://github.com/dariabulacu)
-
-</div>
